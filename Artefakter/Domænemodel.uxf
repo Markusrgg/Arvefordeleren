@@ -57,7 +57,8 @@ arvedel</panel_attributes>
     </coordinates>
     <panel_attributes>Person
 -
-navn
+fornavn
+efternavn
 fødselsdag
 adresse
 </panel_attributes>
