@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace Arvefordeleren_ClassLibrary.Models
 {
-    internal class Person
+    public class Person
     {
+        public string FistName { get; set; }
+
+        public string LastName { get; set; }
+
+        public DateTime DateOfBirth { get; set; }
+
+        public string Address { get; set; }
     }
+
+
 }
