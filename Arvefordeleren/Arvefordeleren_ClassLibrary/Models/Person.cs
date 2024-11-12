@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Arvefordeleren_ClassLibrary.Models
 {
-    public class Person
+    public abstract class Person
     {
         public string FistName { get; set; }
 

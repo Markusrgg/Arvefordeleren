@@ -8,10 +8,9 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public class Asset
     {
+        public Asset() { }
         public string Name { get; set; }
-
         public double Value { get; set; }
-
         public string SeparateEstate { get; set; }
     }
 }
