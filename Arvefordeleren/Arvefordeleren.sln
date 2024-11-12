@@ -5,9 +5,9 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_ClassLibrary", "Arvefordeleren_ClassLibrary\Arvefordeleren_ClassLibrary.csproj", "{9B51E4C8-2B98-43C5-81F9-1BFD70FED831}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arvefordeleren_WebApp", "Arvefordeleren_WebApp\Arvefordeleren_WebApp\Arvefordeleren_WebApp.csproj", "{31DA8A78-A288-4A37-BD59-76EA568CC0D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_WebApp", "Arvefordeleren_WebApp\Arvefordeleren_WebApp\Arvefordeleren_WebApp.csproj", "{31DA8A78-A288-4A37-BD59-76EA568CC0D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arvefordeleren_WebApp.Client", "Arvefordeleren_WebApp\Arvefordeleren_WebApp.Client\Arvefordeleren_WebApp.Client.csproj", "{2153DDF7-2298-4101-B1CB-4844299E45E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_WebApp.Client", "Arvefordeleren_WebApp\Arvefordeleren_WebApp.Client\Arvefordeleren_WebApp.Client.csproj", "{2153DDF7-2298-4101-B1CB-4844299E45E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
