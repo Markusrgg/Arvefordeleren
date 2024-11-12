@@ -1,0 +1,56 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Arvefordeleren_ClassLibrary.Models
+
+
+<EditForm Model="@heir" OnInvalidSubmit="@HandleValidSubmit">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="firstname">Fornavn:</label>
+        <InputText id="firstname" @bind-Value="heir.FistName" />
+        <ValidationMessage For="@(() => heir.FistName)" />
+    </div>
+    <div>
+        <label for="lastname">Efternavn:</label>
+        <InputText id="lastname" @bind-Value="heir.LastName" />
+        <ValidationMessage For="@(() => heir.LastName)" />
+    </div>
+    <div>
+        <label for="dateOfBirth">Fødselsdato:</label>
+        <InputDate id="dataofbirth" @bind-Value="heir.DateOfBirth" />
+        <ValidationMessage For="@(() => heir.DateOfBirth)" />
+    </div>
+
+    <div>
+        <label for="address">Adresse:</label>
+        <InputText id="address" @bind-Value="heir.Address" />
+        <ValidationMessage For="@(() => heir.Address)" />
+    </div>
+    <div>
+        <label for="relation">Relation:</label>
+        <InputText id="relation" @bind-Value="heir.Relation" />
+        <ValidationMessage For="@(() => heir.Relation)" />
+    </div>
+    <div>
+        <label for="inheritanceShare">Arv delen:</label>
+        <InputText id="inheritanceShare" @bind-Value="heir.InheritanceShare" />
+        <ValidationMessage For="@(() => heir.InheritanceShare)" />
+    </div>
+   
+    <button type="submit">Videre</button>
+</EditForm>
+
+@code {
+    private Heir heir = new Heir();
+    private bool isSubmitted = false;
+
+    private void HandleValidSubmit()
+    {
+        isSubmitted = true;
+        Console.WriteLine($"Submitted: {heir.FistName}, {heir.LastName}, {heir.DateOfBirth}, {heir.Address}, {heir.Relation}, {heir.Relation}");
+    }
+
+}
+
