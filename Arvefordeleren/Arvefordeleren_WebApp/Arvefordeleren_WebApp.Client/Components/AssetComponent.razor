@@ -12,8 +12,12 @@
 @code {
     private Asset asset = new Asset();
 
-    private void CreateAsset()
+    [Parameter]
+    public EventCallback OnAssetCreated { get; set; }
+
+    private async void CreateAsset()
     {
-        
+        Testament.AddAsset(asset);
+        await OnAssetCreated.InvokeAsync();
     }
 }

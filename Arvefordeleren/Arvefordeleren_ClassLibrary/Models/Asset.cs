@@ -8,7 +8,17 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public class Asset
     {
-        public Asset() { }
+        public Asset(string separateEstate = "Ingen valgt") 
+        {
+            SeparateEstate = separateEstate;
+        }
+
+        public Asset(string name, double value, string separateEstate) : this(separateEstate)
+        {
+            Name = name;
+            Value = value;
+        }
+        public int id { get; set; }
         public string Name { get; set; }
         public double Value { get; set; }
         public string SeparateEstate { get; set; }

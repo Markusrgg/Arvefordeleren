@@ -1,0 +1,54 @@
+﻿@page "/assetmanager"
+@using System.Collections.Generic
+
+<h1>Asset Manager</h1>
+
+<AssetForm OnAssetCreated="HandleAssetCreated" />
+<AssetUpdater SelectedAsset="@selectedAsset" OnAssetUpdated="HandleAssetUpdated" />
+
+@if (showConfirmation)
+{
+    <p>Asset Created Successfully!</p>
+}
+
+@if (assets.Any())
+{
+    <h3>Added Assets:</h3>
+    <ul>
+        @foreach (var asset in assets)
+        {
+            <li>
+                <span>@asset.Name - Value: @asset.Value - Estate: @asset.SeparateEstate</span>
+                <button @onclick="() => UpdateAsset(asset)">Opdater</button>
+                <button @onclick="() => DeleteAsset(asset)">Slet</button>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    private bool showConfirmation = false;
+    private List<Asset> assets = new List<Asset>();
+    private Asset selectedAsset;
+
+    private void HandleAssetCreated()
+    {
+        assets = Testament.GetAssets();
+        showConfirmation = true;
+    }
+    private void UpdateAsset(Asset asset)
+    {
+        selectedAsset = asset;
+    }
+
+    private void HandleAssetUpdated()
+    {
+        // Logic to update the selected asset
+        selectedAsset = null;
+    }
+
+    private void DeleteAsset(Asset asset)
+    {
+        // Logic to delete the asset from the list
+    }
+}
