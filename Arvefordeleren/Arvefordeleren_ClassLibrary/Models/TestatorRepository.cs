@@ -11,7 +11,7 @@ namespace Arvefordeleren_ClassLibrary.Models
         private static List<Testator> testators = new List<Testator>();
 
         public static void AddTestator(Testator testator)
-        {
+        { 
             testators.Add(testator);
         }
 
