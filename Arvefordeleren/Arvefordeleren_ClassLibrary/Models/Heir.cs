@@ -8,8 +8,8 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public class Heir : Person
     {
-        public string Relation {  get; set; }
+        public string? Relation {  get; set; }
 
-        public string InheritanceShare { get; set; }
+        public string? InheritanceShare { get; set; }
     }
 }

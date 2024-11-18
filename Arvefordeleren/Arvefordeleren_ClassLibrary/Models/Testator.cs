@@ -10,11 +10,11 @@ namespace Arvefordeleren_ClassLibrary.Models
     {
         public WillType WillType { get; set; }
 
-        public string MaritalStatus { get; set; }
+        public string? MaritalStatus { get; set; }
 
-        public string ForcedInheritance {  get; set; }
+        public string? ForcedInheritance {  get; set; }
 
-        public string FreeInheritance { get; set; }
+        public string? FreeInheritance { get; set; }
 
         public DateTime Date {  get; set; }
 
