@@ -8,10 +8,8 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public enum WillType
     {
-        Single,
-        Married,
-        Partner, 
-        Cohabiting
-
+        Individual, 
+        Joint      
     }
 }
+
