@@ -16,19 +16,20 @@ namespace Arvefordeleren_WebAPI.Controllers
         public AssetsController(IRepository<Asset> repository)
         {
             _repository = repository;
+            _repository.Add(new Asset("Rolex", 5, "markus"));
         }
 
         // GET: api/assets
         [HttpGet]
-        public async Task<ActionResult<List<Asset>>> GetAllAssets()
+        public async Task<IActionResult> GetAllAssets()
         {
-            var assets = await _repository.GetAll();
+            var assets = await _repository.GetAll();        
             return Ok(assets);
         }
 
         // GET: api/assets/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Asset>> GetAssetById(Guid id)
+        public async Task<IActionResult> GetAssetById(Guid id)
         {
             var asset = await _repository.GetById(id);
             if (asset == null)
@@ -40,7 +41,7 @@ namespace Arvefordeleren_WebAPI.Controllers
 
         // POST: api/assets
         [HttpPost]
-        public async Task<ActionResult<Asset>> CreateAsset([FromBody] Asset asset)
+        public async Task<IActionResult> CreateAsset([FromBody] Asset asset)
         {
             if (asset == null)
             {

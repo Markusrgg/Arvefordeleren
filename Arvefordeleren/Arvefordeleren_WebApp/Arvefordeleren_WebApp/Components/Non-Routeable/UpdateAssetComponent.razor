@@ -1,0 +1,59 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Arvefordeleren_ClassLibrary.Models
+@inject AssetService AssetService
+@code {
+    [Parameter] public Asset Asset { get; set; }
+    [Parameter] public EventCallback OnUpdate { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    private Asset updatedAsset;
+
+    protected override void OnParametersSet()
+    {
+        updatedAsset = new Asset
+            {
+                Id = Asset.Id,
+                Name = Asset.Name,
+                Value = Asset.Value,
+                SeparateEstate = Asset.SeparateEstate
+            };
+    }
+
+    private async Task UpdateAsset()
+    {
+        await AssetService.UpdateAsset(updatedAsset);
+        await OnUpdate.InvokeAsync();
+    }
+
+    private async Task DeleteAsset()
+    {
+        await AssetService.DeleteAsset(updatedAsset.Id);
+        await OnUpdate.InvokeAsync();
+    }
+
+    private async Task Cancel()
+    {
+        await OnCancel.InvokeAsync();
+    }
+}
+
+<h4>Edit Asset</h4>
+<EditForm Model="updatedAsset" OnValidSubmit="UpdateAsset">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Name:</label>
+        <InputText @bind-Value="updatedAsset.Name" />
+    </div>
+    <div>
+        <label>Value:</label>
+        <InputNumber @bind-Value="updatedAsset.Value" />
+    </div>
+    <div>
+        <label>Separate Estate:</label>
+        <InputText @bind-Value="updatedAsset.SeparateEstate" />
+    </div>
+    <button type="submit">Update</button>
+    <button type="button" @onclick="Cancel">Cancel</button>
+</EditForm>

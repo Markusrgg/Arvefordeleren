@@ -8,6 +8,10 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public class Asset : Model
     {
+        public Asset()
+        {
+        }
+
         public Asset(string separateEstate = "Ingen valgt") 
         {
             Id = Guid.NewGuid();

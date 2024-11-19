@@ -8,10 +8,6 @@ namespace Arvefordeleren_WebApp.Client
         static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("7084") }); 
-
-            await builder.Build().RunAsync();
             await builder.Build().RunAsync();
         }
     }

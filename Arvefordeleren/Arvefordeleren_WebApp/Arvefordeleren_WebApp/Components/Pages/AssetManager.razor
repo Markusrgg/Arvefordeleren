@@ -1,0 +1,117 @@
+﻿@using System.Collections.Generic
+@using Arvefordeleren_ClassLibrary.Models
+@using Arvefordeleren_WebApp.Components.Non_Routeable
+@page "/assets"
+@inject AssetService AssetService
+
+<h3>Asset Manager</h3>
+
+<EditForm Model="@newAsset" OnValidSubmit="@HandleValidSubmit" FormName="assetForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Name:</label>
+        <InputText @bind-Value="@newAsset.Name" />
+    </div>
+    <div>
+        <label>Value:</label>
+        <InputNumber @bind-Value="@newAsset.Value" />
+    </div>
+    <div>
+        <label>Separate Estate:</label>
+        <InputText @bind-Value="@newAsset.SeparateEstate" />
+    </div>
+    <button type="submit">@((isEditing ? "Update Asset" : "Create Asset"))</button>
+    @if (isEditing)
+    {
+        <button type="button" @onclick="CancelEdit">Cancel</button>
+    }
+</EditForm>
+
+@if (assets != null && assets.Count > 0)
+{
+    <ul>
+        @foreach (var asset in assets)
+        {
+            <li>
+                <strong>@asset.Name</strong> - @asset.Value - @asset.SeparateEstate
+                <button @onclick="() => EditAsset(asset)">Edit</button>
+                <button @onclick="() => DeleteAsset(asset.Id)">Delete</button>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No assets found.</p>
+}
+
+@code {
+    private List<Asset> assets;
+    private Asset newAsset = new Asset();
+    private bool isEditing = false; // Track if in editing mode
+    private Guid? editingAssetId; // Store ID of the asset being edited
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAssets();
+    }
+
+    private async Task LoadAssets()
+    {
+        assets = await AssetService.GetAllAssets();
+    }
+
+    private async Task CreateAsset()
+    {
+        await AssetService.CreateAsset(newAsset);
+        newAsset = new Asset(); // Reset the form
+        await LoadAssets(); // Refresh the asset list
+    }
+
+    private void EditAsset(Asset asset)
+    {
+        newAsset = asset; // Load asset into the form for editing
+        isEditing = true; // Set editing mode
+        editingAssetId = asset.Id; // Store the ID for updates
+    }
+
+    private async Task UpdateAsset()
+    {
+        if (editingAssetId.HasValue)
+        {
+            newAsset.Id = editingAssetId.Value; // Set the ID for the asset being updated
+            await AssetService.UpdateAsset(newAsset);
+            newAsset = new Asset(); // Reset the form
+            isEditing = false; // Exit editing mode
+            editingAssetId = null; // Clear the ID
+            await LoadAssets(); // Refresh the asset list
+        }
+    }
+
+    private async Task DeleteAsset(Guid id)
+    {
+        await AssetService.DeleteAsset(id);
+        await LoadAssets();
+    }
+
+    private void CancelEdit()
+    {
+        newAsset = new Asset(); // Reset the form
+        isEditing = false; // Exit editing mode
+        editingAssetId = null; // Clear the ID
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (isEditing)
+        {
+            await UpdateAsset(); // Call the update method if in editing mode
+        }
+        else
+        {
+            await CreateAsset(); // Otherwise, create a new asset
+        }
+    }
+}

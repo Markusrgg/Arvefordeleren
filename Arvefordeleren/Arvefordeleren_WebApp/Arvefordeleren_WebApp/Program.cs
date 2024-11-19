@@ -13,6 +13,8 @@ namespace Arvefordeleren_WebApp
             builder.Services.AddRazorComponents()
                 .AddInteractiveWebAssemblyComponents();
 
+            builder.Services.AddScoped<AssetService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
