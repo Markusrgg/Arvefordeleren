@@ -8,7 +8,6 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <h4>Arvinger</h4>
     @foreach (var heir in testator.Heirs)
     {
         <div class="row mb-3">
@@ -17,6 +16,24 @@
             </div>
             <div class="col-6">
                 <InputText @bind-Value="heir.FirstName" class="form-control" placeholder="Fornavn" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Relation</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="heir.Relation" class="form-control" placeholder="Relation" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Arvemængde</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="heir.InheritanceShare" class="form-control" placeholder="Arvemængde" />
             </div>
         </div>
 
@@ -41,12 +58,12 @@
 <ul>
     @foreach (var heir in testator.Heirs)
     {
-        <li>Arving: @heir.FirstName, Fødselsdato: @heir.DateOfBirth.ToShortDateString()</li>
+        <li>Arving: @heir.FirstName, Fødselsdato: @heir.DateOfBirth.ToShortDateString(), Relation: @heir.Relation, Arvemængde: @heir.InheritanceShare</li>
     }
 </ul>
 
 @code {
-    private Testator testator = new Testator
+    private Testator testator = new Testator 
         {
             Heirs = new List<Heir>() // Initialize heirs list
         };
@@ -67,8 +84,7 @@
         Console.WriteLine($"Testator: {testator.FirstName} {testator.LastName}");
         foreach (var heir in testator.Heirs)
         {
-            Console.WriteLine($"Arving: {heir.FirstName}, Fødselsdato: {heir.DateOfBirth.ToShortDateString()}");
+            Console.WriteLine($"Arving: {heir.FirstName}, Relation: {heir.Relation}, Arvemængde: {heir.InheritanceShare}, Fødselsdato: {heir.DateOfBirth.ToShortDateString()}");
         }
     }
 }
-
