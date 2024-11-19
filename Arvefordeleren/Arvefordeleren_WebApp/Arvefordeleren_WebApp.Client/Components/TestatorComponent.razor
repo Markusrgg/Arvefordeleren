@@ -1,0 +1,49 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Arvefordeleren_ClassLibrary.Models
+
+<h3>TestatorComponent</h3>
+<EditForm Model ="@testator" OnInvalidSubmit="@HandleValidSubmit">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="firstname">Fornavn:</label>
+        <InputText id="firstname" @bind-Value="testator.FistName" />
+        <ValidationMessage For="@(() => testator.FistName)" />
+    </div>
+    <div>
+        <label for="lastname">Efternavn:</label>
+        <InputText id="lastname" @bind-Value="testator.LastName" />
+        <ValidationMessage For="@(() => testator.LastName)" />
+    </div>
+    <div>
+        <label for="dateofbirth">Fødselsdato:</label>
+        <InputDate id="dataofbirth" @bind-Value="testator.DateOfBirth" />
+        <ValidationMessage For="@(() => testator.DateOfBirth)" />
+    </div>
+    
+    <div>
+        <label for="address">Adresse:</label>
+        <InputText id="address" @bind-Value="testator.Address" />
+        <ValidationMessage For="@(() => testator.Address)" />
+    </div>
+    <div>
+        <label for="date">Dato:</label>
+        <InputDate id="date" @bind-Value="testator.Date" />
+        <ValidationMessage For="@(() => testator.Date)" />
+    </div>
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private Testator testator = new Testator();
+    private bool isSubmitted = false;
+
+    private void HandleValidSubmit()
+    {
+        isSubmitted = true;
+        Console.WriteLine($"Submitted: {testator.FistName}, {testator.LastName}, {testator.DateOfBirth}, {testator.Address}, {testator.Date}");
+    }
+
+}

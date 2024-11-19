@@ -1,0 +1,23 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Arvefordeleren_ClassLibrary.Models
+
+<div>
+    <h3>Tilføj aktiv</h3>
+    <input type="text" @bind="asset.Name" placeholder="Navn" />
+    <input type="number" @bind="asset.Value" placeholder="Værdi" />
+    <input type="text" @bind="asset.SeparateEstate" placeholder="Særeje" />
+    <button @onclick="CreateAsset">Create</button>
+</div>
+
+@code {
+    private Asset asset = new Asset();
+
+    [Parameter]
+    public EventCallback OnAssetCreated { get; set; }
+
+    private async void CreateAsset()
+    {
+        AssetRepository.Add(asset);
+        await OnAssetCreated.InvokeAsync();
+    }
+}

@@ -1,0 +1,28 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Arvefordeleren_ClassLibrary.Models
+@inherits ComponentBase
+
+<div>
+    @if (SelectedAsset != null)
+    {
+        <h3>Edit Asset</h3>
+        <input type="text" @bind="SelectedAsset.Name" />
+        <input type="number" @bind="SelectedAsset.Value" />
+        <input type="text" @bind="SelectedAsset.SeparateEstate" />
+        <button @onclick="UpdateAsset">Update</button>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Asset SelectedAsset { get; set; }
+
+    [Parameter]
+    public EventCallback OnAssetUpdated { get; set; }
+
+    private async void UpdateAsset()
+    {
+        AssetRepository.Update(SelectedAsset);
+        await OnAssetUpdated.InvokeAsync();
+    }
+}
