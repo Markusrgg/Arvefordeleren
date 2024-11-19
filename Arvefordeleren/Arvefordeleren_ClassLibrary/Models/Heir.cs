@@ -15,7 +15,7 @@ namespace Arvefordeleren_ClassLibrary.Models
             InheritanceShare = inheritanceShare;
         }
 
-        public string Relation {  get; set; }
+        public string? Relation {  get; set; }
 
         public string? InheritanceShare { get; set; }
     }

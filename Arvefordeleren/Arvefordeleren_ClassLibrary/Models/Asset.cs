@@ -19,8 +19,8 @@ namespace Arvefordeleren_ClassLibrary.Models
             Name = name;
             Value = value;
         }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public double Value { get; set; }
-        public string SeparateEstate { get; set; }
+        public string? SeparateEstate { get; set; }
     }
 }
