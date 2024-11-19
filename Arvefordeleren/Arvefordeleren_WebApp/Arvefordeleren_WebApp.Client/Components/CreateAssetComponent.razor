@@ -17,7 +17,7 @@
 
     private async void CreateAsset()
     {
-        Testament.AddAsset(asset);
+        AssetRepository.Add(asset);
         await OnAssetCreated.InvokeAsync();
     }
 }

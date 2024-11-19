@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_WebApp", "Ar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_WebApp.Client", "Arvefordeleren_WebApp\Arvefordeleren_WebApp.Client\Arvefordeleren_WebApp.Client.csproj", "{2153DDF7-2298-4101-B1CB-4844299E45E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arvefordeleren_WebAPI", "Arvefordeleren_WebAPI\Arvefordeleren_WebAPI.csproj", "{E3152708-EA02-4812-80C0-2C3193DBB183}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2153DDF7-2298-4101-B1CB-4844299E45E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2153DDF7-2298-4101-B1CB-4844299E45E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2153DDF7-2298-4101-B1CB-4844299E45E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3152708-EA02-4812-80C0-2C3193DBB183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3152708-EA02-4812-80C0-2C3193DBB183}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3152708-EA02-4812-80C0-2C3193DBB183}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3152708-EA02-4812-80C0-2C3193DBB183}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

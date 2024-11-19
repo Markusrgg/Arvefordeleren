@@ -8,6 +8,16 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public class Testator : Person 
     {
+        public Testator(WillType willType, string maritalStatus, string forcedInheritance, string freeInheritance, DateTime date)
+        {
+            Id = Guid.NewGuid();
+            WillType = willType;
+            MaritalStatus = maritalStatus;
+            ForcedInheritance = forcedInheritance;
+            FreeInheritance = freeInheritance;
+            Date = date;
+        }
+
         public WillType WillType { get; set; }
 
         public string MaritalStatus { get; set; }

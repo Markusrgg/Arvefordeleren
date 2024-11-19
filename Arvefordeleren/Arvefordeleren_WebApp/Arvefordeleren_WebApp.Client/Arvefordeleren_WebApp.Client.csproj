@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Arvefordeleren_ClassLibrary\Arvefordeleren_ClassLibrary.csproj" />
+    <ProjectReference Include="..\..\Arvefordeleren_WebAPI\Arvefordeleren_WebAPI.csproj" />
   </ItemGroup>
 
 </Project>

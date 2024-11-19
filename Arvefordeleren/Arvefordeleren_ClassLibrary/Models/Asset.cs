@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Arvefordeleren_ClassLibrary.Models
 {
-    public class Asset
+    public class Asset : Model
     {
         public Asset(string separateEstate = "Ingen valgt") 
         {
+            Id = Guid.NewGuid();
             SeparateEstate = separateEstate;
         }
 
@@ -18,7 +19,6 @@ namespace Arvefordeleren_ClassLibrary.Models
             Name = name;
             Value = value;
         }
-        public int id { get; set; }
         public string Name { get; set; }
         public double Value { get; set; }
         public string SeparateEstate { get; set; }
