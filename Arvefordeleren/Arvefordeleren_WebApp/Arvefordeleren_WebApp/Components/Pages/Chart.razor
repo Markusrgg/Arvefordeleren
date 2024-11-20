@@ -1,24 +1,63 @@
 ﻿@page "/chart"
+@rendermode InteractiveServer
 <PageTitle>Chart</PageTitle>
 
 <div class="w-50 h-50 mx-auto">
-    <BlazorChart DataLabel="Percent" ChartType="ChartType.Pie" ChartData="@TestDic"></BlazorChart>
+    <BlazorChart DataLabel="Percent" ChartType="ChartType.Pie" LabelFontSize="14"></BlazorChart>
 </div>
 
 <div class="w-50 h-50 mx-auto">
-    <BlazorChart DataLabel="Yearly Revenue" ChartType="ChartType.Bar" ChartData="@TestDic"></BlazorChart>
+    <BlazorChart 
+                DataLabel="Yearly Revenue" 
+                ChartType="ChartType.Bar" 
+                LabelFontSize="0"
+                ChartData="@Test"/>
 </div>
 
 @code {
     private string Title = "Hello World";
-    private Dictionary<string, object> TestDic = new Dictionary<string, object>()
-        {
-            {"2010", 10.55},
-            {"2011", 20},
-            {"2012", 15.5},
-            {"2013", 25.1},
-            {"2014", 22.432},
-            {"2015", 30.86},
-            {"2016", 28.12}
-        };
+    private Dictionary<string, object> Test = new Dictionary<string, object>()
+    {
+        {"2000", 5.45},
+        {"2001", 7.32},
+        {"2002", 6.89},
+        {"2003", 8.01},
+        {"2004", 9.12},
+        {"2005", 10.34},
+        {"2006", 12.45},
+        {"2007", 14.65},
+        {"2008", 13.98},
+        {"2009", 15.32},
+        {"2010", 10.55},
+        {"2011", 20.00},
+        {"2012", 15.50},
+        {"2013", 25.10},
+        {"2014", 22.43},
+        {"2015", 30.86},
+        {"2016", 28.12},
+        {"2017", 35.67},
+        {"2018", 40.23},
+        {"2019", 38.95},
+        {"2020", 42.78},
+        {"2021", 45.12},
+        {"2022", 48.90},
+        {"2023", 50.33},
+        {"2024", 55.89},
+        {"2025", 60.21},
+        {"2026", 63.77},
+        {"2027", 65.99},
+        {"2028", 68.45},
+        {"2029", 70.89},
+        {"2030", 72.33},
+        {"2031", 75.50},
+        {"2032", 78.22},
+        {"2033", 80.75},
+        {"2034", 85.10},
+        {"2035", 90.15},
+        {"2036", 95.34},
+        {"2037", 100.89},
+        {"2038", 105.12},
+        {"2039", 110.55},
+        {"2040", 115.89}
+    };
 }

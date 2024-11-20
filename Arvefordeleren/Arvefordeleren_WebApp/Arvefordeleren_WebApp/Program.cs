@@ -11,7 +11,7 @@ namespace Arvefordeleren_WebApp
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
-                .AddInteractiveWebAssemblyComponents();
+                .AddInteractiveWebAssemblyComponents().AddInteractiveServerComponents();
 
             var app = builder.Build();
 
@@ -34,7 +34,7 @@ namespace Arvefordeleren_WebApp
 
             app.MapRazorComponents<App>()
                 .AddInteractiveWebAssemblyRenderMode()
-                .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
+                .AddAdditionalAssemblies(typeof(Client._Imports).Assembly).AddInteractiveServerRenderMode();
 
             app.Run();
         }

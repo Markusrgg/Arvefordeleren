@@ -1,42 +1,53 @@
-﻿@using System.Text.Json
+﻿<canvas id="@chartIdentifier"></canvas>
+
+
+@using System.Text.Json
 @using System.Web
+@using Microsoft.JSInterop;
+@inject IJSRuntime JSRuntime;
 
 <ChartJSImport />
-
-<canvas id="@chartIdentifier"></canvas>
 <script>
-    
-    Chart.register(ChartDataLabels);
+    window.renderChart = (chartId, chartType, chartLabels, dataLabel, chartData, fontSize) => {
+        Chart.register(ChartDataLabels);
 
-    new Chart(document.getElementById('@chartIdentifier'), {
-        type: '@ChartType.ToString().ToLower()',
-        data: {
-            labels: JSON.parse('@JsonSerializer.Serialize(chartLabel)'),
-            datasets: [{
-                label: '@JsonSerializer.Serialize(DataLabel)',
-                data: @chartData,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+        new Chart(document.getElementById(chartId), {
+            type: chartType,
+            data: {
+                labels: JSON.parse(chartLabels),
+                datasets: [{
+                    label: dataLabel,
+                    data: chartData,
+                    borderWidth: 1
+                }]
             },
-            plugins: [ {
-                datalabels: {
-                    color: '#fcfafa', // Label color
-                    anchor: 'end',
-                    align: 'start',
-                    offset: -10,
-                    font: {
-                        size: 20,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        color: '#000', // Label color
+                        formatter: (value, ctx) => {
+                                const label = ctx.chart.data.labels[ctx.dataIndex];
+                                return `${value} %`; // Show label and value
+                        },
+                        anchor: 'end',
+                        align: 'start',
+                        offset: 10,
+                        font: {
+                            size: fontSize,
+                        }
+                    },
+                    colors: {
+                        forceOverride: true
                     }
                 }
-            }]
-        }
-    });
+            }
+        });
+    };
 </script>
 
 @code {
@@ -60,6 +71,17 @@
             {"SampleData 4", 20}
         };
 
+    [Parameter]
+    public int LabelFontSize { get; set; } = 14;
+
     private string[] chartLabel => ChartData.Keys.ToArray();
     private string chartData => JsonSerializer.Serialize(ChartData.Values.ToArray());
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("renderChart", chartIdentifier, ChartType.ToString().ToLower(), JsonSerializer.Serialize(chartLabel), JsonSerializer.Serialize(DataLabel), ChartData.Values, LabelFontSize);
+        }
+    }
 }
