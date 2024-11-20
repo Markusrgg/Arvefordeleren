@@ -10,6 +10,7 @@
     <ProjectReference Include="..\..\Arvefordeleren_ClassLibrary\Arvefordeleren_ClassLibrary.csproj" />
     <ProjectReference Include="..\Arvefordeleren_WebApp.Client\Arvefordeleren_WebApp.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7" />
+    <ProjectReference Include="..\..\BlazorChart_Library\BlazorChart_Library.csproj" />
   </ItemGroup>
 
 </Project>

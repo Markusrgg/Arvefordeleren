@@ -1,0 +1,24 @@
+﻿@page "/chart"
+<PageTitle>Chart</PageTitle>
+
+<div class="w-50 h-50 mx-auto">
+    <BlazorChart DataLabel="Percent" ChartType="ChartType.Pie" ChartData="@TestDic"></BlazorChart>
+</div>
+
+<div class="w-50 h-50 mx-auto">
+    <BlazorChart DataLabel="Yearly Revenue" ChartType="ChartType.Bar" ChartData="@TestDic"></BlazorChart>
+</div>
+
+@code {
+    private string Title = "Hello World";
+    private Dictionary<string, object> TestDic = new Dictionary<string, object>()
+        {
+            {"2010", 10.55},
+            {"2011", 20},
+            {"2012", 15.5},
+            {"2013", 25.1},
+            {"2014", 22.432},
+            {"2015", 30.86},
+            {"2016", 28.12}
+        };
+}

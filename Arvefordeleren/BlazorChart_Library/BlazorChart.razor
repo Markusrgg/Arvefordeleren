@@ -1,0 +1,65 @@
+﻿@using System.Text.Json
+@using System.Web
+
+<ChartJSImport />
+
+<canvas id="@chartIdentifier"></canvas>
+<script>
+    
+    Chart.register(ChartDataLabels);
+
+    new Chart(document.getElementById('@chartIdentifier'), {
+        type: '@ChartType.ToString().ToLower()',
+        data: {
+            labels: JSON.parse('@JsonSerializer.Serialize(chartLabel)'),
+            datasets: [{
+                label: '@JsonSerializer.Serialize(DataLabel)',
+                data: @chartData,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: [ {
+                datalabels: {
+                    color: '#fcfafa', // Label color
+                    anchor: 'end',
+                    align: 'start',
+                    offset: -10,
+                    font: {
+                        size: 20,
+                    }
+                }
+            }]
+        }
+    });
+</script>
+
+@code {
+    private string chartIdentifier { get; set; } = Guid.NewGuid().ToString(); // Default unique identifier
+
+    [Parameter]
+    public string ChartTitle { get; set; } = "Default ChartTitle";
+
+    [Parameter]
+    public ChartType ChartType { get; set; } = ChartType.Bar; // Default Chart type
+
+    [Parameter]
+    public string DataLabel { get; set; } = "Label"; // Default Chart Data Label
+
+    [Parameter]
+    public Dictionary<string, object>? ChartData { get; set; } = new()
+        {
+            {"SampleData 1", 20},
+            {"SampleData 2", 20},
+            {"SampleData 3", 20},
+            {"SampleData 4", 20}
+        };
+
+    private string[] chartLabel => ChartData.Keys.ToArray();
+    private string chartData => JsonSerializer.Serialize(ChartData.Values.ToArray());
+}
