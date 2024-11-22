@@ -9,7 +9,7 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public abstract class Person : Model
     {
-        public string? FistName { get; set; }
+        public string? FirstName { get; set; }
 
         public string? LastName { get; set; }
 
