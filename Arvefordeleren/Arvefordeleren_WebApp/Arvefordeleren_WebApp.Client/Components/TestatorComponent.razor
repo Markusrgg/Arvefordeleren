@@ -73,24 +73,24 @@
     </EditForm>
 
     <h5>Person 2</h5>
-    <EditForm Model="secondPerson" OnValidSubmit="HandleValidSubmit">
+    <EditForm Model="secondTestator" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="mb-3">
             <label for="firstName2" class="form-label">Fornavn</label>
-            <InputText id="firstName2" class="form-control" @bind-Value="secondPerson.FirstName" />
+            <InputText id="firstName2" class="form-control" @bind-Value="secondTestator.FirstName" />
         </div>
         <div class="mb-3">
             <label for="lastName2" class="form-label">Efternavn</label>
-            <InputText id="lastName2" class="form-control" @bind-Value="secondPerson.LastName" />
+            <InputText id="lastName2" class="form-control" @bind-Value="secondTestator.LastName" />
         </div>
         <div class="mb-3">
             <label for="dateOfBirth2" class="form-label">Fødselsdag</label>
-            <InputDate id="dateOfBirth2" class="form-control" @bind-Value="secondPerson.DateOfBirth" />
+            <InputDate id="dateOfBirth2" class="form-control" @bind-Value="secondTestator.DateOfBirth" />
         </div>
         <div class="mb-3">
             <label for="address2" class="form-label">Adresse</label>
-            <InputText id="address2" class="form-control" @bind-Value="secondPerson.Address" />
+            <InputText id="address2" class="form-control" @bind-Value="secondTestator.Address" />
         </div>
     </EditForm>
     <button type="submit" class="btn btn-primary">Videre</button>
@@ -102,7 +102,7 @@
             WillType = WillType.Individual // Default value
         };
 
-    private Person secondPerson = new Person();
+    private Testator secondTestator = new Testator();
 
     private void HandleValidSubmit()
     {
@@ -114,7 +114,7 @@
         else if (testator.WillType == WillType.Joint)
         {
             // Process Joint Will data
-            Console.WriteLine($"Fælles: {testator.FirstName} & {secondPerson.FirstName} {testator.LastName} & {secondPerson.LastName} {testator.DateOfBirth} & {secondPerson.DateOfBirth} {testator.Address} & {secondPerson.Address}");
+            Console.WriteLine($"Fælles: {testator.FirstName} & {secondTestator.FirstName} {testator.LastName} & {secondTestator.LastName} {testator.DateOfBirth} & {secondTestator.DateOfBirth} {testator.Address} & {secondTestator.Address}");
         }
     }
 }
