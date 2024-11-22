@@ -9,10 +9,10 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public class Heir : Person
     {
-        [Required]
+
         public string Relation {  get; set; }
 
-        [Required]
+   
         public string InheritanceShare { get; set; }
     }
 }
