@@ -1,49 +1,120 @@
-﻿@using System.ComponentModel.DataAnnotations
-@using Arvefordeleren_ClassLibrary.Models
+﻿@using Arvefordeleren_ClassLibrary.Models
 
-<h3>TestatorComponent</h3>
-<EditForm Model ="@testator" OnInvalidSubmit="@HandleValidSubmit">
+<div class="row mb-3">
+    <div class="col-2">
+        <label class="col-form-label">Testamente type</label>
+    </div>
+    <div class="col-6">
+        <InputRadioGroup @bind-Value="testator.WillType">
+            <div class="form-check">
+                <InputRadio id="individualWill" Value="WillType.Individual" class="form-check-input" />
+                <label class="form-check-label" for="individualWill">Testamente til mig selv</label>
+            </div>
+            <div class="form-check">
+                <InputRadio id="jointWill" Value="WillType.Joint" class="form-check-input" />
+                <label class="form-check-label" for="jointWill">Fælles testamente</label>
+            </div>
+        </InputRadioGroup>
+    </div>
+</div>
 
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<!-- Form for Individual Will -->
+@if (testator.WillType == WillType.Individual)
+{
+    <h4>Testamente for Individ</h4>
+    <EditForm Model="testator" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="mb-3">
+            <label for="firstName" class="form-label">Fornavn</label>
+            <InputText id="firstName" class="form-control" @bind-Value="testator.FirstName" />
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Efternavn</label>
+            <InputText id="lastName" class="form-control" @bind-Value="testator.LastName" />
+        </div>
+        <div class="mb-3">
+            <label for="dateOfBirth" class="form-label">Fødselsdag</label>
+            <InputDate id="dateOfBirth" class="form-control" @bind-Value="testator.DateOfBirth" />
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Adresse</label>
+            <InputText id="address" class="form-control" @bind-Value="testator.Address" />
+        </div>
+        <button type="submit" class="btn btn-primary">Videre</button>
+    </EditForm>
+}
 
-    <div>
-        <label for="firstname">Fornavn:</label>
-        <InputText id="firstname" @bind-Value="testator.FistName" />
-        <ValidationMessage For="@(() => testator.FistName)" />
-    </div>
-    <div>
-        <label for="lastname">Efternavn:</label>
-        <InputText id="lastname" @bind-Value="testator.LastName" />
-        <ValidationMessage For="@(() => testator.LastName)" />
-    </div>
-    <div>
-        <label for="dateofbirth">Fødselsdato:</label>
-        <InputDate id="dataofbirth" @bind-Value="testator.DateOfBirth" />
-        <ValidationMessage For="@(() => testator.DateOfBirth)" />
-    </div>
-    
-    <div>
-        <label for="address">Adresse:</label>
-        <InputText id="address" @bind-Value="testator.Address" />
-        <ValidationMessage For="@(() => testator.Address)" />
-    </div>
-    <div>
-        <label for="date">Dato:</label>
-        <InputDate id="date" @bind-Value="testator.Date" />
-        <ValidationMessage For="@(() => testator.Date)" />
-    </div>
-    <button type="submit">Submit</button>
-</EditForm>
+<!-- Form for Joint Will -->
+@if (testator.WillType == WillType.Joint)
+{
+    <h4>Testamente for Fælles</h4>
+
+    <h5>Person 1</h5>
+    <EditForm Model="testator" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="mb-3">
+            <label for="firstName1" class="form-label">Fornavn</label>
+            <InputText id="firstName1" class="form-control" @bind-Value="testator.FirstName" />
+        </div>
+        <div class="mb-3">
+            <label for="lastName1" class="form-label">Efternavn</label>
+            <InputText id="lastName1" class="form-control" @bind-Value="testator.LastName" />
+        </div>
+        <div class="mb-3">
+            <label for="dateOfBirth1" class="form-label">Fødselsdag</label>
+            <InputDate id="dateOfBirth1" class="form-control" @bind-Value="testator.DateOfBirth" />
+        </div>
+        <div class="mb-3">
+            <label for="address1" class="form-label">Adresse</label>
+            <InputText id="address1" class="form-control" @bind-Value="testator.Address" />
+        </div>
+    </EditForm>
+
+    <h5>Person 2</h5>
+    <EditForm Model="secondPerson" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="mb-3">
+            <label for="firstName2" class="form-label">Fornavn</label>
+            <InputText id="firstName2" class="form-control" @bind-Value="secondPerson.FirstName" />
+        </div>
+        <div class="mb-3">
+            <label for="lastName2" class="form-label">Efternavn</label>
+            <InputText id="lastName2" class="form-control" @bind-Value="secondPerson.LastName" />
+        </div>
+        <div class="mb-3">
+            <label for="dateOfBirth2" class="form-label">Fødselsdag</label>
+            <InputDate id="dateOfBirth2" class="form-control" @bind-Value="secondPerson.DateOfBirth" />
+        </div>
+        <div class="mb-3">
+            <label for="address2" class="form-label">Adresse</label>
+            <InputText id="address2" class="form-control" @bind-Value="secondPerson.Address" />
+        </div>
+    </EditForm>
+    <button type="submit" class="btn btn-primary">Videre</button>
+}
 
 @code {
-    private Testator testator = new Testator();
-    private bool isSubmitted = false;
+    private Testator testator = new Testator
+        {
+            WillType = WillType.Individual // Default value
+        };
+
+    private Person secondPerson = new Person();
 
     private void HandleValidSubmit()
     {
-        isSubmitted = true;
-        Console.WriteLine($"Submitted: {testator.FistName}, {testator.LastName}, {testator.DateOfBirth}, {testator.Address}, {testator.Date}");
+        if (testator.WillType == WillType.Individual)
+        {
+            // Process Individual Will data
+            Console.WriteLine($"Individuel: {testator.FirstName} {testator.LastName} {testator.DateOfBirth} {testator.Address}");
+        }
+        else if (testator.WillType == WillType.Joint)
+        {
+            // Process Joint Will data
+            Console.WriteLine($"Fælles: {testator.FirstName} & {secondPerson.FirstName} {testator.LastName} & {secondPerson.LastName} {testator.DateOfBirth} & {secondPerson.DateOfBirth} {testator.Address} & {secondPerson.Address}");
+        }
     }
-
 }

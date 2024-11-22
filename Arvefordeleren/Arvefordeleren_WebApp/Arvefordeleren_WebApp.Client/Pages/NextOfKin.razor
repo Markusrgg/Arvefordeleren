@@ -1,0 +1,90 @@
+﻿@page "/test/arvinger"
+
+@using Arvefordeleren_ClassLibrary.Models
+
+<h3>Indtast Arvingens Oplysninger</h3>
+
+<EditForm Model="testator" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    @foreach (var heir in testator.Heirs)
+    {
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Arvingens Navn</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="heir.FirstName" class="form-control" placeholder="Fornavn" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Relation</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="heir.Relation" class="form-control" placeholder="Relation" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Arvemængde</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="heir.InheritanceShare" class="form-control" placeholder="Arvemængde" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Fødselsdato</label>
+            </div>
+            <div class="col-6">
+                <InputDate @bind-Value="heir.DateOfBirth" class="form-control" />
+            </div>
+        </div>
+
+        <button class="btn btn-danger" @onclick="() => RemoveHeir(heir)">Fjern Arving</button>
+    }
+
+    <button class="btn btn-success" @onclick="AddHeir">Tilføj Arving</button>
+
+    <button type="submit" class="btn btn-primary">Indsend</button>
+</EditForm>
+
+<h5>Indtastede oplysninger:</h5>
+<ul>
+    @foreach (var heir in testator.Heirs)
+    {
+        <li>Arving: @heir.FirstName, Fødselsdato: @heir.DateOfBirth.ToShortDateString(), Relation: @heir.Relation, Arvemængde: @heir.InheritanceShare</li>
+    }
+</ul>
+
+@code {
+    private Testator testator = new Testator 
+        {
+            Heirs = new List<Heir>() // Initialize heirs list
+        };
+
+    private void AddHeir()
+    {
+        testator.Heirs.Add(new Heir()); // Add a new empty heir
+    }
+
+    private void RemoveHeir(Heir heir)
+    {
+        testator.Heirs.Remove(heir); // Remove the specified heir
+    }
+
+    private void HandleValidSubmit()
+    {
+        // Test output
+        Console.WriteLine($"Testator: {testator.FirstName} {testator.LastName}");
+        foreach (var heir in testator.Heirs)
+        {
+            Console.WriteLine($"Arving: {heir.FirstName}, Relation: {heir.Relation}, Arvemængde: {heir.InheritanceShare}, Fødselsdato: {heir.DateOfBirth.ToShortDateString()}");
+        }
+    }
+}
