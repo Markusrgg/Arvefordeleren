@@ -1,0 +1,21 @@
+﻿@using BlazorChart;
+@rendermode InteractiveServer
+@page "/chart"
+
+<div class="w-50 h-50 mx-auto">
+    <h1 class="text-center">Title</h1>
+    <BlazorChart ChartType="@ChartType.Pie" ChartData="@Test" />
+</div>
+
+<div class="w-50 h-50 mx-auto">
+    <BlazorChart ChartType="@ChartType.Bar" ChartData="@Test" ChartLabel="Data" LabelFontSize="0" />
+</div>
+@code {
+    private Dictionary<string, object> Test = new()
+    {
+        {"Markus", 20},
+        {"Simon", 40},
+        {"Rasmus", 30},
+        {"Rasmus J", 60}
+    };
+}

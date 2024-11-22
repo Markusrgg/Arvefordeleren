@@ -1,0 +1,101 @@
+﻿@using Microsoft.JSInterop
+@using System.Text.Json
+@inject IJSRuntime JSRuntime;
+
+<div class="chart-container" style="position: relative;">
+    <canvas id="@chartIdentifier"></canvas>
+</div>
+
+<script src="
+https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js
+"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+<script>
+    window.initializeChart = (chartId, chartType, dataLabels, chartData, chartLabel, labelFontSize) => {
+        Chart.register(ChartDataLabels);
+        new Chart(document.getElementById(chartId), {
+            type: chartType,
+            data: {
+                labels: JSON.parse(dataLabels),
+                datasets: [{
+                    label: chartLabel,
+                    data: chartData,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    datalabels: {
+                        color: 'black', // Label color
+                        anchor: "center",
+                        font: {
+                            size: labelFontSize, // Font size
+                        },
+                        formatter: (value, context) => {
+                            // Custom formatting logic
+                            return `${value} %`; // Example: Adds "votes" to each value
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        onClick: null,
+                    }
+                }
+            }
+        });
+    }
+
+    function beforePrintHandler() {
+        for (let id in Chart.instances) {
+            Chart.instances[id].resize();
+        }
+    }
+
+    window.addEventListener("resize", beforePrintHandler);
+
+
+</script>
+
+@code {
+
+    private string chartIdentifier = Guid.NewGuid().ToString();
+
+    [Parameter]
+    public ChartType ChartType { get; set; } = ChartType.Bar;
+
+    [Parameter]
+    public Dictionary<string, object> ChartData { get; set; } = new Dictionary<string, object>()
+{
+{"SampleData 1", 10},
+{"SampleData 2", 15},
+{"SampleData 3", 13},
+{"SampleData 4", 30},
+{"Simon Hansen", 20}
+};
+
+    [Parameter]
+    public string ChartLabel { get; set; } = "SampleLabel";
+
+    [Parameter]
+    public int LabelFontSize { get; set; } = 14;
+
+    protected override async Task OnAfterRenderAsync(bool firstrender)
+    {
+        if (firstrender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeChart",
+            chartIdentifier,
+            ChartType.ToString().ToLower(),
+            JsonSerializer.Serialize(ChartData.Keys.ToArray()),
+            ChartData.Values,
+            ChartLabel,
+            LabelFontSize);
+        }
+    }
+}
