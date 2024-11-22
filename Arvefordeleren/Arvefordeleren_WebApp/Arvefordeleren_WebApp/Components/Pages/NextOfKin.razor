@@ -82,7 +82,7 @@
                     <tr>
                         <td>@heir.FirstName</td>
                         <td>@heir.LastName</td>
-                        <td>@(heir.DateOfBirth?.ToShortDateString() ?? "Ikke angivet")</td>
+                        <td>@(heir.DateOfBirth.ToShortDateString() ?? "Ikke angivet")</td>
                         <td>@heir.Address</td>
                     </tr>
                 }
