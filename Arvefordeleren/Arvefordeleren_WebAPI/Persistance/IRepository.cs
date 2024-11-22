@@ -2,7 +2,7 @@
 
 namespace Arvefordeleren_WebAPI.Persistance
 {
-    public interface IRepository<T> where T : Model
+    public interface IRepository<T> where T : Model, ICloneable<T>
     {
         public Task Add(T o);
         public Task<List<T>> GetAll();

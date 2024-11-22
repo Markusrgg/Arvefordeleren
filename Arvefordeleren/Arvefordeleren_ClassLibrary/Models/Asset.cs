@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Arvefordeleren_ClassLibrary.Models
 {
-    public class Asset : Model
+    public class Asset : Model, ICloneable<Asset>
     {
         public Asset()
         {
@@ -26,5 +26,16 @@ namespace Arvefordeleren_ClassLibrary.Models
         public string? Name { get; set; }
         public double Value { get; set; }
         public string? SeparateEstate { get; set; }
+
+        public Asset Clone()
+        {
+            return new Asset
+            {
+                Id = this.Id,
+                Name = this.Name,
+                Value = this.Value,
+                SeparateEstate = this.SeparateEstate
+            };
+        }
     }
 }

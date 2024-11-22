@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Arvefordeleren_ClassLibrary.Models
 {
-    public class Testator : Person 
+    public class Testator : Person, ICloneable<Testator>
     {
         public Testator() 
         {
@@ -34,5 +34,19 @@ namespace Arvefordeleren_ClassLibrary.Models
         public DateTime Date {  get; set; }
 
         public List<Heir> Heirs { get; set; } = new List<Heir>();
+
+        public Testator Clone()
+        {
+            return new Testator
+            {
+                Id = this.Id, 
+                WillType = this.WillType,
+                MaritalStatus = this.MaritalStatus,
+                ForcedInheritance = this.ForcedInheritance,
+                FreeInheritance = this.FreeInheritance,
+                Date = this.Date,
+                Heirs = this.Heirs.Select(heir => heir.Clone()).ToList() 
+            };
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Arvefordeleren_ClassLibrary.Models
 {
-    public class Heir : Person
+    public class Heir : Person, ICloneable<Heir>
     {
         public Heir(){}
 
@@ -21,5 +21,19 @@ namespace Arvefordeleren_ClassLibrary.Models
         public string? Relation {  get; set; }
 
         public string? InheritanceShare { get; set; }
+
+        public Heir Clone()
+        {
+            return new Heir()
+            {
+                Id = this.Id,
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                DateOfBirth = this.DateOfBirth,
+                Address = this.Address,
+                Relation = this.Relation,
+                InheritanceShare = this.InheritanceShare
+            };
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Arvefordeleren_WebAPI.Persistance
 {
-    public class Repository<T> : IRepository<T> where T : Model
+    public class Repository<T> : IRepository<T> where T : Model, ICloneable<T>
     {
         private List<T> _list = new List<T>();
         public async Task Add(T o) // create operation
@@ -21,12 +21,12 @@ namespace Arvefordeleren_WebAPI.Persistance
 
         public async Task<List<T>> GetAll() // read all operation
         {
-            return _list;
+            return _list.Select(x => x.Clone()).ToList();
         }
 
         public async Task<T> GetById(Guid id) // read specific item by id
         {
-            return _list.Find(x => x.Id == id);
+            return _list.Find(x => x.Id == id).Clone();
         }
 
         public async Task Update(T o) // update operation

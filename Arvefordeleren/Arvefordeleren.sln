@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_ClassLibrary
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_WebApp", "Arvefordeleren_WebApp\Arvefordeleren_WebApp\Arvefordeleren_WebApp.csproj", "{31DA8A78-A288-4A37-BD59-76EA568CC0D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_WebAPI", "Arvefordeleren_WebAPI\Arvefordeleren_WebAPI.csproj", "{E3152708-EA02-4812-80C0-2C3193DBB183}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arvefordeleren_WebAPI", "Arvefordeleren_WebAPI\Arvefordeleren_WebAPI.csproj", "{E3152708-EA02-4812-80C0-2C3193DBB183}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
