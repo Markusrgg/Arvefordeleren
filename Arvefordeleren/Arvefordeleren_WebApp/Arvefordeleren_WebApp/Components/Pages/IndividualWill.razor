@@ -1,0 +1,43 @@
+﻿@page "/individual-will"
+@using Arvefordeleren_ClassLibrary.Models
+
+<h4>Testamente for Individ</h4>
+<EditForm Model="testator" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="mb-3">
+        <label for="firstName" class="form-label">Fornavn</label>
+        <InputText id="firstName" class="form-control" @bind-Value="testator.FirstName" />
+    </div>
+    <div class="mb-3">
+        <label for="lastName" class="form-label">Efternavn</label>
+        <InputText id="lastName" class="form-control" @bind-Value="testator.LastName" />
+    </div>
+    <div class="mb-3">
+        <label for="dateOfBirth" class="form-label">Fødselsdag</label>
+        <InputDate id="dateOfBirth" class="form-control" @bind-Value="testator.DateOfBirth" />
+    </div>
+    <div class="mb-3">
+        <label for="address" class="form-label">Adresse</label>
+        <InputText id="address" class="form-control" @bind-Value="testator.Address" />
+    </div>
+    <!-- Civilstand (MaritalStatus) -->
+    <div class="mb-3">
+        <label for="maritalStatus" class="form-label">Civilstand</label>
+        <InputText id="maritalStatus" class="form-check-input" @bind-Value="testator.MaritalStatus" />
+        <label for="maritalStatus" class="form-check-label">Er gift</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Videre</button>
+</EditForm>
+
+
+
+@code {
+    private Testator testator = new Testator();
+
+    private void HandleValidSubmit()
+    {
+        // Handle form submission for Individual Will
+    }
+}
+
