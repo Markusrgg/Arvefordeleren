@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Arvefordeleren_ClassLibrary\Arvefordeleren_ClassLibrary.csproj" />
+    <ProjectReference Include="..\..\BlazorChart\BlazorChart.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7" />
   </ItemGroup>
 
