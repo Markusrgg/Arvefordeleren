@@ -4,87 +4,126 @@
 
 <h3>Indtast Arvingens Oplysninger</h3>
 
-<EditForm Model="testator" OnValidSubmit="HandleValidSubmit">
+<EditForm Model="heir" OnValidSubmit="HandleValidSubmit" FormName="heirForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    @foreach (var heir in testator.Heirs)
-    {
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Arvingens Navn</label>
-            </div>
-            <div class="col-6">
-                <InputText @bind-Value="heir.FirstName" class="form-control" placeholder="Fornavn" />
-            </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Fornavn</label>
         </div>
-
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Relation</label>
-            </div>
-            <div class="col-6">
-                <InputText @bind-Value="heir.Relation" class="form-control" placeholder="Relation" />
-            </div>
+        <div class="col-6">
+            <InputText @bind-Value="heir.FirstName" class="form-control" />
         </div>
-
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Arvemængde</label>
-            </div>
-            <div class="col-6">
-                <InputText @bind-Value="heir.InheritanceShare" class="form-control" placeholder="Arvemængde" />
-            </div>
+        <div class="col">
+            <ValidationMessage For="() => heir.FirstName" />
         </div>
+    </div>
 
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Fødselsdato</label>
-            </div>
-            <div class="col-6">
-                <InputDate @bind-Value="heir.DateOfBirth" class="form-control" />
-            </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Efternavn</label>
         </div>
+        <div class="col-6">
+            <InputText @bind-Value="heir.LastName" class="form-control" />
+        </div>
+        <div class="col">
+            <ValidationMessage For="() => heir.LastName" />
+        </div>
+    </div>
 
-        <button class="btn btn-danger" @onclick="() => RemoveHeir(heir)">Fjern Arving</button>
-    }
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Fødselsdag</label>
+        </div>
+        <div class="col-6">
+            <InputDate @bind-Value="heir.DateOfBirth" class="form-control" />
+        </div>
+        <div class="col">
+            <ValidationMessage For="() => heir.DateOfBirth" />
+        </div>
+    </div>
 
-    <button class="btn btn-success" @onclick="AddHeir">Tilføj Arving</button>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Adresse</label>
+        </div>
+        <div class="col-6">
+            <InputText @bind-Value="heir.Address" class="form-control" />
+        </div>
+        <div class="col">
+            <ValidationMessage For="() => heir.Address" />
+        </div>
+    </div>
 
-    <button type="submit" class="btn btn-primary">Indsend</button>
+    <div class="text-center mb-4">
+        <button type="submit" class="btn btn-primary">Videre</button>
+        <button type="submit" class="btn btn-success">Tilføj Arving</button>
+    </div>
 </EditForm>
 
-<h5>Indtastede oplysninger:</h5>
-<ul>
-    @foreach (var heir in testator.Heirs)
-    {
-        <li>Arving: @heir.FirstName, Fødselsdato: @heir.DateOfBirth.ToShortDateString(), Relation: @heir.Relation, Arvemængde: @heir.InheritanceShare</li>
-    }
-</ul>
+<div class="container mt-5">
+    <h4>Liste af Arvinger</h4>
 
-@code {
-    private Testator testator = new Testator 
-        {
-            Heirs = new List<Heir>() // Initialize heirs list
-        };
-
-    private void AddHeir()
+    @if (heirs.Any())
     {
-        testator.Heirs.Add(new Heir()); // Add a new empty heir
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Fornavn</th>
+                    <th>Efternavn</th>
+                    <th>Fødselsdato</th>
+                    <th>Adresse</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var heir in heirs)
+                {
+                    <tr>
+                        <td>@heir.FirstName</td>
+                        <td>@heir.LastName</td>
+                        <td>@(heir.DateOfBirth?.ToShortDateString() ?? "Ikke angivet")</td>
+                        <td>@heir.Address</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
-
-    private void RemoveHeir(Heir heir)
+    else
     {
-        testator.Heirs.Remove(heir); // Remove the specified heir
+        <p>Ingen arvinger tilføjet endnu.</p>
     }
+</div>
+
+@code
+{
+    private Heir heir = new Heir(); // Now working with a single heir model
+    private List<Heir> heirs = new List<Heir>(); // List to store all heirs
 
     private void HandleValidSubmit()
     {
-        // Test output
-        Console.WriteLine($"Testator: {testator.FirstName} {testator.LastName}");
-        foreach (var heir in testator.Heirs)
+        // Ensure that we have valid heir information before adding to the list
+        if (!string.IsNullOrEmpty(heir.FirstName) && !string.IsNullOrEmpty(heir.LastName))
         {
-            Console.WriteLine($"Arving: {heir.FirstName}, Relation: {heir.Relation}, Arvemængde: {heir.InheritanceShare}, Fødselsdato: {heir.DateOfBirth.ToShortDateString()}");
+            // Add the current heir to the list of heirs
+            heirs.Add(new Heir
+                {
+                    FirstName = heir.FirstName,
+                    LastName = heir.LastName,
+                    DateOfBirth = heir.DateOfBirth,
+                    Address = heir.Address
+                });
+
+            // Clear the form input fields after adding the heir
+            heir = new Heir();  // Reset heir to a new empty object
+
+            // Ensure UI updates by notifying Blazor
+            StateHasChanged();
+        }
+        else
+        {
+            // Optional: Handle case where required fields are empty
+            Console.WriteLine("Fornavn og efternavn er påkrævet.");
         }
     }
 }

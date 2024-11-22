@@ -30,7 +30,7 @@ namespace Arvefordeleren_ClassLibrary.Models
 
         public string? FreeInheritance { get; set; }
 
-        [Required]
+    
         public DateTime Date {  get; set; }
 
         public List<Heir> Heirs { get; set; } = new List<Heir>();
