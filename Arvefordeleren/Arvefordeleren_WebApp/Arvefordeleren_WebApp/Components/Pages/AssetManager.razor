@@ -48,10 +48,10 @@ else
 }
 
 @code {
-    private List<Asset> assets;
+    private List<Asset> assets = new List<Asset>();
     private Asset newAsset = new Asset();
-    private bool isEditing = false; // Track if in editing mode
-    private Guid? editingAssetId; // Store ID of the asset being edited
+    private bool isEditing = false;
+    private Guid? editingAssetId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,32 +61,37 @@ else
     private async Task LoadAssets()
     {
         assets = await AssetService.GetAllAssets();
+        StateHasChanged(); // Ensure component updates after loading assets
     }
 
     private async Task CreateAsset()
     {
         await AssetService.CreateAsset(newAsset);
-        newAsset = new Asset(); // Reset the form
         await LoadAssets(); // Refresh the asset list
+        ResetForm(); // Reset the form after creating an asset
     }
 
     private void EditAsset(Asset asset)
     {
-        newAsset = asset; // Load asset into the form for editing
-        isEditing = true; // Set editing mode
-        editingAssetId = asset.Id; // Store the ID for updates
+        newAsset = new Asset
+            {
+                Id = asset.Id,
+                Name = asset.Name,
+                Value = asset.Value,
+                SeparateEstate = asset.SeparateEstate
+            };
+        isEditing = true;
+        editingAssetId = asset.Id;
     }
 
     private async Task UpdateAsset()
     {
         if (editingAssetId.HasValue)
         {
-            newAsset.Id = editingAssetId.Value; // Set the ID for the asset being updated
+            newAsset.Id = editingAssetId.Value;
             await AssetService.UpdateAsset(newAsset);
-            newAsset = new Asset(); // Reset the form
-            isEditing = false; // Exit editing mode
-            editingAssetId = null; // Clear the ID
             await LoadAssets(); // Refresh the asset list
+            ResetForm(); // Reset the form after updating
         }
     }
 
@@ -98,20 +103,25 @@ else
 
     private void CancelEdit()
     {
-        newAsset = new Asset(); // Reset the form
-        isEditing = false; // Exit editing mode
-        editingAssetId = null; // Clear the ID
+        ResetForm(); // Reset the form when canceling edit
     }
 
     private async Task HandleValidSubmit()
     {
         if (isEditing)
         {
-            await UpdateAsset(); // Call the update method if in editing mode
+            await UpdateAsset();
         }
         else
         {
-            await CreateAsset(); // Otherwise, create a new asset
+            await CreateAsset();
         }
+    }
+
+    private void ResetForm()
+    {
+        newAsset = new Asset(); // Clear the form
+        isEditing = false; // Exit editing mode
+        editingAssetId = null; // Clear the ID
     }
 }
