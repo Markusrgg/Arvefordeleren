@@ -1,4 +1,3 @@
-using Arvefordeleren_WebApp.Client.Pages;
 using Arvefordeleren_WebApp.Components;
 
 namespace Arvefordeleren_WebApp
@@ -10,8 +9,7 @@ namespace Arvefordeleren_WebApp
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorComponents()
-                .AddInteractiveWebAssemblyComponents();
+            builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
             builder.Services.AddScoped<AssetService>();
 
@@ -34,9 +32,7 @@ namespace Arvefordeleren_WebApp
             app.UseStaticFiles();
             app.UseAntiforgery();
 
-            app.MapRazorComponents<App>()
-                .AddInteractiveWebAssemblyRenderMode()
-                .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
+            app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
             app.Run();
         }
