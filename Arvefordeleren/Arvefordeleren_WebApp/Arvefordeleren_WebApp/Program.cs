@@ -12,6 +12,7 @@ namespace Arvefordeleren_WebApp
             builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
             builder.Services.AddScoped<AssetService>();
+            builder.Services.AddHttpClient();
 
             var app = builder.Build();
 
