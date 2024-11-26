@@ -1,5 +1,4 @@
-﻿@page "/asset/create"
-@inject AssetService AssetService
+﻿@inject AssetService AssetService
 <h3>CreateAssetComponent</h3>
 
 <div class="row mb-3">
@@ -34,9 +33,9 @@
 </div>
 @code {
     private Asset asset { get; set; } = new Asset();
-    public async Task CreateAsset()
+    public void CreateAsset()
     {
-        await AssetService.CreateAsset(asset);
+        AssetService.CreateAsset(asset);
         asset = new Asset();
     }
 }
