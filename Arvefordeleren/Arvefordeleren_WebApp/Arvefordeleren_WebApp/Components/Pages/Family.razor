@@ -1,0 +1,116 @@
+﻿@inject IJSRuntime JSRuntime
+@inject FamilyTreeService FamilyTreeService
+
+@using System.Text.Json;
+@using Arvefordeleren_ClassLibrary.Services
+
+
+<div id="tree" />
+<script>
+      window.initializeFamilyTree = function (familyData) {
+          FamilyTree.templates.hugo.node = `<rect x="0" y="0" height="{h}" width="{w}" stroke-width="1" fill="white" stroke="grey" rx="7" ry="7"></rect>`;
+          FamilyTree.templates.hugo.field_0 = '<text ' + FamilyTree.attr.width + ' ="150" style="font-size: 16px; font-weight: bold" fill="#19447E" x="120" y="70" text-anchor="middle">{val}</text>';
+          FamilyTree.templates.hugo.field_1 = '<text ' + FamilyTree.attr.width + ' ="230" style="font-size: 12px;" fill="#19447E" x="120" y="85" text-anchor="middle">{val}</text>';
+          FamilyTree.templates.hugo.img_0 = `<clipPath id="ulaImg"><circle cx="120" cy="25" r="30" fill="#248CE6"></circle></clipPath><image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="100" y="10" width="40" height="40"></image>`;
+          FamilyTree.templates.hugo.defs = `<g transform="matrix(0.05,0,0,0.05,-13 ,-12)" id="heart">
+      <path d="M448,256c0-106-86-192-192-192S64,150,64,256s86,192,192,192S448,362,448,256Z" style="fill:#fff;stroke:red;stroke-miterlimit:10;stroke-width:24px" fill="red"></path><path d="M256,360a16,16,0,0,1-9-2.78c-39.3-26.68-56.32-45-65.7-56.41-20-24.37-29.58-49.4-29.3-76.5.31-31.06,25.22-56.33,55.53-56.33,20.4,0,35,10.63,44.1,20.41a6,6,0,0,0,8.72,0c9.11-9.78,23.7-20.41,44.1-20.41,30.31,0,55.22,25.27,55.53,56.33.28,27.1-9.31,52.13-29.3,76.5-9.38,11.44-26.4,29.73-65.7,56.41A16,16,0,0,1,256,360Z" fill="red"></path>
+    </g>`;
+
+          const expandIcon =
+              '<circle cx="106" cy="-16" r="10" fill="white" stroke="grey" stroke-width="1"></circle>' +
+              '<line x1="99" y1="-16" x2="113" y2="-16" stroke-width="1" stroke="grey"></line>' +
+              '<line x1="106" y1="-23" x2="106" y2="-9" stroke-width="1" stroke="grey"></line>';
+          FamilyTree.templates.hugo.plus = expandIcon;
+
+          var family = new FamilyTree(document.getElementById("tree"), {
+              mouseScrool: FamilyTree.action.none,
+              enableSearch: false,
+              nodeMouseClick: FamilyTree.action.none,
+              scaleInitial: FamilyTree.match.boundary,
+              template: 'hugo',
+              scaleMax: 1,
+              minPartnerSeparation: 75,
+              levelSeparation: 75,
+              siblingSeparation: 75,
+              miniMap: false,
+              nodeBinding: {
+                  field_0: "name",
+                  field_1: "relation",
+                  img_0: "img"
+              },
+              toolbar: {
+                  fullScreen: false,
+                  zoom: true,
+                  fit: true,
+                  expandAll: false,
+              },
+              menu: {
+                  pdf: { text: "Export PDF", icon: FamilyTree.icon.pdf(24, 24, 'green') },
+                  png: { text: "Export PNG", icon: FamilyTree.icon.png(24, 24, 'green') },
+                  svg: { text: "Export SVG", icon: FamilyTree.icon.svg(24, 24, 'green') },
+                  csv: { text: "Export CSV", icon: FamilyTree.icon.csv(24, 24, 'green') },
+                  pdfPreview: {
+                      text: "PDF Preview",
+                      icon: FamilyTree.icon.pdf(24, 24, 'orange'),
+                      onClick: preview
+                  },
+                  importCSV: {
+                      text: "Import CSV",
+                      icon: FamilyTree.icon.csv(24, 24, 'red'),
+                      onClick: function () { family.importCSV(); }
+                  },
+              },
+              nodes: familyData
+          });
+
+          function preview() {
+              FamilyTree.pdfPrevUI.show(family, {
+                  format: 'A4',
+                  padding: 150,
+                  landscape: true
+              });
+
+              function importCSVHandler() {
+                  family.importCSV();
+              };
+          };
+
+          family.on('render-link', function (sender, args) {
+              if (args.cnode.ppid != undefined)
+                  args.html += '<use data-ctrl-ec-id="' + args.node.id + '" xlink:href="#heart" x="' + (args.p.xa) + '" y="' + (args.p.ya) + '"/>';
+              if (args.cnode.isPartner && args.node.partnerSeparation == 30)
+                  args.html += '<use data-ctrl-ec-id="' + args.node.id + '" xlink:href="#heart" x="' + (args.p.xb) + '" y="' + (args.p.yb) + '"/>';
+          });
+      }
+
+
+      function loadScript(url) {
+          return new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = url;
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+          });
+      }
+</script>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var format = await FamilyTreeService.Format();
+
+        await InitializeFamilyTree(format); // Always refresh tree after rendering
+    }
+
+    private async Task InitializeFamilyTree(List<Dictionary<string, object>> format)
+    {
+        await JSRuntime.InvokeVoidAsync("loadScript", "/js/familytree.js");
+        await JSRuntime.InvokeVoidAsync("initializeFamilyTree", format);
+    }
+
+    public void Refresh()
+    {
+        StateHasChanged(); // Re-render this component
+    }
+}

@@ -9,6 +9,11 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public class Heir : Person
     {
+        public Guid Mid { get; set; }
+        public Guid Fid { get; set; }
+
+        public RelationType RelationType { get; set; }
+
         public Heir(){}
 
         public Heir(string relation, string inheritanceShare)

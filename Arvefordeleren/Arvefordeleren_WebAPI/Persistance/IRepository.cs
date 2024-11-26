@@ -8,6 +8,6 @@ namespace Arvefordeleren_WebAPI.Persistance
         public Task<List<T>> GetAll();
         public Task<T> GetById(Guid id);
         public Task Update(T o);
-        public Task Delete(T o);
+        public Task Delete(Guid id);
     }
 }

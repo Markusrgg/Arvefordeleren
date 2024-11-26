@@ -1,7 +1,14 @@
 ﻿@page "/arvinger"
+@rendermode InteractiveServer
+
 @layout InformationLayout
 
 @using Arvefordeleren_ClassLibrary.Models
+@using Arvefordeleren_ClassLibrary.Services
+
+@inject TestatorService TestatorService
+@inject HeirService HeirService
+@inject NavigationManager NavigationManager
 
 <h3>Indtast Arvingens Oplysninger</h3>
 
@@ -47,18 +54,59 @@
 
     <div class="row mb-3">
         <div class="col-2">
-            <label class="col-form-label">Adresse</label>
+            <label class="col-form-label">Relation</label>
         </div>
         <div class="col-6">
-            <InputText @bind-Value="heir.Address" class="form-control" />
-        </div>
-        <div class="col">
-            <ValidationMessage For="() => heir.Address" />
+            <InputSelect @bind-Value="heir.RelationType" class="form-control">
+                @foreach (RelationType relation in Enum.GetValues(typeof(RelationType)))
+                {
+                    if (relation != RelationType.MARRIED && relation != RelationType.INDIVIDUAL)
+                    {
+                        <option value="@relation">@relation.GetDisplayName()</option>
+                    }
+                }
+            </InputSelect>
         </div>
     </div>
+    @if (heir.RelationType == RelationType.CHILD_SEPERATE)
+    {
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Forældre</label>
+            </div>
+            <div class="col-6">
+                <InputSelect @bind-Value="heir.Mid" class="form-control">
+                    @foreach (Testator testator in testators)
+                    {
+                        <option value="@testator.Id">@testator.FullName</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+    }
+
+    @if (heir.RelationType == RelationType.GRAND_CHILD)
+    {
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Forældre</label>
+            </div>
+            <div class="col-6">
+                <InputSelect @bind-Value="heir.Mid" class="form-control">
+                    @foreach (var heir in heirs)
+                    {
+                        if (heir.RelationType == RelationType.CHILD || heir.RelationType == RelationType.CHILD_SEPERATE)
+                        {
+                            <option value="@heir.Id">@heir.RelationType.GetDisplayName(): @heir.FullName</option>
+                        }
+                    }
+                </InputSelect>
+            </div>
+        </div>
+    }
 
     <div class="text-center mb-4">
-        <button type="submit" class="btn btn-primary">Videre</button>
+        <button type="button" class="btn btn-primary" @onclick="NavigateToAssets">Videre</button>
         <button type="submit" class="btn btn-success">Tilføj Arving</button>
     </div>
 </EditForm>
@@ -73,8 +121,7 @@
                 <tr>
                     <th>Fornavn</th>
                     <th>Efternavn</th>
-                    <th>Fødselsdato</th>
-                    <th>Adresse</th>
+                    <th>Relation</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,8 +130,7 @@
                     <tr>
                         <td>@heir.FirstName</td>
                         <td>@heir.LastName</td>
-                        <td>@(heir.DateOfBirth.ToShortDateString() ?? "Ikke angivet")</td>
-                        <td>@heir.Address</td>
+                        <td>@heir.RelationType.GetDisplayName()</td>
                     </tr>
                 }
             </tbody>
@@ -96,28 +142,59 @@
     }
 </div>
 
+<br />
+
+<Family @ref="family" />
+
 @code
 {
-    private Heir heir = new Heir(); // Now working with a single heir model
+    private Family family;
+
+    private Heir heir = new Heir { RelationType = RelationType.CHILD }; // Now working with a single heir model
     private List<Heir> heirs = new List<Heir>(); // List to store all heirs
 
-    private void HandleValidSubmit()
+    private List<Testator> testators = new List<Testator>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Setup();
+            StateHasChanged();
+        }
+    }
+
+    private async Task Setup()
+    {
+        testators = await TestatorService.GetAll();
+        heirs = await HeirService.GetAll();
+    }
+
+    private async Task HandleValidSubmit()
     {
         // Ensure that we have valid heir information before adding to the list
         if (!string.IsNullOrEmpty(heir.FirstName) && !string.IsNullOrEmpty(heir.LastName))
         {
+            heir.Id = Guid.NewGuid();
+
             // Add the current heir to the list of heirs
             heirs.Add(new Heir
                 {
                     FirstName = heir.FirstName,
                     LastName = heir.LastName,
                     DateOfBirth = heir.DateOfBirth,
-                    Address = heir.Address
+                    Mid = heir.Mid,
+                    Fid = heir.Fid,
+                    RelationType = heir.RelationType,
+                    Id = heir.Id
                 });
 
-            // Clear the form input fields after adding the heir
-            heir = new Heir();  // Reset heir to a new empty object
+            await HeirService.Create(heir);
 
+            // Clear the form input fields after adding the heir
+            heir = new Heir { RelationType = RelationType.CHILD };  // Reset heir to a new empty object
+
+            family.Refresh();
             // Ensure UI updates by notifying Blazor
             StateHasChanged();
         }
@@ -126,5 +203,10 @@
             // Optional: Handle case where required fields are empty
             Console.WriteLine("Fornavn og efternavn er påkrævet.");
         }
+    }
+
+    private void NavigateToAssets()
+    {
+        NavigationManager.NavigateTo("/assets");
     }
 }

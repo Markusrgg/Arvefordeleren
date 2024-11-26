@@ -2,6 +2,9 @@
 @inject NavigationManager NavigationManager
 
 @using Arvefordeleren_ClassLibrary.Models
+@using Arvefordeleren_ClassLibrary.Services
+
+@inject TestatorService TestatorService
 
 <div class="row mb-3">
     <div class="col-2">
@@ -62,14 +65,14 @@
             <label class="col-form-label">Civilstatus</label>
         </div>
         <div class="col-6">
-            <InputRadioGroup @bind-Value="testator.MaritalStatus" class="d-flex gap-3">
+            <InputRadioGroup @bind-Value="testator.RelationType" class="d-flex gap-3">
                 <div class="form-check">
-                    <InputRadio id="married" Value="MaritalStatus.Married" class="form-check-input" />
-                    <label class="form-check-label" for="married">Gift</label>
+                    <InputRadio id="married" Value="RelationType.MARRIED" class="form-check-input" />
+                    <label class="form-check-label" for="married">@RelationType.MARRIED.GetDisplayName()</label>
                 </div>
                 <div class="form-check">
-                    <InputRadio id="partner" Value="MaritalStatus.Partner" class="form-check-input" />
-                    <label class="form-check-label" for="partner">Samlever</label>
+                    <InputRadio id="partner" Value="RelationType.PARTNER" class="form-check-input" />
+                    <label class="form-check-label" for="partner">@RelationType.PARTNER.GetDisplayName()</label>
                 </div>
             </InputRadioGroup>
         </div>
@@ -144,6 +147,31 @@
 }
 
 @code {
+    List<Testator> testators = new List<Testator>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Setup();
+            StateHasChanged();
+        }
+    }
+
+    private async Task Setup()
+    {
+        testators = await TestatorService.GetAll();
+
+        if (testators.Any())
+        {
+            testator = testators[0];
+            if (testators.Count > 1)
+            {
+                secondTestator = testators[1];
+            }
+        }
+    }
+
     private Testator testator = new Testator
         {
             WillType = WillType.Individual // Default value
@@ -154,19 +182,60 @@
             WillType = WillType.Joint // Default value
         };
 
-    private void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
         if (testator.WillType == WillType.Individual)
         {
             // Process Individual Will data
             Console.WriteLine($"Individuel: {testator.FirstName} {testator.LastName} {testator.DateOfBirth} {testator.Address}");
             NavigationManager.NavigateTo("/arvinger");
+
+            Testator temp = testators.FirstOrDefault(x => x.Id == testator.Id);
+
+            if (temp != null)
+            {
+                if (testators.Count > 1)
+                {
+                    await TestatorService.Delete(testators[1].Id);
+                    testator.Pids.Remove(testators[1].Id);
+                }
+
+                await TestatorService.Update(testator);
+            }
+            else
+            {
+                await TestatorService.Create(testator);
+            }
         }
         else if (testator.WillType == WillType.Joint)
         {
             // Process Joint Will data
             Console.WriteLine($"Fælles: {testator.FirstName} & {secondTestator.FirstName} {testator.LastName} & {secondTestator.LastName} {testator.DateOfBirth} & {secondTestator.DateOfBirth} {testator.Address} & {secondTestator.Address}");
             NavigationManager.NavigateTo("/arvinger");
+
+            Testator temp = testators.FirstOrDefault(x => x.Id == testator.Id);
+            if (temp != null)
+            {
+                await TestatorService.Update(testator);
+            }
+            else
+            {
+                testator.Pids.Add(secondTestator.Id);
+                await TestatorService.Create(testator);
+            }
+
+            Testator temp2 = testators.FirstOrDefault(x => x.Id == secondTestator.Id);
+            if (temp2 != null)
+            {
+                secondTestator.RelationType = testator.RelationType;
+                await TestatorService.Update(secondTestator);
+            }
+            else
+            {
+                secondTestator.Pids.Add(testator.Id);
+                secondTestator.RelationType = testator.RelationType;
+                await TestatorService.Create(secondTestator);
+            }
         }
     }
 }

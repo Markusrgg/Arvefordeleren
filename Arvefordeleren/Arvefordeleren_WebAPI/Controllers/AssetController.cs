@@ -81,7 +81,7 @@ namespace Arvefordeleren_WebAPI.Controllers
                 return NotFound();
             }
 
-            await _repository.Delete(asset);
+            await _repository.Delete(id);
             return NoContent();
         }
     }
