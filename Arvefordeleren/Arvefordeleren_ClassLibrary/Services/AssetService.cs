@@ -8,7 +8,7 @@ namespace Arvefordeleren_ClassLibrary.Services
 {
     public class AssetService
     {
-        Uri baseAdress = new Uri("https://localhost:7084/api/Assets");
+        Uri baseAdress = new Uri("https://localhost:7084/api/asset");
         private readonly HttpClient _httpClient;
 
         public AssetService()
@@ -19,27 +19,27 @@ namespace Arvefordeleren_ClassLibrary.Services
 
         public async Task<List<Asset>> GetAllAssets()
         {
-            return await _httpClient.GetFromJsonAsync<List<Asset>>("assets");
+            return await _httpClient.GetFromJsonAsync<List<Asset>>("asset");
         }
 
         public async Task<Asset> GetAssetById(Guid id)
         {
-            return await _httpClient.GetFromJsonAsync<Asset>($"assets/{id}");
+            return await _httpClient.GetFromJsonAsync<Asset>($"asset/{id}");
         }
 
         public async Task CreateAsset(Asset asset)
         {
-            await _httpClient.PostAsJsonAsync("assets", asset);
+            await _httpClient.PostAsJsonAsync("asset", asset);
         }
 
         public async Task UpdateAsset(Asset asset)
         {
-            await _httpClient.PutAsJsonAsync($"assets/{asset.Id}", asset);
+            await _httpClient.PutAsJsonAsync($"asset/{asset.Id}", asset);
         }
 
         public async Task DeleteAsset(Guid id)
         {
-            await _httpClient.DeleteAsync($"assets/{id}");
+            await _httpClient.DeleteAsync($"asset/{id}");
         }
     }
 }

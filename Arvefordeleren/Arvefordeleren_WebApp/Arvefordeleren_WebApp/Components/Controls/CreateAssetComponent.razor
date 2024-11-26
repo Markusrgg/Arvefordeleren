@@ -1,41 +1,36 @@
-﻿@inject AssetService AssetService
+﻿@rendermode InteractiveServer
+@inject AssetService AssetService
 <h3>CreateAssetComponent</h3>
 
 <div class="row mb-3">
     <div class="col-2">
-        <label class="col-form-label">Name</label>
+        <label class="col-form-label">Navn</label>
     </div>
     <div class="col-6">
         <InputText @bind-Value="asset.Name" class="form-control"></InputText>
     </div>
-    <div class="col">
-        <ValidationMessage For="() => asset.Name"></ValidationMessage>
-    </div>
 </div>
 <div class="row mb-3">
     <div class="col-2">
-        <label class="col-form-label">City</label>
+        <label class="col-form-label">Værdi</label>
     </div>
     <div class="col-6">
         <InputNumber @bind-Value="asset.Value" class="form-control"></InputNumber>
     </div>
-    <div class="col">
-        <ValidationMessage For="() => asset.Value"></ValidationMessage>
-    </div>
 </div>
 <div class="row mb-3">
     <div class="col-2">
-        <label class="col-form-label">Online</label>
+        <label class="col-form-label">Særeje</label>
     </div>
     <div class="col-6">
-        <InputText @bind-Value="asset.SeparateEstate" class="form-check-input"></InputText>
+        <InputText @bind-Value="asset.SeparateEstate" class="form-control"></InputText>
     </div>
 </div>
 @code {
-    private Asset asset { get; set; } = new Asset();
-    public void CreateAsset()
+    [SupplyParameterFromForm]
+    public Asset asset { get; set; } = new Asset();
+    public async Task CreateAsset()
     {
-        AssetService.CreateAsset(asset);
-        asset = new Asset();
+        await AssetService.CreateAsset(asset);
     }
 }

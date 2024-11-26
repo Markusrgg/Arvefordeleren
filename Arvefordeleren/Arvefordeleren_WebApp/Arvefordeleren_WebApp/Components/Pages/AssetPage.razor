@@ -1,64 +1,58 @@
 ﻿@rendermode InteractiveServer
 @page "/asset"
+@layout InformationLayout
 @inject AssetService assetService
-@inject NavigationManager NavigationManager
 
 <h3>Asset</h3>
 <br/>
 @if (isCreating)
 {
-    <p>
-        <CreateAssetComponent></CreateAssetComponent>
-    </p>
-    <p>
-        <button class="btn btn-primary" @onclick="CancelCreateAsset">Fortryd</button>
-    </p>
+    <CreateAssetComponent @ref="createAssetComponent"></CreateAssetComponent>
+    <button class="btn btn-primary" @onclick="CreateAsset">Tilføj</button>
+    <button class="btn btn-primary" @onclick="CancelCreateAsset">Tilbage</button>
 }
 else
 {
     <button class="btn btn-primary" @onclick="CallCreateAsset">Tilføj Aktiv</button>
-
-    @* <a href="/asset/create" class="btn btn-primary">Tilføj Aktiv</a> *@
-    <ul>
+}
+<ul>
+    @if (assets.Count > 0)
+    {
         @foreach (var asset in assets)
         {
-            <li>
+            <div style="display: inline-block;">
                 <AssetComponent Asset="@asset"></AssetComponent>
-                &nbsp;
-                <EditForm Model="asset"
-                FormName="@($"form-asset-{asset.Id}")"
-                OnValidSubmit="@(() => {DeleteAsset(asset.Id);})">
+                <EditForm Model="asset" FormName="@($"form-asset-{asset.Id}")" OnValidSubmit="@(() => {DeleteAsset(asset.Id);})">
                     <button type="submit" class="btn btn-primary">Delete</button>
                 </EditForm>
-            </li>
+            </div>
         }
-    </ul>
-
-}
+    }
+</ul>
 <br/>
 
 
 
 
 @code {
-    private CreateAssetComponent createAsset;
+    private CreateAssetComponent createAssetComponent;
     private List<Asset> assets { get; set; } = new List<Asset>();
     private bool isCreating;
+
     public void CallCreateAsset()
     {
         isCreating = true;
-        NavigationManager.NavigateTo("/asset");
     }
-    private void CreateAsset()
+    private async Task CreateAsset()
     {
+        await createAssetComponent.CreateAsset();
+        assets = await assetService.GetAllAssets();
         isCreating = false;
-        createAsset.CreateAsset();
-        NavigationManager.NavigateTo("/asset");
+        isCreating = true;
     }
     private void CancelCreateAsset()
     {
         isCreating = false;
-        NavigationManager.NavigateTo("/asset");
     }
     protected override async Task OnInitializedAsync()
     {
@@ -67,7 +61,6 @@ else
     private async Task DeleteAsset(Guid assetId)
     {
         await assetService.DeleteAsset(assetId);
-        NavigationManager.NavigateTo("/asset");
     }
 }
 

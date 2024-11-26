@@ -9,17 +9,16 @@ namespace Arvefordeleren_WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AssetsController : ControllerBase
+    public class AssetController : ControllerBase
     {
         private readonly IRepository<Asset> _repository;
 
-        public AssetsController(IRepository<Asset> repository)
+        public AssetController(IRepository<Asset> repository)
         {
             _repository = repository;
-            //_repository.Add(new Asset("Rolex", 5, "markus"));
         }
 
-        // GET: api/assets
+        // GET: api/asset
         [HttpGet]
         public async Task<IActionResult> GetAllAssets()
         {
@@ -27,7 +26,7 @@ namespace Arvefordeleren_WebAPI.Controllers
             return Ok(assets);
         }
 
-        // GET: api/assets/{id}
+        // GET: api/asset/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAssetById(Guid id)
         {
@@ -39,7 +38,7 @@ namespace Arvefordeleren_WebAPI.Controllers
             return Ok(asset);
         }
 
-        // POST: api/assets
+        // POST: api/asset
         [HttpPost]
         public async Task<IActionResult> CreateAsset([FromBody] Asset asset)
         {
@@ -52,7 +51,7 @@ namespace Arvefordeleren_WebAPI.Controllers
             return CreatedAtAction(nameof(GetAssetById), new { id = asset.Id }, asset);
         }
 
-        // PUT: api/assets/{id}
+        // PUT: api/asset/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsset(Guid id, [FromBody] Asset asset)
         {
@@ -71,7 +70,7 @@ namespace Arvefordeleren_WebAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/assets/{id}
+        // DELETE: api/asset/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsset(Guid id)
         {

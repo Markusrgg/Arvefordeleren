@@ -1,15 +1,14 @@
 ﻿@rendermode InteractiveServer
 @inject AssetService AssetService
-<h3>AssetComponent</h3>
 
 <div>
     @if (!isEditing)
     {
         <div>
-            <p><strong>@Asset.Name</strong></p>
-            <p>Værdi: @Asset.Value</p>
-            <p>Særeje: @Asset.SeparateEstate</p>
-            <button @onclick="EditAsset">Edit</button>
+            @Asset.Name
+            Værdi: @Asset.Value
+            Særeje: @Asset.SeparateEstate
+            <button class="btn btn-primary" @onclick="EditAsset">Edit</button>
         </div>
     }
     else
@@ -18,10 +17,11 @@
             <input type="text" @bind="@Asset.Name" />
             <input type="number" @bind="@Asset.Value" />
             <input type="text" @bind="@Asset.SeparateEstate" />
-            <button @onclick="SaveAsset">Save</button>
-            <button @onclick="CancelEdit">Cancel</button>
+            <button class="btn btn-primary" @onclick="SaveAsset">Save</button>
+            <button class="btn btn-primary" @onclick="CancelEdit">Cancel</button>
         </div>
     }
+
 </div>
 
 @code {
