@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Arvefordeleren_ClassLibrary.Models
 {
     public class Testator : Person 
@@ -33,6 +34,6 @@ namespace Arvefordeleren_ClassLibrary.Models
     
         public DateTime Date {  get; set; }
 
-        public List<Heir> Heirs { get; set; } = new List<Heir>();
+        public List<Heir> Heirs { get; set; } = new List<Heir>();   
     }
 }

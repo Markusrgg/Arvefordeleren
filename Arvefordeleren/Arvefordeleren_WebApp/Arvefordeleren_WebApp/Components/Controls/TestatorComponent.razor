@@ -1,6 +1,7 @@
 ﻿@rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
+@using System.ComponentModel.DataAnnotations
 
 @using Arvefordeleren_ClassLibrary.Models
 
@@ -26,7 +27,7 @@
 @if (testator.WillType == WillType.Individual)
 {
     <h4>Individuelt testamente</h4>
-    <EditForm Model="testator" FormName="Individual" OnValidSubmit="HandleValidSubmit">
+    <EditForm Model="testator" EditContext="editContext" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="row mb-3">
@@ -76,12 +77,12 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <h5>Person 1</h5>
-            <EditForm Model="testator" FormName="joint" OnValidSubmit="HandleValidSubmit">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
+    <EditForm Model="this" EditContext="editContext" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Person 1</h5>
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="firstName1" class="form-label">Fornavn</label>
@@ -106,14 +107,10 @@
                         <InputText id="address1" class="form-control" @bind-Value="testator.Address" />
                     </div>
                 </div>
-            </EditForm>
-        </div>
+            </div>
 
-        <div class="col-md-6">
-            <h5>Person 2</h5>
-            <EditForm Model="secondTestator" FormName="joint" OnValidSubmit="HandleValidSubmit">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
+            <div class="col-md-6">
+                <h5>Person 2</h5>
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="firstName2" class="form-label">Fornavn</label>
@@ -138,13 +135,14 @@
                         <InputText id="address2" class="form-control" @bind-Value="secondTestator.Address" />
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Videre</button>
-            </EditForm>
+            </div>
         </div>
-    </div>
+        <button type="submit" class="btn btn-primary">Videre</button>
+    </EditForm>
 }
 
 @code {
+    [Required]
     private Testator testator = new Testator
         {
             WillType = WillType.Individual // Default value
@@ -155,23 +153,31 @@
             WillType = WillType.Joint // Default value
         };
 
+    private EditContext editContext;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(this);
+    }
+
     private async Task HandleValidSubmit()
     {
-        if (testator.WillType == WillType.Individual)
+        if (editContext.Validate())
         {
-           
-            // Process Individual Will data
-            Console.WriteLine($"Individuel: {testator.FirstName} {testator.LastName} {testator.DateOfBirth} {testator.Address}");
-           // await SaveTestatorData(testator);
-            NavigationManager.NavigateTo("/arvinger");
-        }
-        else if (testator.WillType == WillType.Joint)
-        {
-            // Process Joint Will data
-                       
-           // await SaveTestatorData(testator, secondTestator);
-            Console.WriteLine($"Fælles: {testator.FirstName} {testator.LastName} : {testator.DateOfBirth} : {testator.Address} & {secondTestator.FirstName} {secondTestator.LastName} : {secondTestator.DateOfBirth} : {secondTestator.Address}");
-            NavigationManager.NavigateTo("/arvinger");
+            if (testator.WillType == WillType.Individual)
+            {
+                // Process Individual Will data
+                Console.WriteLine($"Individuel: {testator.FirstName} {testator.LastName} {testator.DateOfBirth} {testator.Address}");
+                // await SaveTestatorData(testator);
+                NavigationManager.NavigateTo("/arvinger");
+            }
+            else if (testator.WillType == WillType.Joint)
+            {
+                // Process Joint Will data
+                Console.WriteLine($"Fælles: {testator.FirstName} {testator.LastName} : {testator.DateOfBirth} : {testator.Address} & {secondTestator.FirstName} {secondTestator.LastName} : {secondTestator.DateOfBirth} : {secondTestator.Address}");
+                // await SaveTestatorData(testator, secondTestator);
+                NavigationManager.NavigateTo("/arvinger");
+            }
         }
     }
     // private async Task SaveTestatorData(Testator testator)
@@ -183,7 +189,6 @@
     //     // Save data to database
     //     var response = await HttpClient.PostAsJsonAsync("api/testator", testator);
     //     response.EnsureSuccessStatusCode();
-        
     // }
     // private async Task SaveTestatorData(Testator testator1, Testator testator2)
     // {
