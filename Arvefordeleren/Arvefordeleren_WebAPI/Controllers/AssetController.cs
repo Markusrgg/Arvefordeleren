@@ -16,7 +16,7 @@ namespace Arvefordeleren_WebAPI.Controllers
         public AssetsController(IRepository<Asset> repository)
         {
             _repository = repository;
-            _repository.Add(new Asset("Rolex", 5, "markus"));
+            //_repository.Add(new Asset("Rolex", 5, "markus"));
         }
 
         // GET: api/assets

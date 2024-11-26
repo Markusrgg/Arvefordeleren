@@ -1,0 +1,58 @@
+﻿@page "/asset"
+@inject AssetService assetService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<h3>Asset</h3>
+<br/>
+    <a href="/asset/create" class="btn btn-primary">Tilføj Aktiv</a>
+<br/>
+<ul>
+    @foreach (var asset in assets)
+    {
+        <li>
+            <AssetComponent Asset="@asset"></AssetComponent>
+            &nbsp;
+            <EditForm Model="asset"
+            FormName="@($"form-asset-{asset.Id}")"
+            OnValidSubmit="@(() => {DeleteAsset(asset.Id);})">
+                <button type="submit" class="btn btn-primary">Delete</button>
+            </EditForm>
+        </li>
+    }
+</ul>
+
+
+
+
+@code {
+    private CreateAssetComponent createAsset;
+    private List<Asset> assets { get; set; } = new List<Asset>();
+    private bool isCreating;
+    public void CallCreateAsset()
+    {
+        isCreating = true;
+        NavigationManager.NavigateTo("/asset");
+    }
+    private async Task CreateAsset()
+    {
+        isCreating = false;
+        await createAsset.CreateAsset();
+        NavigationManager.NavigateTo("/asset");
+    }
+    private void CancelCreateAsset()
+    {
+        isCreating = false;
+        NavigationManager.NavigateTo("/asset");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        assets = await assetService.GetAllAssets();
+    }
+    private async Task DeleteAsset(Guid assetId)
+    {
+        await assetService.DeleteAsset(assetId);
+        NavigationManager.NavigateTo("/asset");
+    }
+}
+

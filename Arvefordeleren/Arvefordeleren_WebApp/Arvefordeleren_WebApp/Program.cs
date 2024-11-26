@@ -1,4 +1,5 @@
 using Arvefordeleren_WebApp.Components;
+using Arvefordeleren_ClassLibrary.Services;
 
 namespace Arvefordeleren_WebApp
 {
@@ -11,7 +12,7 @@ namespace Arvefordeleren_WebApp
             // Add services to the container.
             builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-            builder.Services.AddScoped<AssetService>();
+            builder.Services.AddSingleton<AssetService>();
 
             var app = builder.Build();
 
