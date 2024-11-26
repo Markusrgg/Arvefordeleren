@@ -13,10 +13,11 @@ namespace Arvefordeleren_ClassLibrary.Models
         {
             Id = Guid.NewGuid();
         }
-        public Testator(WillType willType, string maritalStatus, string forcedInheritance, string freeInheritance, DateTime date)
+
+        public Testator(WillType willType, RelationType relationType, string forcedInheritance, string freeInheritance, DateTime date)
         {
             WillType = willType;
-            MaritalStatus = maritalStatus;
+            RelationType = relationType;
             ForcedInheritance = forcedInheritance;
             FreeInheritance = freeInheritance;
             Date = date;
@@ -24,13 +25,12 @@ namespace Arvefordeleren_ClassLibrary.Models
 
         public WillType WillType { get; set; }
 
-        public string? MaritalStatus { get; set; }
+        public RelationType RelationType { get; set; }
 
         public string? ForcedInheritance {  get; set; }
 
         public string? FreeInheritance { get; set; }
 
-    
         public DateTime Date {  get; set; }
 
         public List<Heir> Heirs { get; set; } = new List<Heir>();
@@ -41,12 +41,14 @@ namespace Arvefordeleren_ClassLibrary.Models
             {
                 Id = this.Id, 
                 WillType = this.WillType,
-                MaritalStatus = this.MaritalStatus,
+                RelationType = this.RelationType,
                 ForcedInheritance = this.ForcedInheritance,
                 FreeInheritance = this.FreeInheritance,
                 Date = this.Date,
                 Heirs = this.Heirs.Select(heir => heir.Clone()).ToList() 
             };
         }
+
+        public List<Guid> Pids { get; set; } = new List<Guid>(); 
     }
 }

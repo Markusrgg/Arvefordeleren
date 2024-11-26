@@ -13,6 +13,9 @@ namespace Arvefordeleren_WebApp
             builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
             builder.Services.AddScoped<AssetService>();
+            builder.Services.AddSingleton<TestatorService>();
+            builder.Services.AddSingleton<HeirService>();
+            builder.Services.AddSingleton<FamilyTreeService>();
 
             var app = builder.Build();
 

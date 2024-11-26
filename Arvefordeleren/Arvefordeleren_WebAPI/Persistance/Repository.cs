@@ -10,9 +10,9 @@ namespace Arvefordeleren_WebAPI.Persistance
             _list.Add(o);
         }
 
-        public async Task Delete(T o) // remove operation
+        public async Task Delete(Guid id) // remove operation
         {
-            var entity = _list.Find(x => x.Id == o.Id); 
+            var entity = _list.Find(x => x.Id == id); 
             if (entity is not null)
             {
                 _list.Remove(entity);
@@ -34,7 +34,9 @@ namespace Arvefordeleren_WebAPI.Persistance
             var entity = _list.Find(x => x.Id == o.Id);
             if (entity is not null)
             {
+                _list.Remove(entity);
                 entity = o;
+                _list.Add(entity);
             }
         }
     }
