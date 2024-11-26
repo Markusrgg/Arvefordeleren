@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Components\Pages\Create.razor">
+    <Content Update="Components\Pages\PersonInformation.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Components\Pages\Information.razor">

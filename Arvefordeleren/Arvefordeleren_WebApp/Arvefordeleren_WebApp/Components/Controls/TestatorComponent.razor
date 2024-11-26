@@ -1,4 +1,5 @@
 ﻿@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
 
 @using Arvefordeleren_ClassLibrary.Models
 
@@ -23,25 +24,29 @@
 <!-- Form for Individual Will -->
 @if (testator.WillType == WillType.Individual)
 {
-    <h4>Testamente for Individ</h4>
+    <h4>Individuelt testamente</h4>
     <EditForm Model="testator" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <div class="mb-3">
-            <label for="firstName" class="form-label">Fornavn</label>
-            <InputText id="firstName" class="form-control" @bind-Value="testator.FirstName" />
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="firstName" class="form-label">Fornavn</label>
+                <InputText id="firstName" class="form-control" @bind-Value="testator.FirstName" />
+            </div>
+            <div class="col-md-6">
+                <label for="lastName" class="form-label">Efternavn</label>
+                <InputText id="lastName" class="form-control" @bind-Value="testator.LastName" />
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="lastName" class="form-label">Efternavn</label>
-            <InputText id="lastName" class="form-control" @bind-Value="testator.LastName" />
-        </div>
-        <div class="mb-3">
-            <label for="dateOfBirth" class="form-label">Fødselsdag</label>
-            <InputDate id="dateOfBirth" class="form-control" @bind-Value="testator.DateOfBirth" />
-        </div>
-        <div class="mb-3">
-            <label for="address" class="form-label">Adresse</label>
-            <InputText id="address" class="form-control" @bind-Value="testator.Address" />
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="dateOfBirth" class="form-label">Fødselsdag</label>
+                <InputDate id="dateOfBirth" class="form-control" @bind-Value="testator.DateOfBirth" />
+            </div>
+            <div class="col-md-6">
+                <label for="address" class="form-label">Adresse</label>
+                <InputText id="address" class="form-control" @bind-Value="testator.Address" />
+            </div>
         </div>
         <button type="submit" class="btn btn-primary">Videre</button>
     </EditForm>
@@ -50,52 +55,92 @@
 <!-- Form for Joint Will -->
 @if (testator.WillType == WillType.Joint)
 {
-    <h4>Testamente for Fælles</h4>
+    <h4>Gensidigt Testamente</h4>
 
-    <h5>Person 1</h5>
-    <EditForm Model="testator" OnValidSubmit="HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="mb-3">
-            <label for="firstName1" class="form-label">Fornavn</label>
-            <InputText id="firstName1" class="form-control" @bind-Value="testator.FirstName" />
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Civilstatus</label>
         </div>
-        <div class="mb-3">
-            <label for="lastName1" class="form-label">Efternavn</label>
-            <InputText id="lastName1" class="form-control" @bind-Value="testator.LastName" />
+        <div class="col-6">
+            <InputRadioGroup @bind-Value="testator.MaritalStatus" class="d-flex gap-3">
+                <div class="form-check">
+                    <InputRadio id="married" Value="MaritalStatus.Married" class="form-check-input" />
+                    <label class="form-check-label" for="married">Gift</label>
+                </div>
+                <div class="form-check">
+                    <InputRadio id="partner" Value="MaritalStatus.Partner" class="form-check-input" />
+                    <label class="form-check-label" for="partner">Samlever</label>
+                </div>
+            </InputRadioGroup>
         </div>
-        <div class="mb-3">
-            <label for="dateOfBirth1" class="form-label">Fødselsdag</label>
-            <InputDate id="dateOfBirth1" class="form-control" @bind-Value="testator.DateOfBirth" />
-        </div>
-        <div class="mb-3">
-            <label for="address1" class="form-label">Adresse</label>
-            <InputText id="address1" class="form-control" @bind-Value="testator.Address" />
-        </div>
-    </EditForm>
+    </div>
 
-    <h5>Person 2</h5>
-    <EditForm Model="secondTestator" OnValidSubmit="HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="mb-3">
-            <label for="firstName2" class="form-label">Fornavn</label>
-            <InputText id="firstName2" class="form-control" @bind-Value="secondTestator.FirstName" />
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Person 1</h5>
+            <EditForm Model="testator" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="firstName1" class="form-label">Fornavn</label>
+                        <InputText id="firstName1" class="form-control" @bind-Value="testator.FirstName" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="lastName1" class="form-label">Efternavn</label>
+                        <InputText id="lastName1" class="form-control" @bind-Value="testator.LastName" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="dateOfBirth1" class="form-label">Fødselsdag</label>
+                        <InputDate id="dateOfBirth1" class="form-control" @bind-Value="testator.DateOfBirth" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="address1" class="form-label">Adresse</label>
+                        <InputText id="address1" class="form-control" @bind-Value="testator.Address" />
+                    </div>
+                </div>
+            </EditForm>
         </div>
-        <div class="mb-3">
-            <label for="lastName2" class="form-label">Efternavn</label>
-            <InputText id="lastName2" class="form-control" @bind-Value="secondTestator.LastName" />
+
+        <div class="col-md-6">
+            <h5>Person 2</h5>
+            <EditForm Model="secondTestator" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="firstName2" class="form-label">Fornavn</label>
+                        <InputText id="firstName2" class="form-control" @bind-Value="secondTestator.FirstName" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="lastName2" class="form-label">Efternavn</label>
+                        <InputText id="lastName2" class="form-control" @bind-Value="secondTestator.LastName" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="dateOfBirth2" class="form-label">Fødselsdag</label>
+                        <InputDate id="dateOfBirth2" class="form-control" @bind-Value="secondTestator.DateOfBirth" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="address2" class="form-label">Adresse</label>
+                        <InputText id="address2" class="form-control" @bind-Value="secondTestator.Address" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Videre</button>
+            </EditForm>
         </div>
-        <div class="mb-3">
-            <label for="dateOfBirth2" class="form-label">Fødselsdag</label>
-            <InputDate id="dateOfBirth2" class="form-control" @bind-Value="secondTestator.DateOfBirth" />
-        </div>
-        <div class="mb-3">
-            <label for="address2" class="form-label">Adresse</label>
-            <InputText id="address2" class="form-control" @bind-Value="secondTestator.Address" />
-        </div>
-    </EditForm>
-    <button type="submit" class="btn btn-primary">Videre</button>
+    </div>
 }
 
 @code {
@@ -104,7 +149,10 @@
             WillType = WillType.Individual // Default value
         };
 
-    private Testator secondTestator = new Testator();
+    private Testator secondTestator = new Testator
+        {
+            WillType = WillType.Joint // Default value
+        };
 
     private void HandleValidSubmit()
     {
@@ -112,11 +160,13 @@
         {
             // Process Individual Will data
             Console.WriteLine($"Individuel: {testator.FirstName} {testator.LastName} {testator.DateOfBirth} {testator.Address}");
+            NavigationManager.NavigateTo("/arvinger");
         }
         else if (testator.WillType == WillType.Joint)
         {
             // Process Joint Will data
             Console.WriteLine($"Fælles: {testator.FirstName} & {secondTestator.FirstName} {testator.LastName} & {secondTestator.LastName} {testator.DateOfBirth} & {secondTestator.DateOfBirth} {testator.Address} & {secondTestator.Address}");
+            NavigationManager.NavigateTo("/arvinger");
         }
     }
 }

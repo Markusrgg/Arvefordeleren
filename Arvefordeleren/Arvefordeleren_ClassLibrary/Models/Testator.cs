@@ -13,7 +13,7 @@ namespace Arvefordeleren_ClassLibrary.Models
         {
             Id = Guid.NewGuid();
         }
-        public Testator(WillType willType, string maritalStatus, string forcedInheritance, string freeInheritance, DateTime date)
+        public Testator(WillType willType, MaritalStatus maritalStatus, string forcedInheritance, string freeInheritance, DateTime date)
         {
             WillType = willType;
             MaritalStatus = maritalStatus;
@@ -24,7 +24,7 @@ namespace Arvefordeleren_ClassLibrary.Models
 
         public WillType WillType { get; set; }
 
-        public string? MaritalStatus { get; set; }
+        public MaritalStatus MaritalStatus { get; set; }
 
         public string? ForcedInheritance {  get; set; }
 
