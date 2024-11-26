@@ -37,7 +37,10 @@ namespace Arvefordeleren_ClassLibrary.Models
                 DateOfBirth = this.DateOfBirth,
                 Address = this.Address,
                 Relation = this.Relation,
-                InheritanceShare = this.InheritanceShare
+                InheritanceShare = this.InheritanceShare,
+                RelationType = this.RelationType,
+                Mid = this.Mid,
+                Fid = this.Fid,
             };
         }
     }

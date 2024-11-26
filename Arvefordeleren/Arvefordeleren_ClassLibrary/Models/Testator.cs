@@ -45,6 +45,9 @@ namespace Arvefordeleren_ClassLibrary.Models
                 ForcedInheritance = this.ForcedInheritance,
                 FreeInheritance = this.FreeInheritance,
                 Date = this.Date,
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                Pids = this.Pids,
                 Heirs = this.Heirs.Select(heir => heir.Clone()).ToList() 
             };
         }
