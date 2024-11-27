@@ -76,7 +76,7 @@ namespace Arvefordeleren_WebAPI.Controllers
                 }
             }
 
-                var response = await _testatorController.GetAll();
+            var response = await _testatorController.GetAll();
             string? jsonString = (response as OkObjectResult)?.Value?.ToString();
 
             if (!string.IsNullOrEmpty(jsonString))

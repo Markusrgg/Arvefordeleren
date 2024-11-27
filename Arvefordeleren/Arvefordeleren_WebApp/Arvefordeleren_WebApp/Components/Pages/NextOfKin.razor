@@ -10,11 +10,10 @@
 @inject HeirService HeirService
 @inject NavigationManager NavigationManager
 
-<h3>Indtast Arvingens Oplysninger</h3>
+<h3>Indtast arvingens oplysninger</h3>
 
 <EditForm Model="heir" OnValidSubmit="HandleValidSubmit" FormName="heirForm">
     <DataAnnotationsValidator />
-    <ValidationSummary />
 
     <div class="row mb-3">
         <div class="col-2">
@@ -78,7 +77,7 @@
                 <InputSelect @bind-Value="heir.Mid" class="form-control">
                     @foreach (Testator testator in testators)
                     {
-                        <option value="@testator.Id">@testator.FullName</option>
+                        <option value="@testator.Id">@heir.RelationType.GetDisplayName(): @testator.FullName</option>
                     }
                 </InputSelect>
             </div>
@@ -104,15 +103,41 @@
             </div>
         </div>
     }
+    @if (heir.RelationType == RelationType.SIBLING)
+    {
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Søskende</label>
+            </div>
+            <div class="col-6">
+                <InputSelect @bind-Value="heir.Mid" class="form-control">
+                    @foreach (Testator testator in testators)
+                    {
+                        <option value="@testator.Id">@heir.RelationType.GetDisplayName(): @testator.FullName</option>
+                    }
+                    @foreach (var heir in heirs)
+                    {
+                        <option value="@heir.Id">@heir.RelationType.GetDisplayName(): @heir.FullName</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+    }
 
-    <div class="text-center mb-4">
-        <button type="button" class="btn btn-primary" @onclick="NavigateToAssets">Videre</button>
-        <button type="submit" class="btn btn-success">Tilføj Arving</button>
+    <div class="mb-3">
+        <div class="col-2">
+            <button type="submit" class="btn btn-success">@(isEditing == false ? "Tilføj arving" : "Opdater arving")</button>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="col-2">
+            <button type="button" class="btn btn-primary" @onclick="NavigateToAssets">Videre til aktiver</button>
+        </div>
     </div>
 </EditForm>
 
 <div class="container mt-5">
-    <h4>Liste af Arvinger</h4>
+    <h4>Arvinger</h4>
 
     @if (heirs.Any())
     {
@@ -122,6 +147,8 @@
                     <th>Fornavn</th>
                     <th>Efternavn</th>
                     <th>Relation</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -131,6 +158,8 @@
                         <td>@heir.FirstName</td>
                         <td>@heir.LastName</td>
                         <td>@heir.RelationType.GetDisplayName()</td>
+                        <td><button class="btn btn-primary" @onclick="(() => Edit(heir.Id))">Rediger</button></td>
+                        <td><button class="btn btn-danger" @onclick="(() => Delete(heir.Id))">Slet</button></td>
                     </tr>
                 }
             </tbody>
@@ -144,16 +173,21 @@
 
 <br />
 
-<Family @ref="family" />
+<div class="container mt-5">
+    <h4>Familie træ</h4>
+    <Family @ref="family" />
+</div>
 
 @code
 {
     private Family family;
 
-    private Heir heir = new Heir { RelationType = RelationType.CHILD }; // Now working with a single heir model
-    private List<Heir> heirs = new List<Heir>(); // List to store all heirs
+    private Heir heir = new Heir { RelationType = RelationType.CHILD };
+    private List<Heir> heirs = new List<Heir>();
 
     private List<Testator> testators = new List<Testator>();
+
+    private bool isEditing = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -172,36 +206,62 @@
 
     private async Task HandleValidSubmit()
     {
-        // Ensure that we have valid heir information before adding to the list
         if (!string.IsNullOrEmpty(heir.FirstName) && !string.IsNullOrEmpty(heir.LastName))
         {
-            heir.Id = Guid.NewGuid();
+            if (!isEditing)
+            {
+                heir.Id = Guid.NewGuid();
 
-            // Add the current heir to the list of heirs
-            heirs.Add(new Heir
-                {
-                    FirstName = heir.FirstName,
-                    LastName = heir.LastName,
-                    DateOfBirth = heir.DateOfBirth,
-                    Mid = heir.Mid,
-                    Fid = heir.Fid,
-                    RelationType = heir.RelationType,
-                    Id = heir.Id
-                });
+                heirs.Add(new Heir
+                    {
+                        FirstName = heir.FirstName,
+                        LastName = heir.LastName,
+                        DateOfBirth = heir.DateOfBirth,
+                        Mid = heir.Mid,
+                        Fid = heir.Fid,
+                        RelationType = heir.RelationType,
+                        Id = heir.Id
+                    });
 
-            await HeirService.Create(heir);
+                await HeirService.Create(heir);
+            }
+            else
+            {
+                await HeirService.Update(heir);
+                isEditing = false;
+            }
 
-            // Clear the form input fields after adding the heir
-            heir = new Heir { RelationType = RelationType.CHILD };  // Reset heir to a new empty object
+            heir = new Heir { RelationType = RelationType.CHILD };
+
 
             family.Refresh();
-            // Ensure UI updates by notifying Blazor
             StateHasChanged();
         }
         else
         {
-            // Optional: Handle case where required fields are empty
             Console.WriteLine("Fornavn og efternavn er påkrævet.");
+        }
+    }
+
+    private async void Delete(Guid id)
+    {
+        await HeirService.Delete(id);
+        Heir? heir = heirs.FirstOrDefault(x => x.Id == id);
+        if (heir != null)
+        {
+            heirs.Remove(heir);
+        }
+        family.Refresh();
+        StateHasChanged();
+    }
+
+    private void Edit(Guid id)
+    {
+        Heir? heirEdit = heirs.FirstOrDefault(x => x.Id == id);
+        if (heirEdit != null)
+        {
+            heir = heirEdit;
+            isEditing = true;
         }
     }
 

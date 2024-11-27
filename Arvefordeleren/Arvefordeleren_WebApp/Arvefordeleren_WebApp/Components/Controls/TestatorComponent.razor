@@ -5,6 +5,7 @@
 @using Arvefordeleren_ClassLibrary.Services
 
 @inject TestatorService TestatorService
+@inject HeirService HeirService
 
 <div class="row mb-3">
     <div class="col-2">
@@ -13,11 +14,11 @@
     <div class="col-6">
         <InputRadioGroup @bind-Value="testator.WillType">
             <div class="form-check">
-                <InputRadio id="individualWill" Value="WillType.Individual" class="form-check-input" />
+                <InputRadio id="individualWill" Value="WillType.Individual" class="form-check-input" @onclick="(() => testator.RelationType = RelationType.INDIVIDUAL)" />
                 <label class="form-check-label" for="individualWill">Testamente til mig selv</label>
             </div>
             <div class="form-check">
-                <InputRadio id="jointWill" Value="WillType.Joint" class="form-check-input" />
+                <InputRadio id="jointWill" Value="WillType.Joint" class="form-check-input" @onclick="(() => testator.RelationType = RelationType.MARRIED)" />
                 <label class="form-check-label" for="jointWill">Fælles testamente</label>
             </div>
         </InputRadioGroup>
@@ -108,6 +109,11 @@
                         <InputText id="address1" class="form-control" @bind-Value="testator.Address" />
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary">Videre til arvinger</button>
+                    </div>
+                </div>
             </EditForm>
         </div>
 
@@ -140,7 +146,11 @@
                         <InputText id="address2" class="form-control" @bind-Value="secondTestator.Address" />
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Videre</button>
+                @*    <div class="row mb-3">
+            <div class="col-md-6">
+            <button type="submit" class="btn btn-primary">videre</button>
+            </div>
+            </div> *@
             </EditForm>
         </div>
     </div>
@@ -188,16 +198,17 @@
         {
             // Process Individual Will data
             Console.WriteLine($"Individuel: {testator.FirstName} {testator.LastName} {testator.DateOfBirth} {testator.Address}");
-            NavigationManager.NavigateTo("/arvinger");
 
             Testator temp = testators.FirstOrDefault(x => x.Id == testator.Id);
 
+            testator.RelationType = RelationType.INDIVIDUAL;
             if (temp != null)
             {
                 if (testators.Count > 1)
                 {
                     await TestatorService.Delete(testators[1].Id);
                     testator.Pids.Remove(testators[1].Id);
+                    secondTestator = new Testator { WillType = WillType.Joint };
                 }
 
                 await TestatorService.Update(testator);
@@ -206,16 +217,22 @@
             {
                 await TestatorService.Create(testator);
             }
+            NavigationManager.NavigateTo("/arvinger");
         }
         else if (testator.WillType == WillType.Joint)
         {
             // Process Joint Will data
             Console.WriteLine($"Fælles: {testator.FirstName} & {secondTestator.FirstName} {testator.LastName} & {secondTestator.LastName} {testator.DateOfBirth} & {secondTestator.DateOfBirth} {testator.Address} & {secondTestator.Address}");
-            NavigationManager.NavigateTo("/arvinger");
+
+            testator.RelationType = RelationType.MARRIED;
 
             Testator temp = testators.FirstOrDefault(x => x.Id == testator.Id);
             if (temp != null)
             {
+                if (!testator.Pids.Contains(secondTestator.Id))
+                {
+                    testator.Pids.Add(secondTestator.Id);
+                }
                 await TestatorService.Update(testator);
             }
             else
@@ -235,7 +252,21 @@
                 secondTestator.Pids.Add(testator.Id);
                 secondTestator.RelationType = testator.RelationType;
                 await TestatorService.Create(secondTestator);
+
+                // List<Testator> testators = await TestatorService.GetAll();
+                // List<Heir> heirs = await HeirService.GetAll();
+                // foreach (var heir in heirs)
+                // {
+                //     if (heir.Fid != Guid.Empty)
+                //     {
+                //         heir.Fid = testators[1].Id;
+
+                //         await HeirService.Update(heir);
+                //     }
+                // }
             }
+            NavigationManager.NavigateTo("/arvinger");
+
         }
     }
 }
