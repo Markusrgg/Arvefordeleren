@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Arvefordeleren_ClassLibrary.Models
 {
@@ -10,28 +12,21 @@ namespace Arvefordeleren_ClassLibrary.Models
     {
         public Asset()
         {
-        }
-
-        public Asset(string separateEstate = "Ingen valgt") 
-        {
             Id = Guid.NewGuid();
-            SeparateEstate = separateEstate;
         }
-
-        public Asset(string name, double value, string separateEstate) : this(separateEstate)
+        public Asset(Guid id)
         {
-            Name = name;
-            Value = value;
+            Id = id;
         }
+        [Required]
         public string? Name { get; set; }
         public double Value { get; set; }
         public string? SeparateEstate { get; set; }
 
         public Asset Clone()
         {
-            return new Asset
+            return new Asset(this.Id)
             {
-                Id = this.Id,
                 Name = this.Name,
                 Value = this.Value,
                 SeparateEstate = this.SeparateEstate

@@ -5,62 +5,91 @@
 
 <h3>Asset</h3>
 <br/>
-@if (isCreating)
+@if (isUpdating || isCreating)
 {
-    <CreateAssetComponent @ref="createAssetComponent"></CreateAssetComponent>
-    <button class="btn btn-primary" @onclick="CreateAsset">Tilføj</button>
-    <button class="btn btn-primary" @onclick="CancelCreateAsset">Tilbage</button>
+    <AssetComponent @ref="assetComponent" asset="assetToBeUpdatedOrCreated" isUpdateMode="isUpdating"></AssetComponent>
+    <button class="btn btn-primary" @onclick="UpdateOrCreateAsset">@(isUpdating ? "Update" : "Create")</button>
+    <button class="btn btn-primary" @onclick="CancelUpdateOrCreate">Cancel</button>
 }
 else
 {
     <button class="btn btn-primary" @onclick="CallCreateAsset">Tilføj Aktiv</button>
 }
-<ul>
-    @if (assets.Count > 0)
-    {
-        @foreach (var asset in assets)
-        {
-            <div style="display: inline-block;">
-                <AssetComponent Asset="@asset"></AssetComponent>
-                <EditForm Model="asset" FormName="@($"form-asset-{asset.Id}")" OnValidSubmit="@(() => {DeleteAsset(asset.Id);})">
-                    <button type="submit" class="btn btn-primary">Delete</button>
-                </EditForm>
-            </div>
-        }
-    }
-</ul>
-<br/>
+@if (assets.Count > 0 && !isUpdating)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Navn</th>
+                <th>Værdi</th>
+                <th>Særeje</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var asset in assets)
+            {
+                <tr>
+                    <td>@asset.Name</td>
+                    <td>@asset.Value</td>
+                    <td>@asset.SeparateEstate</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => CallUpdateAsset(asset)">Opdater</button>
+                        <button class="btn btn-primary" @onclick="() => DeleteAsset(asset.Id)">Fjern</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 
 
 
 @code {
-    private CreateAssetComponent createAssetComponent;
+    private AssetComponent assetComponent;
     private List<Asset> assets { get; set; } = new List<Asset>();
-    private bool isCreating;
+    private bool isCreating = false;
+    private bool isUpdating = false;
+    private Asset assetToBeUpdatedOrCreated;
 
     public void CallCreateAsset()
     {
+        assetToBeUpdatedOrCreated = new Asset();
         isCreating = true;
     }
-    private async Task CreateAsset()
+    public void CallUpdateAsset(Asset asset)
     {
-        await createAssetComponent.CreateAsset();
-        assets = await assetService.GetAllAssets();
-        isCreating = false;
-        isCreating = true;
-    }
-    private void CancelCreateAsset()
-    {
-        isCreating = false;
+        assetToBeUpdatedOrCreated = asset;
+        isUpdating = true;
     }
     protected override async Task OnInitializedAsync()
     {
         assets = await assetService.GetAllAssets();
     }
-    private async Task DeleteAsset(Guid assetId)
+    public async Task DeleteAsset(Guid assetId)
     {
         await assetService.DeleteAsset(assetId);
+        assets = await assetService.GetAllAssets();
+    }
+    public async Task UpdateOrCreateAsset()
+    {
+        if (isUpdating)
+        {
+            await assetService.UpdateAsset(assetComponent.asset);
+            isUpdating = false;
+        }
+        else if (isCreating)
+        {
+            await assetService.CreateAsset(assetComponent.asset);
+            assetToBeUpdatedOrCreated = new Asset();
+            assets = await assetService.GetAllAssets();
+        }
+    }
+    public void CancelUpdateOrCreate()
+    {
+        isUpdating = false;
+        isCreating = false;
     }
 }
 
