@@ -9,6 +9,11 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public class Heir : Person, ICloneable<Heir>
     {
+        public Guid Mid { get; set; }
+        public Guid Fid { get; set; }
+
+        public RelationType RelationType { get; set; }
+
         public Heir(){}
 
         public Heir(string relation, string inheritanceShare)
@@ -32,7 +37,10 @@ namespace Arvefordeleren_ClassLibrary.Models
                 DateOfBirth = this.DateOfBirth,
                 Address = this.Address,
                 Relation = this.Relation,
-                InheritanceShare = this.InheritanceShare
+                InheritanceShare = this.InheritanceShare,
+                RelationType = this.RelationType,
+                Mid = this.Mid,
+                Fid = this.Fid,
             };
         }
     }

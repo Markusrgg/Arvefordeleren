@@ -1,3 +1,4 @@
+using Arvefordeleren_ClassLibrary.Services;
 using Arvefordeleren_WebApp.Components;
 using Arvefordeleren_ClassLibrary.Services;
 using Arvefordeleren_WebApp.Components.Controls;
@@ -13,7 +14,11 @@ namespace Arvefordeleren_WebApp
             // Add services to the container.
             builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-            builder.Services.AddSingleton<AssetService>();
+            builder.Services.AddScoped<AssetService>();
+            builder.Services.AddSingleton<TestatorService>();
+            builder.Services.AddSingleton<HeirService>();
+            builder.Services.AddSingleton<FamilyTreeService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

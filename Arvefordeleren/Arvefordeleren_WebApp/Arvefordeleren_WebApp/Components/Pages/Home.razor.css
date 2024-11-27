@@ -1,5 +1,5 @@
 .hero-background {
-  background-color: #f5f5f5;
+  background-color: #99fffc;
 }
 
 h1 {
@@ -47,7 +47,7 @@ img {
 @media (min-width: 768px) and (max-width: 991px) {
   /* Styles for tablets */
   .hero-background {
-    background-color: #f5f5f5;
+    background-color: #c2dada;
   }
 
   .hero-background h1 {
@@ -65,7 +65,7 @@ img {
 @media (min-width: 992px) and (max-width: 1199px) {
   /* Styles for desktops */
   .hero-background {
-    background-color: #f5f5f5;
+    background-color: #c2dada;
   }
   .hero-background h1 {
     font-size: 72px;
@@ -82,7 +82,7 @@ img {
 @media (min-width: 1200px) {
   /* Styles for large desktops */
   .hero-background {
-    background-color: #f5f5f5;
+    background-color:#c2dada;
   }
   .hero-background h1 {
     font-size: 72px;
