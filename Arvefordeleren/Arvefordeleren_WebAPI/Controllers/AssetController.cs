@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Arvefordeleren_WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/aktiver")]
     [ApiController]
     public class AssetController : ControllerBase
     {
