@@ -1,0 +1,141 @@
+﻿@rendermode InteractiveServer
+@page "/aktiver"
+@layout InformationLayout
+@inject AssetService assetService
+@inject HeirService heirService
+@inject TestatorService testatorService
+
+<h3>Aktiver</h3>
+<br/>   
+
+@if (isUpdating || isCreating)
+{
+    <EditForm Model="asset" FormName="formAsset" OnValidSubmit="UpdateOrCreateAsset">
+
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Aktivet:</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="asset.Name" class="form-control" />
+            </div>
+            <div class="col">
+                <ValidationMessage For="() => asset.Name"></ValidationMessage>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Særeje:</label>
+            </div>
+            <div class="col-6">
+                <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
+                    <option value="">Ingen valgt</option>
+                    @foreach (var heir in inheritors)
+                    {
+                        <option value="@heir.FirstName @heir.LastName">
+                            @heir.FirstName @heir.LastName
+                        </option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">@(isUpdating ? "Update" : "Create")</button>
+        <button class="btn btn-primary" @onclick="CancelUpdateOrCreate">Cancel</button>
+    </EditForm>
+}
+else
+{
+    <button class="btn btn-primary" @onclick="CallCreateAsset">Tilføj Aktiv</button>
+}
+@if (assets.Count > 0 && !isUpdating)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Navn</th>
+                <th>Særeje</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var asset in assets)
+            {
+                <tr>
+                    <td>@asset.Name</td>
+                    <td>@asset.SeparateEstate</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => CallUpdateAsset(asset)">Opdater</button>
+                        <button class="btn btn-primary" @onclick="() => DeleteAsset(asset.Id)">Fjern</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+    [SupplyParameterFromForm]
+    public Asset asset { get; set; } = new Asset();
+    private List<Asset> assets { get; set; } = new List<Asset>();
+    private List<Person> inheritors { get; set; } = new List<Person>();
+    private bool isCreating = false;
+    private bool isUpdating = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        List<Heir> heirList = await heirService.GetAll();
+        List<Testator> testatorList = await testatorService.GetAll();
+        inheritors = heirList.Concat<Person>(testatorList).ToList();
+        assets = await assetService.GetAll();
+    }
+
+    private void SelectHeir(Heir selectedHeir)
+    {
+        asset.SeparateEstate = $"{selectedHeir.FirstName} {selectedHeir.LastName}";
+    }
+
+    public void CallCreateAsset()
+    {
+        asset = new Asset();
+        isCreating = true;
+    }
+
+    public void CallUpdateAsset(Asset asset)
+    {
+        this.asset = asset;
+        isUpdating = true;
+    }
+
+    public async Task UpdateOrCreateAsset()
+    {
+        if (isUpdating)
+        {
+            await assetService.Update(asset);
+            isUpdating = false;
+        }
+        else if (isCreating)
+        {
+            await assetService.Create(asset);
+            assets = await assetService.GetAll();
+            asset = new Asset();
+        }
+    }
+
+    public async Task DeleteAsset(Guid assetId)
+    {
+        await assetService.Delete(assetId);
+        assets = await assetService.GetAll();
+    }
+
+    public void CancelUpdateOrCreate()
+    {
+        isUpdating = false;
+        isCreating = false;
+    }
+}
+
