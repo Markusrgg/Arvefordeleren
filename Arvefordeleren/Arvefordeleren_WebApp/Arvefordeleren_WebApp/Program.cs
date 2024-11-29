@@ -1,7 +1,5 @@
 using Arvefordeleren_ClassLibrary.Services;
 using Arvefordeleren_WebApp.Components;
-using Arvefordeleren_ClassLibrary.Services;
-using Arvefordeleren_WebApp.Components.Controls;
 
 namespace Arvefordeleren_WebApp
 {

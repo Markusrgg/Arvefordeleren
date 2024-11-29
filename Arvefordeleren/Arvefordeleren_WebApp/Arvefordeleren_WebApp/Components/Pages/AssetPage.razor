@@ -4,10 +4,11 @@
 @inject AssetService assetService
 
 <h3>Asset</h3>
-<br/>
+<br/>   
+
 @if (isUpdating || isCreating)
 {
-    <AssetComponent @ref="assetComponent" asset="assetToBeUpdatedOrCreated" isUpdateMode="isUpdating"></AssetComponent>
+    <AssetComponent @ref="assetComponent" passAsset="assetToBeUpdatedOrCreated" isUpdateMode="isUpdating"></AssetComponent>
     <button class="btn btn-primary" @onclick="UpdateOrCreateAsset">@(isUpdating ? "Update" : "Create")</button>
     <button class="btn btn-primary" @onclick="CancelUpdateOrCreate">Cancel</button>
 }
@@ -45,7 +46,6 @@ else
 
 
 
-
 @code {
     private AssetComponent assetComponent;
     private List<Asset> assets { get; set; } = new List<Asset>();
@@ -74,16 +74,20 @@ else
     }
     public async Task UpdateOrCreateAsset()
     {
-        if (isUpdating)
+        assetComponent.Submit();
+        if (assetComponent.isValid)
         {
-            await assetService.UpdateAsset(assetComponent.asset);
-            isUpdating = false;
-        }
-        else if (isCreating)
-        {
-            await assetService.CreateAsset(assetComponent.asset);
-            assetToBeUpdatedOrCreated = new Asset();
-            assets = await assetService.GetAllAssets();
+            if (isUpdating)
+            {
+                await assetService.UpdateAsset(assetComponent.Asset);
+                isUpdating = false;
+            }
+            else if (isCreating)
+            {
+                await assetService.CreateAsset(assetComponent.Asset);
+                assetToBeUpdatedOrCreated = new Asset();
+                assets = await assetService.GetAllAssets();
+            }
         }
     }
     public void CancelUpdateOrCreate()

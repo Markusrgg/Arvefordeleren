@@ -1,35 +1,65 @@
 ﻿@rendermode InteractiveServer
-<h5>@(isUpdateMode ? "Opdater " + asset.Name : "Opret Aktiv")</h5>
 
-<div class="row mb-3">
-    <div class="col-2">
-        <label class="col-form-label">Navn</label>
+<h5>@(isUpdateMode ? "Opdater " + Asset.Name : "Opret Aktiv")</h5>
+
+<EditForm Model="Asset" FormName="formAsset" OnValidSubmit="Submit">
+
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Aktivet:</label>
+        </div>
+        <div class="col-6">
+            <InputText @bind-Value="Asset.Name" class="form-control" />
+            <ValidationMessage For="@(() => Asset.Name)" />
+        </div>
     </div>
-    <div class="col-6">
-        <InputText @bind-Value="asset.Name" class="form-control"></InputText>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Værdi:</label>
+        </div>
+        <div class="col-6">
+            <InputNumber @bind-Value="Asset.Value" class="form-control" />
+            <ValidationMessage For="@(() => Asset.Value)" />
+        </div>
     </div>
-</div>
-<div class="row mb-3">
-    <div class="col-2">
-        <label class="col-form-label">Værdi</label>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Særeje:</label>
+        </div>
+        <div class="col-6">
+            <InputText @bind-Value="Asset.SeparateEstate" class="form-control" />
+            <ValidationMessage For="@(() => Asset.SeparateEstate)" />
+        </div>
     </div>
-    <div class="col-6">
-        <InputNumber @bind-Value="asset.Value" class="form-control"></InputNumber>
-    </div>
-</div>
-<div class="row mb-3">
-    <div class="col-2">
-        <label class="col-form-label">Særeje</label>
-    </div>
-    <div class="col-6">
-        <InputText @bind-Value="asset.SeparateEstate" class="form-control"></InputText>
-    </div>
-</div>
+
+</EditForm>
 
 @code {
+    [SupplyParameterFromForm]
+    public Asset Asset { get; set; }
     [Parameter]
-    public Asset asset { get; set; }
-
+    public Asset passAsset
+    {
+        set
+        {
+            Asset = value;
+        }
+    }
     [Parameter]
     public bool isUpdateMode { get; set; }
+
+    [Parameter]
+    public bool isValid{ get; set; }
+    // public void PassAsset(Asset asset)
+    // {
+    //     Asset = asset;
+    // }
+
+    public void Submit()
+    {
+        isValid = true;
+    }
 }
