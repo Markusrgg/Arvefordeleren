@@ -80,11 +80,19 @@ else
 
 @code {
     [SupplyParameterFromForm]
-    public Asset asset { get; set; }
+    public Asset asset { get; set; } = new Asset();
     private List<Asset> assets { get; set; } = new List<Asset>();
     private List<Person> inheritors { get; set; } = new List<Person>();
     private bool isCreating = false;
     private bool isUpdating = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        List<Heir> heirList = await heirService.GetAll();
+        List<Testator> testatorList = await testatorService.GetAll();
+        inheritors = heirList.Concat<Person>(testatorList).ToList();
+        assets = await assetService.GetAll();
+    }
 
     private void SelectHeir(Heir selectedHeir)
     {
@@ -93,28 +101,16 @@ else
 
     public void CallCreateAsset()
     {
-        isCreating = true;
         asset = new Asset();
+        isCreating = true;
     }
+
     public void CallUpdateAsset(Asset asset)
     {
         this.asset = asset;
         isUpdating = true;
     }
-    protected override async Task OnInitializedAsync()
-    {
-        assets = await assetService.GetAll();
-        // await heirService.Create(new Heir { FirstName = "simon", LastName = "Hansen" });
-        // await testatorService.Create(new Testator { FirstName = "Markus", LastName = "Riddertoft" });
-        List<Heir> heirList = await heirService.GetAll();
-        List<Testator> testatorList = await testatorService.GetAll();
-        inheritors = heirList.Concat<Person>(testatorList).ToList();
-    }
-    public async Task DeleteAsset(Guid assetId)
-    {
-        await assetService.Delete(assetId);
-        assets = await assetService.GetAll();
-    }
+
     public async Task UpdateOrCreateAsset()
     {
         if (isUpdating)
@@ -128,8 +124,14 @@ else
             assets = await assetService.GetAll();
             asset = new Asset();
         }
-        
     }
+
+    public async Task DeleteAsset(Guid assetId)
+    {
+        await assetService.Delete(assetId);
+        assets = await assetService.GetAll();
+    }
+
     public void CancelUpdateOrCreate()
     {
         isUpdating = false;
