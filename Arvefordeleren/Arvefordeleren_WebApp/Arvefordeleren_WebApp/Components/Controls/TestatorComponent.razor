@@ -224,8 +224,6 @@
             // Process Joint Will data
             Console.WriteLine($"Fælles: {testator.FirstName} & {secondTestator.FirstName} {testator.LastName} & {secondTestator.LastName} {testator.DateOfBirth} & {secondTestator.DateOfBirth} {testator.Address} & {secondTestator.Address}");
 
-            testator.RelationType = RelationType.MARRIED;
-
             Testator temp = testators.FirstOrDefault(x => x.Id == testator.Id);
             if (temp != null)
             {
