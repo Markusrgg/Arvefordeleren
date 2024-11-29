@@ -17,27 +17,27 @@ namespace Arvefordeleren_ClassLibrary.Services
             _httpClient.BaseAddress = baseAdress;
         }
 
-        public async Task<List<Asset>> GetAllAssets()
+        public async Task<List<Asset>> GetAll()
         {
             return await _httpClient.GetFromJsonAsync<List<Asset>>("asset");
         }
 
-        public async Task<Asset> GetAssetById(Guid id)
+        public async Task<Asset> GetById(Guid id)
         {
             return await _httpClient.GetFromJsonAsync<Asset>($"asset/{id}");
         }
 
-        public async Task CreateAsset(Asset asset)
+        public async Task Create(Asset asset)
         {
             await _httpClient.PostAsJsonAsync("asset", asset);
         }
 
-        public async Task UpdateAsset(Asset asset)
+        public async Task Update(Asset asset)
         {
             await _httpClient.PutAsJsonAsync($"asset/{asset.Id}", asset);
         }
 
-        public async Task DeleteAsset(Guid id)
+        public async Task Delete(Guid id)
         {
             await _httpClient.DeleteAsync($"asset/{id}");
         }

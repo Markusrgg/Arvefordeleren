@@ -19,8 +19,7 @@ namespace Arvefordeleren_ClassLibrary.Models
             Id = id;
         }
         [Required]
-        public string? Name { get; set; }
-        public double Value { get; set; }
+        public string Name { get; set; }
         public string? SeparateEstate { get; set; }
 
         public Asset Clone()
@@ -28,7 +27,6 @@ namespace Arvefordeleren_ClassLibrary.Models
             return new Asset(this.Id)
             {
                 Name = this.Name,
-                Value = this.Value,
                 SeparateEstate = this.SeparateEstate
             };
         }

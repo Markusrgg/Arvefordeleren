@@ -2,15 +2,49 @@
 @page "/asset"
 @layout InformationLayout
 @inject AssetService assetService
+@inject HeirService heirService
+@inject TestatorService testatorService
 
 <h3>Asset</h3>
 <br/>   
 
 @if (isUpdating || isCreating)
 {
-    <AssetComponent @ref="assetComponent" passAsset="assetToBeUpdatedOrCreated" isUpdateMode="isUpdating"></AssetComponent>
-    <button class="btn btn-primary" @onclick="UpdateOrCreateAsset">@(isUpdating ? "Update" : "Create")</button>
-    <button class="btn btn-primary" @onclick="CancelUpdateOrCreate">Cancel</button>
+    <EditForm Model="asset" FormName="formAsset" OnValidSubmit="UpdateOrCreateAsset">
+
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Aktivet:</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="asset.Name" class="form-control" />
+            </div>
+            <div class="col">
+                <ValidationMessage For="() => asset.Name"></ValidationMessage>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Særeje:</label>
+            </div>
+            <div class="col-6">
+                <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
+                    <option value="">Ingen valgt</option>
+                    @foreach (var heir in inheritors)
+                    {
+                        <option value="@heir.FirstName @heir.LastName">
+                            @heir.FirstName @heir.LastName
+                        </option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">@(isUpdating ? "Update" : "Create")</button>
+        <button class="btn btn-primary" @onclick="CancelUpdateOrCreate">Cancel</button>
+    </EditForm>
 }
 else
 {
@@ -22,7 +56,6 @@ else
         <thead>
             <tr>
                 <th>Navn</th>
-                <th>Værdi</th>
                 <th>Særeje</th>
                 <th></th>
             </tr>
@@ -32,7 +65,6 @@ else
             {
                 <tr>
                     <td>@asset.Name</td>
-                    <td>@asset.Value</td>
                     <td>@asset.SeparateEstate</td>
                     <td>
                         <button class="btn btn-primary" @onclick="() => CallUpdateAsset(asset)">Opdater</button>
@@ -47,48 +79,56 @@ else
 
 
 @code {
-    private AssetComponent assetComponent;
+    [SupplyParameterFromForm]
+    public Asset asset { get; set; }
     private List<Asset> assets { get; set; } = new List<Asset>();
+    private List<Person> inheritors { get; set; } = new List<Person>();
     private bool isCreating = false;
     private bool isUpdating = false;
-    private Asset assetToBeUpdatedOrCreated;
+
+    private void SelectHeir(Heir selectedHeir)
+    {
+        asset.SeparateEstate = $"{selectedHeir.FirstName} {selectedHeir.LastName}";
+    }
 
     public void CallCreateAsset()
     {
-        assetToBeUpdatedOrCreated = new Asset();
         isCreating = true;
+        asset = new Asset();
     }
     public void CallUpdateAsset(Asset asset)
     {
-        assetToBeUpdatedOrCreated = asset;
+        this.asset = asset;
         isUpdating = true;
     }
     protected override async Task OnInitializedAsync()
     {
-        assets = await assetService.GetAllAssets();
+        assets = await assetService.GetAll();
+        // await heirService.Create(new Heir { FirstName = "simon", LastName = "Hansen" });
+        // await testatorService.Create(new Testator { FirstName = "Markus", LastName = "Riddertoft" });
+        List<Heir> heirList = await heirService.GetAll();
+        List<Testator> testatorList = await testatorService.GetAll();
+        inheritors = heirList.Concat<Person>(testatorList).ToList();
     }
     public async Task DeleteAsset(Guid assetId)
     {
-        await assetService.DeleteAsset(assetId);
-        assets = await assetService.GetAllAssets();
+        await assetService.Delete(assetId);
+        assets = await assetService.GetAll();
     }
     public async Task UpdateOrCreateAsset()
     {
-        assetComponent.Submit();
-        if (assetComponent.isValid)
+        if (isUpdating)
         {
-            if (isUpdating)
-            {
-                await assetService.UpdateAsset(assetComponent.Asset);
-                isUpdating = false;
-            }
-            else if (isCreating)
-            {
-                await assetService.CreateAsset(assetComponent.Asset);
-                assetToBeUpdatedOrCreated = new Asset();
-                assets = await assetService.GetAllAssets();
-            }
+            await assetService.Update(asset);
+            isUpdating = false;
         }
+        else if (isCreating)
+        {
+            await assetService.Create(asset);
+            assets = await assetService.GetAll();
+            asset = new Asset();
+        }
+        
     }
     public void CancelUpdateOrCreate()
     {
