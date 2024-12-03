@@ -4,6 +4,7 @@
 @inject AssetService assetService
 @inject HeirService heirService
 @inject TestatorService testatorService
+@inject NavigationManager navigationManager
 
 <h3>Aktiver</h3>
 <p>
@@ -11,47 +12,46 @@
 </p>
 <br/>   
 
-    <EditForm Model="asset" FormName="formAsset" OnValidSubmit="UpdateOrCreateAsset">
+<EditForm Model="asset" FormName="formAsset" OnValidSubmit="UpdateOrCreateAsset">
 
-        <DataAnnotationsValidator></DataAnnotationsValidator>
-        <ValidationSummary></ValidationSummary>
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
 
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Aktivet:</label>
-            </div>
-            <div class="col-6">
-                <InputText @bind-Value="asset.Name" class="form-control" />
-            </div>
-            <div class="col">
-                <ValidationMessage For="() => asset.Name"></ValidationMessage>
-            </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Aktivet:</label>
         </div>
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Særeje:</label>
-            </div>
-            <div class="col-6">
-                <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
-                    <option value="">Ingen valgt</option>
-                    @foreach (var heir in inheritors)
-                    {
-                        <option value="@heir.FirstName @heir.LastName">
-                            @heir.FirstName @heir.LastName
-                        </option>
-                    }
-                </InputSelect>
-            </div>
+        <div class="col-6">
+            <InputText @bind-Value="asset.Name" class="form-control" />
         </div>
-        <button class="btn btn-primary" type="submit">@(isUpdating ? "Rediger" : "Tilføj")</button>
-    </EditForm>
-}
+        <div class="col">
+            <ValidationMessage For="() => asset.Name"></ValidationMessage>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Særeje:</label>
+        </div>
+        <div class="col-6">
+            <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
+                <option value="">Ingen valgt</option>
+                @foreach (var heir in inheritors)
+                {
+                    <option value="@heir.FirstName @heir.LastName">
+                        @heir.FirstName @heir.LastName
+                    </option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">@(isUpdating ? "Rediger" : "Tilføj")</button>
+</EditForm>
 @if (assets.Count > 0 && !isUpdating)
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Navn</th>
+                <th>Aktiv</th>
                 <th>Særeje</th>
                 <th></th>
             </tr>
@@ -71,6 +71,8 @@
         </tbody>
     </table>
 }
+<button class="btn btn-primary" @onclick="() => NavigateToInheritanceDistribution">Videre</button>
+
 
 
 
@@ -129,6 +131,11 @@
     {
         await assetService.Delete(assetId);
         assets = await assetService.GetAll();
+    }
+
+    public void NavigateToInheritanceDistribution()
+    {
+        navigationManager.NavigateTo("/aktiver");
     }
 }
 
