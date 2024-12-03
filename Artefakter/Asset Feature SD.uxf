@@ -4,7 +4,7 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>341</y>
       <w>22</w>
       <h>44</h>
@@ -15,7 +15,7 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>616</x>
+      <x>385</x>
       <y>341</y>
       <w>462</w>
       <h>44</h>
@@ -27,7 +27,7 @@ _httpClient.GetFromJsonAsync&lt;Asset&gt;($"aktiver/{id}")</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1067</x>
+      <x>836</x>
       <y>352</y>
       <w>231</w>
       <h>44</h>
@@ -39,7 +39,7 @@ _repository.GetById(id)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>352</y>
       <w>22</w>
       <h>44</h>
@@ -50,7 +50,7 @@ _repository.GetById(id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>407</x>
+      <x>176</x>
       <y>330</y>
       <w>220</w>
       <h>44</h>
@@ -62,7 +62,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>363</y>
       <w>22</w>
       <h>44</h>
@@ -73,7 +73,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>374</y>
       <w>33</w>
       <h>66</h>
@@ -84,7 +84,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>385</y>
       <w>33</w>
       <h>66</h>
@@ -95,7 +95,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>396</y>
       <w>33</w>
       <h>66</h>
@@ -106,7 +106,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>231</y>
       <w>33</w>
       <h>55</h>
@@ -117,7 +117,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>561</x>
+      <x>330</x>
       <y>209</y>
       <w>110</w>
       <h>33</h>
@@ -128,7 +128,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>264</y>
       <w>22</w>
       <h>44</h>
@@ -139,7 +139,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>242</y>
       <w>33</w>
       <h>55</h>
@@ -150,7 +150,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1001</x>
+      <x>770</x>
       <y>220</y>
       <w>132</w>
       <h>33</h>
@@ -161,7 +161,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1177</x>
+      <x>946</x>
       <y>231</y>
       <w>242</w>
       <h>33</h>
@@ -172,7 +172,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>253</y>
       <w>33</w>
       <h>55</h>
@@ -183,7 +183,7 @@ GetById(Guid id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>616</x>
+      <x>385</x>
       <y>264</y>
       <w>462</w>
       <h>44</h>
@@ -195,7 +195,7 @@ _httpClient.GetFromJsonAsync&lt;List&lt;Asset&gt;&gt;("aktiver")</panel_attribut
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1067</x>
+      <x>836</x>
       <y>275</y>
       <w>231</w>
       <h>44</h>
@@ -207,7 +207,7 @@ _repository.GetAll()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>275</y>
       <w>22</w>
       <h>44</h>
@@ -218,7 +218,7 @@ _repository.GetAll()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>407</x>
+      <x>176</x>
       <y>253</y>
       <w>220</w>
       <h>44</h>
@@ -230,7 +230,7 @@ GetAll()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>286</y>
       <w>22</w>
       <h>44</h>
@@ -241,7 +241,7 @@ GetAll()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>297</y>
       <w>33</w>
       <h>66</h>
@@ -252,7 +252,7 @@ GetAll()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>308</y>
       <w>33</w>
       <h>66</h>
@@ -263,7 +263,7 @@ GetAll()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>319</y>
       <w>33</w>
       <h>66</h>
@@ -274,7 +274,7 @@ GetAll()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>418</y>
       <w>22</w>
       <h>44</h>
@@ -285,7 +285,7 @@ GetAll()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>616</x>
+      <x>385</x>
       <y>418</y>
       <w>462</w>
       <h>44</h>
@@ -297,7 +297,7 @@ _httpClient.PostAsJsonAsync("aktiver", asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1067</x>
+      <x>836</x>
       <y>429</y>
       <w>231</w>
       <h>44</h>
@@ -309,7 +309,7 @@ _repository.Add(asset)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>429</y>
       <w>22</w>
       <h>44</h>
@@ -320,7 +320,7 @@ _repository.Add(asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>407</x>
+      <x>176</x>
       <y>407</y>
       <w>220</w>
       <h>44</h>
@@ -332,7 +332,7 @@ Create(Asset asset)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>440</y>
       <w>22</w>
       <h>44</h>
@@ -343,7 +343,7 @@ Create(Asset asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>451</y>
       <w>33</w>
       <h>66</h>
@@ -354,7 +354,7 @@ Create(Asset asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>462</y>
       <w>33</w>
       <h>66</h>
@@ -365,7 +365,7 @@ Create(Asset asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>473</y>
       <w>33</w>
       <h>66</h>
@@ -376,7 +376,7 @@ Create(Asset asset)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>495</y>
       <w>22</w>
       <h>44</h>
@@ -387,7 +387,7 @@ Create(Asset asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>616</x>
+      <x>385</x>
       <y>495</y>
       <w>462</w>
       <h>44</h>
@@ -399,7 +399,7 @@ _httpClient.PutAsJsonAsync($"aktiver/{asset.Id}", asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1067</x>
+      <x>836</x>
       <y>506</y>
       <w>231</w>
       <h>44</h>
@@ -411,7 +411,7 @@ _repository.Update(asset)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>506</y>
       <w>22</w>
       <h>44</h>
@@ -422,7 +422,7 @@ _repository.Update(asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>407</x>
+      <x>176</x>
       <y>484</y>
       <w>220</w>
       <h>44</h>
@@ -434,7 +434,7 @@ Update(Asset asset)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>517</y>
       <w>22</w>
       <h>44</h>
@@ -445,7 +445,7 @@ Update(Asset asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>528</y>
       <w>33</w>
       <h>66</h>
@@ -456,7 +456,7 @@ Update(Asset asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>539</y>
       <w>33</w>
       <h>66</h>
@@ -467,7 +467,7 @@ Update(Asset asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>550</y>
       <w>33</w>
       <h>66</h>
@@ -478,7 +478,7 @@ Update(Asset asset)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>572</y>
       <w>22</w>
       <h>44</h>
@@ -489,7 +489,7 @@ Update(Asset asset)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>616</x>
+      <x>385</x>
       <y>572</y>
       <w>462</w>
       <h>44</h>
@@ -501,7 +501,7 @@ _httpClient.DeleteAsync($"aktiver/{id}")</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1067</x>
+      <x>836</x>
       <y>583</y>
       <w>231</w>
       <h>44</h>
@@ -513,7 +513,7 @@ _repository.Delete(id)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>583</y>
       <w>22</w>
       <h>44</h>
@@ -524,7 +524,7 @@ _repository.Delete(id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>407</x>
+      <x>176</x>
       <y>561</y>
       <w>220</w>
       <h>44</h>
@@ -536,7 +536,7 @@ Delete(Guid id)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>594</y>
       <w>22</w>
       <h>44</h>
@@ -547,7 +547,7 @@ Delete(Guid id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>605</x>
+      <x>374</x>
       <y>605</y>
       <w>33</w>
       <h>55</h>
@@ -558,7 +558,7 @@ Delete(Guid id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1056</x>
+      <x>825</x>
       <y>616</y>
       <w>33</w>
       <h>55</h>
@@ -569,7 +569,7 @@ Delete(Guid id)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1276</x>
+      <x>1045</x>
       <y>627</y>
       <w>33</w>
       <h>55</h>
@@ -580,7 +580,7 @@ Delete(Guid id)</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>649</x>
+      <x>418</x>
       <y>99</y>
       <w>550</w>
       <h>77</h>
