@@ -4,54 +4,67 @@
 @inject AssetService assetService
 @inject HeirService heirService
 @inject TestatorService testatorService
+@inject NavigationManager navigationManager
 
 <h3>Aktiver</h3>
 <p>
-    Indtast dine aktiver
+    En <strong>aktiv</strong> i forhold til en arv refererer til de værdier eller ejendele, som en afdød person efterlader,
+    og som kan indgå i boets samlede værdi. Aktiver kan være:
+</p>
+
+<ul>
+    <li><strong>Kontanter:</strong> Indestående på bankkonti.</li>
+    <li><strong>Ejendomme:</strong> Fx huse eller lejligheder.</li>
+    <li><strong>Investeringer:</strong> Aktier, obligationer eller pensionsopsparinger.</li>
+    <li><strong>Personlige ejendele:</strong> Fx biler, smykker eller kunst.</li>
+    <li><strong>Virksomheder eller ejerandele:</strong> Ejerskab i en virksomhed.</li>
+</ul>
+
+<p>
+    Når boet gøres op, trækkes gæld og forpligtelser fra aktiverne for at beregne, hvad der kan fordeles blandt arvingerne.
 </p>
 <br/>   
 
-    <EditForm Model="asset" FormName="formAsset" OnValidSubmit="UpdateOrCreateAsset">
+<EditForm Model="asset" FormName="formAsset" OnValidSubmit="UpdateOrCreateAsset">
 
-        <DataAnnotationsValidator></DataAnnotationsValidator>
-        <ValidationSummary></ValidationSummary>
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
 
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Aktivet:</label>
-            </div>
-            <div class="col-6">
-                <InputText @bind-Value="asset.Name" class="form-control" />
-            </div>
-            <div class="col">
-                <ValidationMessage For="() => asset.Name"></ValidationMessage>
-            </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Aktivet:</label>
         </div>
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Særeje:</label>
-            </div>
-            <div class="col-6">
-                <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
-                    <option value="">Ingen valgt</option>
-                    @foreach (var heir in inheritors)
-                    {
-                        <option value="@heir.FirstName @heir.LastName">
-                            @heir.FirstName @heir.LastName
-                        </option>
-                    }
-                </InputSelect>
-            </div>
+        <div class="col-6">
+            <InputText @bind-Value="asset.Name" class="form-control" />
         </div>
-        <button class="btn btn-primary" type="submit">@(isUpdating ? "Rediger" : "Tilføj")</button>
-    </EditForm>
-}
+        <div class="col">
+            <ValidationMessage For="() => asset.Name"></ValidationMessage>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Særeje:</label>
+        </div>
+        <div class="col-6">
+            <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
+                <option value="">Ingen valgt</option>
+                @foreach (var heir in inheritors)
+                {
+                    <option value="@heir.FirstName @heir.LastName">
+                        @heir.FirstName @heir.LastName
+                    </option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">@(isUpdating ? "Opdater" : "Tilføj")</button>
+</EditForm>
 @if (assets.Count > 0 && !isUpdating)
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Navn</th>
+                <th>Aktiv</th>
                 <th>Særeje</th>
                 <th></th>
             </tr>
@@ -71,6 +84,9 @@
         </tbody>
     </table>
 }
+<br />
+<button class="btn btn-primary" @onclick="NavigateToInheritanceDistribution">Videre</button>
+
 
 
 
@@ -79,7 +95,7 @@
     public Asset asset { get; set; } = new Asset();
     private List<Asset> assets { get; set; } = new List<Asset>();
     private List<Person> inheritors { get; set; } = new List<Person>();
-    private bool isCreating = true;
+    private bool isCreating;
     private bool isUpdating;
 
     protected override async Task OnInitializedAsync()
@@ -88,19 +104,12 @@
         List<Testator> testatorList = await testatorService.GetAll();
         inheritors = heirList.Concat<Person>(testatorList).ToList();
         assets = await assetService.GetAll();
+        isCreating = true;
     }
 
     private void SelectHeir(Heir selectedHeir)
     {
         asset.SeparateEstate = $"{selectedHeir.FirstName} {selectedHeir.LastName}";
-    }
-
-    public void CallCreateAsset()
-    {
-        asset = new Asset();
-        isUpdating = false;
-        isCreating = true;
-
     }
 
     public void CallUpdateAsset(Asset asset)
@@ -116,19 +125,25 @@
         {
             await assetService.Update(asset);
             isUpdating = false;
+            isCreating = true;
         }
         else if (isCreating)
         {
             await assetService.Create(asset);
-            assets = await assetService.GetAll();
-            asset = new Asset();
         }
+        assets = await assetService.GetAll();
+        asset = new Asset();
     }
 
     public async Task DeleteAsset(Guid assetId)
     {
         await assetService.Delete(assetId);
         assets = await assetService.GetAll();
+    }
+
+    public void NavigateToInheritanceDistribution()
+    {
+        navigationManager.NavigateTo("/aktiver");
     }
 }
 

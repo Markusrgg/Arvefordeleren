@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>624</x>
+      <y>0</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Person
+-
+fornavn
+efternavn
+fødselsdag
+adresse
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>632</x>
+      <y>144</y>
+      <w>24</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>768</x>
+      <y>144</y>
+      <w>24</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>504</x>
+      <y>264</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Testator
+-
+testamenteType
+civilstatus
+tvangsarv
+friarv
+dato</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>744</x>
+      <y>264</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Arving
+-
+relation
+arvedel</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>664</x>
+      <y>312</y>
+      <w>96</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>568</x>
+      <y>408</y>
+      <w>32</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>488</x>
+      <y>472</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Aktiv
+-
+navn
+værdi
+særeje
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>136</x>
+      <y>768</y>
+      <w>312</w>
+      <h>1072</h>
+    </coordinates>
+    <panel_attributes>
+_Area: Testatoradministration_
+
+Aktivitet: Opret testator
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>312</y>
+      <w>240</w>
+      <h>472</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;570.0;10.0;10.0;280.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>224</x>
+      <y>952</y>
+      <w>128</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 2
+--
+Vælg civilstatus</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>224</x>
+      <y>864</y>
+      <w>128</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 1
+--
+Vælg testamente-type</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>208</x>
+      <y>1048</y>
+      <w>168</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 3
+--
+Indtast testators fornavn</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>168</x>
+      <y>1512</y>
+      <w>256</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 1
+--
+Beregn tvangsarv baseret på aktiver og friarv</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>496</x>
+      <y>768</y>
+      <w>272</w>
+      <h>376</h>
+    </coordinates>
+    <panel_attributes>
+_Area: Aktivadministration_
+
+Aktivitet: Opret aktiv
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>872</y>
+      <w>136</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 1
+--
+Indtast aktivets navn</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>960</y>
+      <w>136</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 2
+--
+Indtast aktivets værdi</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>1040</y>
+      <w>152</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 3
+--
+Angiv om aktivet er særeje</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>568</x>
+      <y>616</y>
+      <w>24</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>10.0;190.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>192</x>
+      <y>1360</y>
+      <w>208</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 6
+--
+Indtast testators fødselsdag</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>208</x>
+      <y>1144</y>
+      <w>168</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 4
+--
+Indtast testators efternavn</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>200</x>
+      <y>1248</y>
+      <w>208</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 5
+--
+Indtast testators adresse</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>192</x>
+      <y>1448</y>
+      <w>200</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Aktivitet: Beregn tvangsarv og friarv
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>184</x>
+      <y>1608</y>
+      <w>216</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 2
+--
+Beregn friarv baseret på aktiver</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>184</x>
+      <y>1704</y>
+      <w>216</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 3
+--
+Vis beregnede tvangsarv og friarv for testator</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>832</x>
+      <y>768</y>
+      <w>368</w>
+      <h>944</h>
+    </coordinates>
+    <panel_attributes>
+_Area: Arvingadministration_
+
+Aktivitet: Opret 
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>944</x>
+      <y>840</y>
+      <w>152</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 1
+--
+Indtast arvingens fornavn</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>944</x>
+      <y>928</y>
+      <w>152</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 2
+--
+Indtast arvingens efternavn</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>944</x>
+      <y>1016</y>
+      <w>152</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 3
+--
+Indtast arvingens adresse</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>944</x>
+      <y>1096</y>
+      <w>152</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 4
+--
+Indtast arvingens fødselsdag</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>928</x>
+      <y>1184</y>
+      <w>208</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 5
+--
+Angiv relation mellem testator og arving</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>928</x>
+      <y>1272</y>
+      <w>208</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 6
+--
+Angiv arvingens arvdel</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>856</x>
+      <y>1520</y>
+      <w>328</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 1
+--
+Beregn arvens fordeling baseret på arvdel og testators aktiver</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>928</x>
+      <y>1464</y>
+      <w>224</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Aktivitet: Beregn arvens fordeling
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>920</x>
+      <y>1368</y>
+      <w>208</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 7
+--
+Angiv arvingens arvdel</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>904</x>
+      <y>1616</y>
+      <w>224</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Feature 2
+--
+Vis arvens fordeling for hver arving</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>904</x>
+      <y>304</y>
+      <w>160</w>
+      <h>480</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>180.0;580.0;180.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
