@@ -98,12 +98,14 @@
     private bool isCreating;
     private bool isUpdating;
 
+    //Blazo-livscyklus der køres når komponenten bliver intialiseret
     protected override async Task OnInitializedAsync()
     {
+
         List<Heir> heirList = await heirService.GetAll();
         List<Testator> testatorList = await testatorService.GetAll();
         inheritors = heirList.Concat<Person>(testatorList).ToList();
-        assets = await assetService.GetAll();
+        assets = await assetService.GetAll(); //kalder tjeneste til at hente en liste over aktiver 
         isCreating = true;
     }
 
@@ -141,6 +143,7 @@
         assets = await assetService.GetAll();
     }
 
+    //Navigation til siden
     public void NavigateToInheritanceDistribution()
     {
         navigationManager.NavigateTo("/aktiver");
