@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Arvefordeleren_ClassLibrary.Models
 {
-    // Clone interface, forced upon non-abstract methods to allow Repository to deep-copy our _list and not just return reference types to the same objects of the original list.
+   //Her laves et generisk interface 
     public interface ICloneable<T>
     {
         T Clone();

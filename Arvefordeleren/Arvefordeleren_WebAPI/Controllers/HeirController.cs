@@ -54,7 +54,6 @@ namespace Arvefordeleren_WebAPI.Controllers
                     {
                         result.Add(testator);
                     }
-
                     if (heir.RelationType == RelationType.CHILD)
                     {
                         if (result.Count > 0)
@@ -76,13 +75,14 @@ namespace Arvefordeleren_WebAPI.Controllers
                 }
             }
 
-            var response = await _testatorController.GetAll();
+            var response = await _testatorController.GetAll(); 
             string? jsonString = (response as OkObjectResult)?.Value?.ToString();
 
-            if (!string.IsNullOrEmpty(jsonString))
+            if (!string.IsNullOrEmpty(jsonString)) 
             {
                 List<Testator> testators = JsonSerializer.Deserialize<List<Testator>>(jsonString);
 
+                //Hvis relationen er CHILD tildeles en mor og far her 
                 if (heir.RelationType == RelationType.CHILD)
                 {
                     if (testators.Count > 0)

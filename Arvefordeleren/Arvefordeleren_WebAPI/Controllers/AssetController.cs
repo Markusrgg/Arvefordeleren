@@ -7,18 +7,22 @@ using System.Threading.Tasks;
 
 namespace Arvefordeleren_WebAPI.Controllers
 {
+    //Angiv routing for API-endpoints 
     [Route("api/aktiver")]
     [ApiController]
-    public class AssetController : ControllerBase
+    public class AssetController : ControllerBase 
     {
+        //et privat felt af typen IRepository<Asset> 
         private readonly IRepository<Asset> _repository;
 
+
+        //Konstruktør for AssetController klassen 
         public AssetController(IRepository<Asset> repository)
         {
             _repository = repository;
         }
 
-        // GET: api/asset
+        // GET: api/asset - endpoint til at hente alle aktiver 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -26,7 +30,7 @@ namespace Arvefordeleren_WebAPI.Controllers
             return Ok(assets);
         }
 
-        // GET: api/asset/{id}
+        // GET: api/asset/{id} - hente et enkelt aktiv baseret på id 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -38,7 +42,7 @@ namespace Arvefordeleren_WebAPI.Controllers
             return Ok(asset);
         }
 
-        // POST: api/asset
+        // POST: api/asset - endpoint til at oprette et aktiv 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Asset asset)
         {
@@ -51,7 +55,7 @@ namespace Arvefordeleren_WebAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = asset.Id }, asset);
         }
 
-        // PUT: api/asset/{id}
+        // PUT: api/asset/{id} - endpoint til at opdatere eksisterende aktiv 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] Asset asset)
         {
@@ -70,18 +74,18 @@ namespace Arvefordeleren_WebAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/asset/{id}
+        // DELETE: api/asset/{id} - endpoint til at slette et aktiv baseret på id. 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var asset = await _repository.GetById(id);
             if (asset == null)
             {
-                return NotFound();
+                return NotFound();//HTTP 404 not found 
             }
 
             await _repository.Delete(id);
-            return NoContent();
+            return NoContent();//returnerer en HTTP 204 no content 
         }
     }
 }

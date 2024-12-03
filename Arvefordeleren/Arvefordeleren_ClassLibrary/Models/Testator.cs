@@ -11,6 +11,7 @@ namespace Arvefordeleren_ClassLibrary.Models
     {
         public Testator() 
         {
+            //Lav en unik id-værdi 
             Id = Guid.NewGuid();
         }
 
@@ -37,6 +38,7 @@ namespace Arvefordeleren_ClassLibrary.Models
 
         public Testator Clone()
         {
+            //Opret en ny instans af Testor klassen 
             return new Testator
             {
                 Id = this.Id, 
@@ -48,10 +50,13 @@ namespace Arvefordeleren_ClassLibrary.Models
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 Pids = this.Pids,
+
+                //Kloner listen af Heirs ved at kalde Clone på hver enkel heir og skabe en ny liste 
                 Heirs = this.Heirs.Select(heir => heir.Clone()).ToList() 
             };
         }
 
+        //En liste der indeholder Guids, de unikke værdier 
         public List<Guid> Pids { get; set; } = new List<Guid>(); 
     }
 }

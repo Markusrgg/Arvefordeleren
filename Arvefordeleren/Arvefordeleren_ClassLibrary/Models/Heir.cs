@@ -9,6 +9,7 @@ namespace Arvefordeleren_ClassLibrary.Models
 {
     public class Heir : Person, ICloneable<Heir>
     {
+        //Forældre id så stamtræet kan virke 
         public Guid Mid { get; set; }
         public Guid Fid { get; set; }
 
