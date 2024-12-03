@@ -57,7 +57,7 @@
             </InputSelect>
         </div>
     </div>
-    <button class="btn btn-primary" type="submit">@(isUpdating ? "Rediger" : "Tilføj")</button>
+    <button class="btn btn-primary" type="submit">@(isUpdating ? "Opdater" : "Tilføj")</button>
 </EditForm>
 @if (assets.Count > 0 && !isUpdating)
 {
@@ -95,7 +95,7 @@
     public Asset asset { get; set; } = new Asset();
     private List<Asset> assets { get; set; } = new List<Asset>();
     private List<Person> inheritors { get; set; } = new List<Person>();
-    private bool isCreating = true;
+    private bool isCreating;
     private bool isUpdating;
 
     protected override async Task OnInitializedAsync()
@@ -104,19 +104,12 @@
         List<Testator> testatorList = await testatorService.GetAll();
         inheritors = heirList.Concat<Person>(testatorList).ToList();
         assets = await assetService.GetAll();
+        isCreating = true;
     }
 
     private void SelectHeir(Heir selectedHeir)
     {
         asset.SeparateEstate = $"{selectedHeir.FirstName} {selectedHeir.LastName}";
-    }
-
-    public void CallCreateAsset()
-    {
-        asset = new Asset();
-        isUpdating = false;
-        isCreating = true;
-
     }
 
     public void CallUpdateAsset(Asset asset)
@@ -132,13 +125,14 @@
         {
             await assetService.Update(asset);
             isUpdating = false;
+            isCreating = true;
         }
         else if (isCreating)
         {
             await assetService.Create(asset);
-            assets = await assetService.GetAll();
-            asset = new Asset();
         }
+        assets = await assetService.GetAll();
+        asset = new Asset();
     }
 
     public async Task DeleteAsset(Guid assetId)
