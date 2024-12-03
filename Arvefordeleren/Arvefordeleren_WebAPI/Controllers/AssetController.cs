@@ -20,7 +20,7 @@ namespace Arvefordeleren_WebAPI.Controllers
 
         // GET: api/asset
         [HttpGet]
-        public async Task<IActionResult> GetAllAssets()
+        public async Task<IActionResult> GetAll()
         {
             var assets = await _repository.GetAll();        
             return Ok(assets);
@@ -28,7 +28,7 @@ namespace Arvefordeleren_WebAPI.Controllers
 
         // GET: api/asset/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAssetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var asset = await _repository.GetById(id);
             if (asset == null)
@@ -40,7 +40,7 @@ namespace Arvefordeleren_WebAPI.Controllers
 
         // POST: api/asset
         [HttpPost]
-        public async Task<IActionResult> CreateAsset([FromBody] Asset asset)
+        public async Task<IActionResult> Create([FromBody] Asset asset)
         {
             if (asset == null)
             {
@@ -48,12 +48,12 @@ namespace Arvefordeleren_WebAPI.Controllers
             }
 
             await _repository.Add(asset);
-            return CreatedAtAction(nameof(GetAssetById), new { id = asset.Id }, asset);
+            return CreatedAtAction(nameof(GetById), new { id = asset.Id }, asset);
         }
 
         // PUT: api/asset/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsset(Guid id, [FromBody] Asset asset)
+        public async Task<IActionResult> Update(Guid id, [FromBody] Asset asset)
         {
             if (id != asset.Id)
             {
@@ -72,7 +72,7 @@ namespace Arvefordeleren_WebAPI.Controllers
 
         // DELETE: api/asset/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsset(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var asset = await _repository.GetById(id);
             if (asset == null)
