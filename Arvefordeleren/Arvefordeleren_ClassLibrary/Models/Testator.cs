@@ -23,6 +23,10 @@ namespace Arvefordeleren_ClassLibrary.Models
             Date = date;
         }
 
+        public int Percent { get; set; }
+
+        public InheritanceType InheritanceType { get; set; }
+
         public WillType WillType { get; set; }
 
         public RelationType RelationType { get; set; }
@@ -48,7 +52,9 @@ namespace Arvefordeleren_ClassLibrary.Models
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 Pids = this.Pids,
-                Heirs = this.Heirs.Select(heir => heir.Clone()).ToList() 
+                Heirs = this.Heirs.Select(heir => heir.Clone()).ToList(),
+                InheritanceType = this.InheritanceType,
+                Percent = this.Percent,
             };
         }
 
