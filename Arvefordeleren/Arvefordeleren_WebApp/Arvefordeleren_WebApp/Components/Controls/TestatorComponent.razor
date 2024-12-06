@@ -1,33 +1,38 @@
-﻿@rendermode InteractiveServer //Brugerens handlinger bliver sendt til serveren og behandler dem 
-@inject NavigationManager NavigationManager 
+﻿@rendermode InteractiveServer //Brugerens handlinger bliver sendt til serveren og behandler dem
+@inject NavigationManager NavigationManager
 @using Arvefordeleren_ClassLibrary.Models
 @using Arvefordeleren_ClassLibrary.Services
 
 @inject TestatorService TestatorService
-@inject HeirService HeirService 
+@inject HeirService HeirService
 
+<h3><strong>Personoplysninger</strong></h3>
+<hr style=" width: 22%"/>
+<br
+<p> <strong>VÆLG TESTAMENTYPE: tooltip</strong> </p>
 <div class="row mb-3">
     <div class="col-2">
-        <label class="col-form-label">Testamente type</label>
+        <label class="col-form-label"><strong>Testamentetype:</strong></label>
     </div>
     <div class="col-6">
         <InputRadioGroup @bind-Value="testator.WillType">
             <div class="form-check">
                 <InputRadio id="individualWill" Value="WillType.Individual" class="form-check-input" @onclick="(() => testator.RelationType = RelationType.INDIVIDUAL)" />
-                <label class="form-check-label" for="individualWill">Testamente til mig selv</label>
+                <label class="form-check-label" for="individualWill">Personligt testamente</label>
             </div>
             <div class="form-check">
                 <InputRadio id="jointWill" Value="WillType.Joint" class="form-check-input" @onclick="(() => testator.RelationType = RelationType.MARRIED)" />
-                <label class="form-check-label" for="jointWill">Fælles testamente</label>
+                <label class="form-check-label" for="jointWill">Gensidigt testamente</label>
             </div>
         </InputRadioGroup>
     </div>
 </div>
 
-<!-- Form for Individual Will -->
+<!-- Form for Individual Will --> 
 @if (testator.WillType == WillType.Individual)
-{
-    <h4>Individuelt testamente</h4>
+{                           
+    <h7>Indtast venligst din personoplysninger - </h7>
+    
     <EditForm Model="testator" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -41,16 +46,11 @@
                 <InputText id="lastName" class="form-control" @bind-Value="testator.LastName" />
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="dateOfBirth" class="form-label">Fødselsdag</label>
-                <InputDate id="dateOfBirth" class="form-control" @bind-Value="testator.DateOfBirth" />
-            </div>
-            <div class="col-md-6">
-                <label for="address" class="form-label">Adresse</label>
-                <InputText id="address" class="form-control" @bind-Value="testator.Address" />
-            </div>
+        <div class="col-md-6">
+            <label for="address" class="form-label">Adresse</label>
+            <InputText id="address" class="form-control" @bind-Value="testator.Address" />
         </div>
+        <br />
         <button type="submit" class="btn btn-primary">Videre</button>
     </EditForm>
 }
@@ -59,10 +59,11 @@
 @if (testator.WillType == WillType.Joint)
 {
     <h4>Gensidigt Testamente</h4>
+    <hr style=" width: 22%" />
 
     <div class="row mb-3">
         <div class="col-2">
-            <label class="col-form-label">Civilstatus</label>
+            <label class="col-form-label"><strong>Civilstatus:</strong></label>
         </div>
         <div class="col-6">
             <InputRadioGroup @bind-Value="testator.RelationType" class="d-flex gap-3">
@@ -80,7 +81,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            <h5>Person 1</h5>
+            <h5>Arvelader</h5>
             <EditForm Model="testator" OnValidSubmit="HandleValidSubmit">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
@@ -98,12 +99,6 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label for="dateOfBirth1" class="form-label">Fødselsdag</label>
-                        <InputDate id="dateOfBirth1" class="form-control" @bind-Value="testator.DateOfBirth" />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
                         <label for="address1" class="form-label">Adresse</label>
                         <InputText id="address1" class="form-control" @bind-Value="testator.Address" />
                     </div>
@@ -117,7 +112,7 @@
         </div>
 
         <div class="col-md-6">
-            <h5>Person 2</h5>
+            <h5>Arvelader</h5>
             <EditForm Model="secondTestator" OnValidSubmit="HandleValidSubmit">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
@@ -131,12 +126,6 @@
                     <div class="col-md-12">
                         <label for="lastName2" class="form-label">Efternavn</label>
                         <InputText id="lastName2" class="form-control" @bind-Value="secondTestator.LastName" />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label for="dateOfBirth2" class="form-label">Fødselsdag</label>
-                        <InputDate id="dateOfBirth2" class="form-control" @bind-Value="secondTestator.DateOfBirth" />
                     </div>
                 </div>
                 <div class="row mb-3">
