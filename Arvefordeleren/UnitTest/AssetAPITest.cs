@@ -1,6 +1,6 @@
 ﻿using Arvefordeleren_ClassLibrary.Models;
 using Arvefordeleren_ClassLibrary.Services;
-namespace UnitTest
+namespace UnitTestAPI
 {
     [TestClass]
     public sealed class AssetAPITest
