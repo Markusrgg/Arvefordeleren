@@ -21,11 +21,17 @@ namespace UnitTestAPI
         [TestMethod]
         public void Clone_Asset_ThroughModel()
         {
-            Asset unmodifiedAsset = asset;
-            Asset clone = asset.Clone();
+            Asset copyedReferenceToAsset = asset;
+            Asset cloneOfAsset = asset.Clone();
             asset.Name = "Simon";
-            Assert.AreEqual(asset.Name, unmodifiedAsset.Name);
-            Assert.AreNotEqual(clone.Name, asset.Name);
+
+            // Since unmodifiedAsset got the reference to the objekt from asset,
+            // they should both point to the same objekt and be equel, even when only one of them is modified.
+            Assert.AreEqual(asset.Name, copyedReferenceToAsset.Name);
+
+            // The clone should be seperate from the original asset,
+            // as the objekt itself was cloned, instead of the path being passed along.
+            Assert.AreNotEqual(cloneOfAsset.Name, asset.Name);
         }
 
           
