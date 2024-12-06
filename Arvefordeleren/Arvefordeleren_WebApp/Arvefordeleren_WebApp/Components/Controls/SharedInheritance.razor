@@ -1,5 +1,6 @@
 ﻿@rendermode InteractiveServer
 
+
 @inject TestatorService TestatorService
 @inject HeirService HeirService
 
@@ -52,7 +53,7 @@
 
         foreach (var item in heirs)
         {
-            testator.RelationsPercent.Add(item.Clone());
+            //testator.RelationsPercent.Add(item.Clone());
             testator1.Add(item);
         }
 
@@ -60,7 +61,7 @@
         // secondTestator.RelationsPercent.Add(testator.Clone());
         foreach (var item in heirs)
         {
-            secondTestator.RelationsPercent.Add(item.Clone());
+            //secondTestator.RelationsPercent.Add(item.Clone());
             testator2.Add(item);
         }
     }
