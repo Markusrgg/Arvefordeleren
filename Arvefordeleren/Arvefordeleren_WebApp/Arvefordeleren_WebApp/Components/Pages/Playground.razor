@@ -1,0 +1,56 @@
+﻿@page "/playground"
+@layout PlaygroundLayout
+
+<PageTitle>Playground</PageTitle>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach((tooltipTriggerEl) => {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+
+<div class="d-flex flex-row playerground-container">
+    <!-- Sidebar -->
+    <div class="sidebar bg-light p-3">
+        <div class="d-flex justify-content-end">
+            <BlazorToolTip TooltipText="fytdytytyj" />
+        </div>
+        <h5 class="text-center" style="font-size: 25px;">Arvinger</h5>
+        <br>
+        <div class="d-flex flex-column gap-3">
+            <HeirListItem Name="Simon Hansen" Relation="Barn"></HeirListItem>
+            <HeirListItem Name="Simon Hansen" Relation="Barn"></HeirListItem>
+            <HeirListItem Name="Simon Hansen" Relation="Barn"></HeirListItem>
+            <HeirListItem Name="Simon Hansen" Relation="Barn"></HeirListItem>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content flex-grow-1 p-3">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+
+                </div>
+                <div class="col">
+                    <div class="w-75 mx-auto">
+                        <div class="d-flex justify-content-end">
+                            <BlazorToolTip />
+                        </div>
+                        <BlazorChart @rendermode=InteractiveServer ChartType="ChartType.Pie"></BlazorChart>
+                    </div>
+                    <div class="summary my-5">
+                        <h2>Opsummering</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    
+}

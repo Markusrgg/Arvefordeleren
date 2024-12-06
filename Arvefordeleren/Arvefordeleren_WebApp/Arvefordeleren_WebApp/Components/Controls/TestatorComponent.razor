@@ -162,24 +162,37 @@
     {
         if (firstRender)
         {
-            await Setup();
+            await SetupTestators();
             StateHasChanged();
         }
     }
 
-    private async Task Setup()
+    private async Task SetupTestators()
     {
-        testators = await TestatorService.GetAll();
+        var allTestators = await TestatorService.GetAll();
 
-        if (testators.Any())
+        // Hvis ingen testators, start en ny
+        if (!allTestators.Any())
         {
-            testator = testators[0];
-            if (testators.Count > 1)
-            {
-                secondTestator = testators[1];
-            }
+            testator = new Testator { WillType = WillType.Individual };
+            secondTestator = new Testator { WillType = WillType.Joint };
+            return;
+        }
+
+        // Brug eksisterende testators
+        testator = allTestators.FirstOrDefault() ?? new Testator { WillType = WillType.Individual };
+
+        // Tjek om der er en anden testator for fælles testamente
+        if (allTestators.Count > 1)
+        {
+            secondTestator = allTestators[1];
+        }
+        else
+        {
+            secondTestator = new Testator { WillType = WillType.Joint };
         }
     }
+
 
     private Testator testator = new Testator
         {

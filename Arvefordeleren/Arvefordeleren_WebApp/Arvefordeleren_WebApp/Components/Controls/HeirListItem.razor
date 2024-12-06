@@ -1,0 +1,15 @@
+﻿<div class="d-flex gap-3 px-1 align-items-center">
+    <input type="checkbox" checked="true" class="form-check-input">
+    <div class="d-flex flex-column">
+        <label for="filter1">@Name</label>
+        <label style="font-size: 13px; color: slategrey;">@Relation</label>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Name {get; set; } = "Default name";
+
+    [Parameter]
+    public string Relation { get; set; } = "Barn";
+}

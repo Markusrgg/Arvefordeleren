@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_ClassLibrary
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_WebApp", "Arvefordeleren_WebApp\Arvefordeleren_WebApp\Arvefordeleren_WebApp.csproj", "{31DA8A78-A288-4A37-BD59-76EA568CC0D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arvefordeleren_WebAPI", "Arvefordeleren_WebAPI\Arvefordeleren_WebAPI.csproj", "{E3152708-EA02-4812-80C0-2C3193DBB183}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arvefordeleren_WebAPI", "Arvefordeleren_WebAPI\Arvefordeleren_WebAPI.csproj", "{E3152708-EA02-4812-80C0-2C3193DBB183}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorChart", "BlazorChart\BlazorChart.csproj", "{F4C28BCE-CF75-4593-A989-9A877D8B3BB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorChart", "BlazorChart\BlazorChart.csproj", "{F4C28BCE-CF75-4593-A989-9A877D8B3BB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestAPI", "UnitTest\UnitTestAPI.csproj", "{552D84BB-11D4-4AB2-AD14-314ADCA7C62D}"
 EndProject
