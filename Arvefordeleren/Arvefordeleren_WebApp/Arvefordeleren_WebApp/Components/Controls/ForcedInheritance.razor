@@ -1,0 +1,83 @@
+﻿@rendermode InteractiveServer
+
+@inject TestatorService TestatorService
+@inject HeirService HeirService
+
+<h4 class="fw-bold">Tvangsarv (25%)</h4>
+<hr />
+
+<div class="row mb-3">
+    @if (testator != null)
+    {
+        <div class="col-2">
+            <label class="col-form-label">@testator.FullName</label>
+        </div>
+        <div class="col-6">
+            <InputRadioGroup @bind-Value="testator.InheritanceType">
+                <div class="form-check">
+                    <InputRadio id="split" Value="InheritanceType.SPLIT" class="form-check-input" />
+                    <label class="form-check-label" for="split">@InheritanceType.SPLIT.GetDisplayName()</label>
+                </div>
+                <div class="form-check">
+                    <InputRadio id="fifty" Value="InheritanceType.FIFTY" class="form-check-input" />
+                    <label class="form-check-label" for="fifty">@InheritanceType.FIFTY.GetDisplayName()</label>
+                </div>
+            </InputRadioGroup>
+        </div>
+    }
+</div>
+
+<div class="row mb-3">
+    @if (secondTestator != null)
+    {
+        <div class="col-2">
+            <label class="col-form-label">@secondTestator.FullName</label>
+        </div>
+        <div class="col-6">
+            <InputRadioGroup @bind-Value="secondTestator.InheritanceType">
+                <div class="form-check">
+                    <InputRadio id="split2" Value="InheritanceType.SPLIT" class="form-check-input" />
+                    <label class="form-check-label" for="split2">@InheritanceType.SPLIT.GetDisplayName()</label>
+                </div>
+                <div class="form-check">
+                    <InputRadio id="fifty2" Value="InheritanceType.FIFTY" class="form-check-input" />
+                    <label class="form-check-label" for="fifty2">@InheritanceType.FIFTY.GetDisplayName()</label>
+                </div>
+            </InputRadioGroup>
+        </div>
+    }
+</div>
+
+@code {
+    List<Testator> testators = new List<Testator>();
+
+    private Testator testator = new Testator();
+    private Testator secondTestator = new Testator();
+
+    string Test = "";
+    string Test2 = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Setup();
+            StateHasChanged();
+        }
+    }
+
+    private async Task Setup()
+    {
+        testators = await TestatorService.GetAll();
+
+        if (testators.Count > 0)
+        {
+            testator = testators[0];
+
+            if (testators.Count > 1)
+            {
+                secondTestator = testators[1];
+            }
+        }
+    }
+}

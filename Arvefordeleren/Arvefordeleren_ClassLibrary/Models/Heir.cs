@@ -13,6 +13,8 @@ namespace Arvefordeleren_ClassLibrary.Models
         public Guid Mid { get; set; }
         public Guid Fid { get; set; }
 
+        public int Percent { get; set; } = 0;
+
         public RelationType RelationType { get; set; }
 
         public Heir(){}
@@ -42,6 +44,7 @@ namespace Arvefordeleren_ClassLibrary.Models
                 RelationType = this.RelationType,
                 Mid = this.Mid,
                 Fid = this.Fid,
+                Percent = this.Percent
             };
         }
     }
