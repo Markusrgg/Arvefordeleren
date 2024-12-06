@@ -1,10 +1,12 @@
-﻿@inject IJSRuntime JSRuntime
-@inject FamilyTreeService FamilyTreeService
+﻿@inject IJSRuntime JSRuntime //@*Injicerer Javascript runtime-objekt så vi kan kalde Javascript-funktioner*@
+
+@inject FamilyTreeService FamilyTreeService //@* injecerer tjeneste som leverer funktionalitet til familie-træet *@
 
 @using System.Text.Json;
 @using Arvefordeleren_ClassLibrary.Services
 
 
+@*tom HTML-container hvor træet bliver intialiseret*@
 <div id="tree" />
 <script>
       window.initializeFamilyTree = function (familyData) {
@@ -61,14 +63,14 @@
                   },
               },
               nodes: familyData
-          });
+          });//konfigurerer familie-træet og binder datafelter 
 
           function preview() {
               FamilyTree.pdfPrevUI.show(family, {
                   format: 'A4',
                   padding: 150,
                   landscape: true
-              });
+              });//Funktion til at forhåndsvise en PDF af familie-træet
 
               function importCSVHandler() {
                   family.importCSV();
@@ -99,18 +101,20 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         var format = await FamilyTreeService.Format();
+        //henter familie-træ data fra FamilyTreeService
 
         await InitializeFamilyTree(format); // Always refresh tree after rendering
     }
 
     private async Task InitializeFamilyTree(List<Dictionary<string, object>> format)
     {
+        //Indlæser Javascript bibilioteket 
         await JSRuntime.InvokeVoidAsync("loadScript", "/js/familytree.js");
         await JSRuntime.InvokeVoidAsync("initializeFamilyTree", format);
     }
 
     public void Refresh()
     {
-        StateHasChanged(); // Re-render this component
+        StateHasChanged(); // opdaterer brugergrænsefladen og re-render komponenten 
     }
 }

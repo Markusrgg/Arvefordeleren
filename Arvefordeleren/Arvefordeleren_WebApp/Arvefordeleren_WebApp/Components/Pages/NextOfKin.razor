@@ -51,6 +51,7 @@
         </div>
     </div>
 
+    @*dynamaiske felter baseret på relationstype*@
     <div class="row mb-3">
         <div class="col-2">
             <label class="col-form-label">Relation</label>
@@ -123,7 +124,7 @@
             </div>
         </div>
     }
-
+    @*Knapper til handling*@
     <div class="mb-3">
         <div class="col-2">
             <button type="submit" class="btn btn-success">@(isEditing == false ? "Tilføj arving" : "Opdater arving")</button>
@@ -136,6 +137,7 @@
     </div>
 </EditForm>
 
+@*Liste over eksisterende arvinger*@
 <div class="container mt-5">
     <h4>Arvinger</h4>
 
@@ -172,7 +174,7 @@
 </div>
 
 <br />
-
+@*sektion til familietræet*@
 <div class="container mt-5">
     <h4>Familie træ</h4>
     <Family @ref="family" />
@@ -183,11 +185,11 @@
     private Family family;
 
     private Heir heir = new Heir { RelationType = RelationType.CHILD };
-    private List<Heir> heirs = new List<Heir>();
+    private List<Heir> heirs = new List<Heir>();//Liste over eksisterende arvinger
 
-    private List<Testator> testators = new List<Testator>();
+    private List<Testator> testators = new List<Testator>();//Liste over testatorer
 
-    private bool isEditing = false;
+    private bool isEditing = false; //Indikator for om en arving redigeres
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -200,17 +202,18 @@
 
     private async Task Setup()
     {
-        testators = await TestatorService.GetAll();
-        heirs = await HeirService.GetAll();
+        testators = await TestatorService.GetAll();//Hent alle testatorer
+        heirs = await HeirService.GetAll();//Hent alle arvinger 
     }
 
     private async Task HandleValidSubmit()
     {
+        //Tjek om fornavn og efternavn er udfyldt 
         if (!string.IsNullOrEmpty(heir.FirstName) && !string.IsNullOrEmpty(heir.LastName))
         {
-            if (!isEditing)
+            if (!isEditing) 
             {
-                heir.Id = Guid.NewGuid();
+                heir.Id = Guid.NewGuid();//Generer et unikt id til en ny arving 
 
                 heirs.Add(new Heir
                     {
@@ -222,7 +225,7 @@
                         RelationType = heir.RelationType,
                         Id = heir.Id
                     });
-
+                   
                 await HeirService.Create(heir);
             }
             else

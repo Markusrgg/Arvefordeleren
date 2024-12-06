@@ -2,8 +2,10 @@
 @rendermode InteractiveServer
 @page "/chart"
 
-<div class="w-50 h-50 mx-auto">
+<div class="w-50 h-50 mx-auto"> 
     <h1 class="text-center">Title</h1>
+
+    @*Blazor-komponent der skal generere diagrammet *@
     <BlazorChart ChartType="@ChartType.Pie" ChartData="@Test" />
 </div>
 
@@ -11,6 +13,7 @@
     <BlazorChart ChartType="@ChartType.Bar" ChartData="@Test" ChartLabel="Data" LabelFontSize="0" />
 </div>
 @code {
+    //string er typen for nøglerne object er typen for værdierne 
     private Dictionary<string, object> Test = new()
     {
         {"Markus", 20},
