@@ -5,7 +5,7 @@
 
 <div class="container">
     <div class="row flex-nowrap overflow-auto">
-            @foreach (Person person in Persons)
+            @foreach (Person person in Testator.Persons)
             {
                 <div class="col-auto">
                     <div class="card" style="width: 15rem;">
@@ -46,14 +46,11 @@
 
 @code {
     [Parameter]
-    public List<Person> Persons { get; set; }
-
-    [Parameter]
     public Testator Testator { get; set; }
 
     private int MaxSliderValue = 100;
 
-    private int TotalPercent => Persons.OfType<Heir>().Sum(h => h.Percent) + Persons.OfType<Testator>().Sum(t => t.Percent);
+    private int TotalPercent => Testator.Persons.OfType<Heir>().Sum(h => h.Percent) + Testator.Persons.OfType<Testator>().Sum(t => t.Percent);
 
     private void UpdateSliderValue(Person person, object value)
     {
@@ -91,17 +88,7 @@
         }
         else
         {
-            @foreach (Person person in Persons)
-            {
-                if (person is Heir heir)
-                {
-                    await HeirService.Update(heir);
-                }
-                if (person is Testator testator)
-                {
-                    await TestatorService.Update(testator);
-                }
-            }
+            await TestatorService.Update(Testator);
         }
     }
 

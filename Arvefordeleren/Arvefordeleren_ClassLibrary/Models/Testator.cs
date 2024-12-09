@@ -40,12 +40,14 @@ namespace Arvefordeleren_ClassLibrary.Models
 
         public List<Heir> Heirs { get; set; } = new List<Heir>();
 
+        public List<Person> Persons { get; set; } = new List<Person>();
+
         public Testator Clone()
         {
             //Opret en ny instans af Testor klassen 
             return new Testator
             {
-                Id = this.Id, 
+                Id = this.Id,
                 WillType = this.WillType,
                 RelationType = this.RelationType,
                 ForcedInheritance = this.ForcedInheritance,
@@ -57,6 +59,7 @@ namespace Arvefordeleren_ClassLibrary.Models
                 Heirs = this.Heirs.Select(heir => heir.Clone()).ToList(),
                 InheritanceType = this.InheritanceType,
                 Percent = this.Percent,
+                Persons = this.Persons
             };
         }
 

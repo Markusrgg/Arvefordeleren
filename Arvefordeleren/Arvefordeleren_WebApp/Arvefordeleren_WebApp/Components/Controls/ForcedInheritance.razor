@@ -48,6 +48,9 @@
     }
 </div>
 
+<button type="button" class="btn btn-success" @onclick="Save">Gem</button>
+
+
 @code {
     List<Testator> testators = new List<Testator>();
 
@@ -79,5 +82,11 @@
                 secondTestator = testators[1];
             }
         }
+    }
+
+    private async Task Save()
+    {
+        await TestatorService.Update(testator);
+        await TestatorService.Update(secondTestator);
     }
 }

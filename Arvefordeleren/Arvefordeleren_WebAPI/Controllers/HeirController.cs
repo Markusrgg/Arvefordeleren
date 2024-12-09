@@ -1,6 +1,7 @@
 ﻿using Arvefordeleren_ClassLibrary.Models;
 using Arvefordeleren_WebAPI.Persistance;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Text.Json;
 
 namespace Arvefordeleren_WebAPI.Controllers
@@ -30,74 +31,70 @@ namespace Arvefordeleren_WebAPI.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var heirs = await _repository.GetById(id);
-            return Ok(heirs);
+            var serialized = JsonConvert.SerializeObject(heirs, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto, // Include type information in JSON
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Ignore circular references
+            });
+            return Ok(serialized);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Heir heir)
         {
+            // Step 1: Add the heir to the repository
             await _repository.Add(heir);
 
-            // Call GetAll() to retrieve the data
+            // Step 2: Call GetAll() to retrieve the list of testators
             var testatorResult = await _testatorController.GetAll();
 
             if (testatorResult is OkObjectResult okResult)
             {
-                // Extract the Value (assuming it's already a list of Testators)
-                var testators = okResult.Value as IEnumerable<Testator>;
-
-                if (testators != null)
+                // Deserialize the JSON string into a list of Testators
+                var jsonString = okResult.Value?.ToString();
+                if (!string.IsNullOrEmpty(jsonString))
                 {
-                    // Use the list of Testators as needed
-                    List<Testator> result = new List<Testator>();
-                    foreach (var testator in testators)
+                    var testators = JsonConvert.DeserializeObject<List<Testator>>(jsonString, new JsonSerializerSettings
                     {
-                        result.Add(testator);
-                    }
-                    if (heir.RelationType == RelationType.CHILD)
-                    {
-                        if (result.Count > 0)
-                        {
-                            heir.Fid = result[0].Id;
+                        TypeNameHandling = TypeNameHandling.Auto, // Handle inheritance
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Avoid circular references
+                    });
 
-                            if (result.Count > 1)
+                    if (testators != null)
+                    {
+                        // Step 3: Assign Fid and Mid based on relation type
+                        if (heir.RelationType == RelationType.CHILD)
+                        {
+                            if (testators.Count > 0)
                             {
-                                heir.Mid = result[1].Id;
+                                heir.Fid = testators[0].Id;
+
+                                if (testators.Count > 1)
+                                {
+                                    heir.Mid = testators[1].Id;
+                                }
                             }
                         }
                     }
-
-                    //NEXT CASE
+                    else
+                    {
+                        return BadRequest("Failed to deserialize testators.");
+                    }
                 }
                 else
                 {
-                    return BadRequest("Failed to deserialize testators.");
+                    return BadRequest("No testators found in the response.");
                 }
             }
-
-            var response = await _testatorController.GetAll(); 
-            string? jsonString = (response as OkObjectResult)?.Value?.ToString();
-
-            if (!string.IsNullOrEmpty(jsonString)) 
+            else
             {
-                List<Testator> testators = JsonSerializer.Deserialize<List<Testator>>(jsonString);
-
-                //Hvis relationen er CHILD tildeles en mor og far her 
-                if (heir.RelationType == RelationType.CHILD)
-                {
-                    if (testators.Count > 0)
-                    {
-                        heir.Fid = testators[0].Id;
-
-                        if (testators.Count > 1)
-                        {
-                            heir.Mid = testators[1].Id;
-                        }
-                    }
-                }
+                return BadRequest("Failed to retrieve testators.");
             }
+
+            // Step 4: Return success response
             return Ok();
         }
+
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] Heir heir)

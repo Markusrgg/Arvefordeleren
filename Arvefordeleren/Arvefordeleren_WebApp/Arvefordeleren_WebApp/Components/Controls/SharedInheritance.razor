@@ -8,18 +8,15 @@
 
 <hr />
 <p>Fordeling for <span class="fw-bold">@testator.FullName</span>:</p>
-<InheritanceDistributer Persons="testator1" Testator="testator"/>
+<InheritanceDistributer Testator="testator" />
 
 <hr />
 <p>Fordeling for <span class="fw-bold">@secondTestator.FullName</span>:</p>
-<InheritanceDistributer Persons="testator2" Testator="secondTestator"/>
+<InheritanceDistributer Testator="secondTestator" />
 
 @code {
     List<Testator> testators = new List<Testator>();
     List<Heir> heirs = new List<Heir>();
-
-    List<Person> testator1 = new List<Person>();
-    List<Person> testator2 = new List<Person>();
 
     private Testator testator = new Testator();
     private Testator secondTestator = new Testator();
@@ -46,23 +43,6 @@
             {
                 secondTestator = testators[1];
             }
-        }
-
-        testator1.Add(secondTestator);
-        // testator.RelationsPercent.Add(secondTestator.Clone());
-
-        foreach (var item in heirs)
-        {
-            //testator.RelationsPercent.Add(item.Clone());
-            testator1.Add(item);
-        }
-
-        testator2.Add(testator);
-        // secondTestator.RelationsPercent.Add(testator.Clone());
-        foreach (var item in heirs)
-        {
-            //secondTestator.RelationsPercent.Add(item.Clone());
-            testator2.Add(item);
         }
     }
 }

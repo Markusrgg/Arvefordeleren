@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using Arvefordeleren_ClassLibrary.Models;
+using Newtonsoft.Json;
 
 namespace Arvefordeleren_ClassLibrary.Services;
 
@@ -18,7 +19,14 @@ public class TestatorService
 
     public async Task<List<Testator>> GetAll()
     {
-        return await client.GetFromJsonAsync<List<Testator>>("testator");
+        var serialized = await client.GetStringAsync("testator");
+
+        var testators = JsonConvert.DeserializeObject<List<Testator>>(serialized, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        });
+
+        return testators;
     }
 
     public async Task<Testator> GetById(Guid id)
@@ -33,7 +41,12 @@ public class TestatorService
 
     public async Task Update(Testator testator)
     {
-        await client.PutAsJsonAsync("testator", testator);
+        var serialized = JsonConvert.SerializeObject(testator, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto, // Include type information in JSON
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Ignore circular references
+        });
+        await client.PutAsJsonAsync("testator", serialized);
     }
 
     public async Task Delete(Guid id)

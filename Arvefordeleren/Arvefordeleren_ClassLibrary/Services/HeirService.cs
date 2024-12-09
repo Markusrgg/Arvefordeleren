@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using Arvefordeleren_ClassLibrary.Models;
+using Newtonsoft.Json;
 
 namespace Arvefordeleren_ClassLibrary.Services;
 
@@ -32,7 +33,12 @@ public class HeirService
 
     public async Task Update(Heir heir)
     {
-        await client.PutAsJsonAsync("heir", heir);
+        var serialized = JsonConvert.SerializeObject(heir, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto, // Include type information in JSON
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Ignore circular references
+        });
+        await client.PutAsJsonAsync("heir", serialized);
     }
 
     public async Task Delete(Guid id)

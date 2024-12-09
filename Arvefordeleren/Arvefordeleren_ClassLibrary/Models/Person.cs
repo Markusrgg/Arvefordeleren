@@ -20,6 +20,11 @@ namespace Arvefordeleren_ClassLibrary.Models
         public DateTime DateOfBirth { get; set; }
 
         public string? Address { get; set; }
+
+        public Person ()
+        {
+
+        }
     }
 
 
