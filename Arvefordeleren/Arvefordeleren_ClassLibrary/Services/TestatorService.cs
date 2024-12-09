@@ -3,8 +3,6 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using Arvefordeleren_ClassLibrary.Models;
-using Newtonsoft.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Arvefordeleren_ClassLibrary.Services;
 
