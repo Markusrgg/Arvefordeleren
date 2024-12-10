@@ -172,8 +172,6 @@
     {
         if (testator.WillType == WillType.Individual)
         {
-            Console.WriteLine($"Individuel: {testator.FirstName} {testator.LastName} {testator.DateOfBirth} {testator.Address}");
-
             Testator temp = testators.FirstOrDefault(x => x.Id == testator.Id);
 
             testator.RelationType = RelationType.INDIVIDUAL;
@@ -222,21 +220,8 @@
                 secondTestator.Pids.Add(testator.Id);
                 secondTestator.RelationType = testator.RelationType;
                 await TestatorService.Create(secondTestator);
-
-                // List<Testator> testators = await TestatorService.GetAll();
-                // List<Heir> heirs = await HeirService.GetAll();
-                // foreach (var heir in heirs)
-                // {
-                //     if (heir.Fid != Guid.Empty)
-                //     {
-                //         heir.Fid = testators[1].Id;
-
-                //         await HeirService.Update(heir);
-                //     }
-                // }
             }
             NavigationManager.NavigateTo("/arvinger");
-
         }
     }
 }
