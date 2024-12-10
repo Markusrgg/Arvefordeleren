@@ -17,8 +17,7 @@
 
                                 <br />
                                 <p class="card-text" style="font-size: 14px;">Vælg procent:</p>
-                                <input type="range" min="0" max="100" value="@t.Percent"
-                                       @oninput="(e) => UpdateSliderValue(t, e.Value)" class="form-range" />
+                                <input type="range" min="0" max="100" value="@t.Percent" @oninput="(e) => UpdateSliderValue(t, e.Value)" class="form-range" />
                                 <p>Fordelt procent: <strong>@t.Percent%</strong></p>
                             }
                             @if (person is Heir h)
@@ -28,8 +27,7 @@
 
                                 <br />
                                 <p class="card-text" style="font-size: 14px;">Vælg procent:</p>
-                                <input type="range" min="0" max="100" value="@h.Percent"
-                                       @oninput="(e) => UpdateSliderValue(h, e.Value)" class="form-range" />
+                                <input type="range" min="0" max="100" value="@h.Percent" @oninput="(e) => UpdateSliderValue(h, e.Value)" class="form-range" />
                                 <p>Fordelt procent: <strong>@h.Percent%</strong></p>
                             }
                         </div>
@@ -89,6 +87,7 @@
         else
         {
             await TestatorService.Update(Testator);
+            StateHasChanged();
         }
     }
 

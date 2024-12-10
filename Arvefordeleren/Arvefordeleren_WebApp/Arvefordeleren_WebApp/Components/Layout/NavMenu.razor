@@ -1,4 +1,10 @@
-﻿<div class="sidebar">
+﻿@rendermode InteractiveServer
+
+@inject TestatorService TestatorService
+@inject HeirService HeirService
+@inject NavigationManager NavigationManager
+
+<div class="sidebar">
     <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
         <nav class="flex-column">
             <div class="nav-item px-3">
@@ -30,7 +36,26 @@
                     Bekræft oplysninger
                 </NavLink>
             </div>
+
+            <div class="nav-item px-3">
+                <button class="btn btn-warning btn-outline-danger" @onclick="Restart">Start forfra</button>
+            </div>
         </nav>
     </div>
 </div>
 
+@code {
+    private async void Restart()
+    {
+        var testators = await TestatorService.GetAll();
+        var heirs = await HeirService.GetAll();
+
+        var deleteTasks = testators.Select(x => TestatorService.Delete(x.Id));
+        await Task.WhenAll(deleteTasks);
+
+        deleteTasks = heirs.Select(x => TestatorService.Delete(x.Id));
+        await Task.WhenAll(deleteTasks);
+
+        NavigationManager.NavigateTo("/test");
+    }
+}
