@@ -1,4 +1,6 @@
-﻿@page "/arvefordeling"
+﻿@rendermode InteractiveServer
+
+@page "/arvefordeling"
 
 @layout InformationLayout
 
@@ -29,5 +31,6 @@ else
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         testators = await TestatorService.GetAll();
+        StateHasChanged();
     }
 }
