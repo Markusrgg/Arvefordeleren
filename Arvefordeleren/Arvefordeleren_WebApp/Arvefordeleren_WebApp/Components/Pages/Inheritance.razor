@@ -1,18 +1,33 @@
 ﻿@page "/arvefordeling"
 
 @layout InformationLayout
-<div style="width: 35%;">
-    <h3 class="fw-bold">Fordeling af fri- og tvangsarvs</h3>
-    <hr class="mt-0"/>
-</div>
 
-<br />
-<ForcedInheritance />
+@inject TestatorService TestatorService
 
-<hr />
-<br />
-<SharedInheritance />
+@if (!testators.Any())
+{
+    <h3>Udfyld personoplysninger først!</h3>
+}
+else
+{
+    <div style="width: 35%;">
+        <h3 class="fw-bold">Fordeling af fri- og tvangsarvs</h3>
+        <hr class="mt-0" />
+    </div>
+
+    <br />
+    <ForcedInheritance />
+
+    <hr />
+    <br />
+    <SharedInheritance />
+}
 
 @code {
+    List<Testator> testators = new List<Testator>();
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        testators = await TestatorService.GetAll();
+    }
 }

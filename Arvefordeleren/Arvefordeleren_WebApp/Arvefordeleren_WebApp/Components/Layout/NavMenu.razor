@@ -8,7 +8,7 @@
     <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
         <nav class="flex-column">
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="test">
+                <NavLink class="nav-link" href="testatorer">
                     Personoplysninger
                 </NavLink>
             </div>
@@ -45,6 +45,13 @@
 </div>
 
 @code {
+    List<Testator> testators = new List<Testator>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        testators = await TestatorService.GetAll();
+    }
+
     private async void Restart()
     {
         var testators = await TestatorService.GetAll();

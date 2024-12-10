@@ -3,166 +3,172 @@
 
 @layout InformationLayout
 
-
 @inject TestatorService TestatorService
 @inject HeirService HeirService
 @inject NavigationManager NavigationManager
 
-<h3>Indtast arvingens oplysninger</h3>
+@if (!testators.Any())
+{
+    <h3>Udfyld personoplysninger fra forrige side først!</h3>
+}
+else
+{
+    <h3>Indtast arvingens oplysninger</h3>
 
-<EditForm Model="heir" OnValidSubmit="HandleValidSubmit" FormName="heirForm">
-    <DataAnnotationsValidator />
+    <EditForm Model="heir" OnValidSubmit="HandleValidSubmit" FormName="heirForm">
+        <DataAnnotationsValidator />
 
-    <div class="row mb-3">
-        <div class="col-2">
-            <label class="col-form-label">Fornavn</label>
-        </div>
-        <div class="col-6">
-            <InputText @bind-Value="heir.FirstName" class="form-control" />
-        </div>
-        <div class="col">
-            <ValidationMessage For="() => heir.FirstName" />
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-2">
-            <label class="col-form-label">Efternavn</label>
-        </div>
-        <div class="col-6">
-            <InputText @bind-Value="heir.LastName" class="form-control" />
-        </div>
-        <div class="col">
-            <ValidationMessage For="() => heir.LastName" />
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-2">
-            <label class="col-form-label">Relation</label>
-        </div>
-        <div class="col-6">
-            <InputSelect @bind-Value="heir.RelationType" class="form-control">
-                @foreach (RelationType relation in Enum.GetValues(typeof(RelationType)))
-                {
-                    if (relation != RelationType.MARRIED && relation != RelationType.INDIVIDUAL)
-                    {
-                        <option value="@relation">@relation.GetDisplayName()</option>
-                    }
-                }
-            </InputSelect>
-        </div>
-    </div>
-    @if (heir.RelationType == RelationType.CHILD_SEPERATE)
-    {
         <div class="row mb-3">
             <div class="col-2">
-                <label class="col-form-label">Forældre</label>
+                <label class="col-form-label">Fornavn</label>
             </div>
             <div class="col-6">
-                <InputSelect @bind-Value="heir.Mid" class="form-control">
-                    @foreach (Testator testator in testators)
-                    {
-                        <option value="@testator.Id">@heir.RelationType.GetDisplayName(): @testator.FullName</option>
-                    }
-                </InputSelect>
+                <InputText @bind-Value="heir.FirstName" class="form-control" />
+            </div>
+            <div class="col">
+                <ValidationMessage For="() => heir.FirstName" />
             </div>
         </div>
-    }
 
-    @if (heir.RelationType == RelationType.GRAND_CHILD)
-    {
         <div class="row mb-3">
             <div class="col-2">
-                <label class="col-form-label">Forældre</label>
+                <label class="col-form-label">Efternavn</label>
             </div>
             <div class="col-6">
-                <InputSelect @bind-Value="heir.Mid" class="form-control">
-                    @foreach (var heir in heirs)
+                <InputText @bind-Value="heir.LastName" class="form-control" />
+            </div>
+            <div class="col">
+                <ValidationMessage For="() => heir.LastName" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Relation</label>
+            </div>
+            <div class="col-6">
+                <InputSelect @bind-Value="heir.RelationType" class="form-control">
+                    @foreach (RelationType relation in Enum.GetValues(typeof(RelationType)))
                     {
-                        if (heir.RelationType == RelationType.CHILD || heir.RelationType == RelationType.CHILD_SEPERATE)
+                        if (relation != RelationType.MARRIED && relation != RelationType.INDIVIDUAL)
                         {
-                            <option value="@heir.Id">@heir.RelationType.GetDisplayName(): @heir.FullName</option>
+                            <option value="@relation">@relation.GetDisplayName()</option>
                         }
                     }
                 </InputSelect>
             </div>
         </div>
-    }
-    @if (heir.RelationType == RelationType.SIBLING)
-    {
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Søskende</label>
+        @if (heir.RelationType == RelationType.CHILD_SEPERATE)
+        {
+            <div class="row mb-3">
+                <div class="col-2">
+                    <label class="col-form-label">Forældre</label>
+                </div>
+                <div class="col-6">
+                    <InputSelect @bind-Value="heir.Mid" class="form-control">
+                        @foreach (Testator testator in testators)
+                        {
+                            <option value="@testator.Id">@heir.RelationType.GetDisplayName(): @testator.FullName</option>
+                        }
+                    </InputSelect>
+                </div>
             </div>
-            <div class="col-6">
-                <InputSelect @bind-Value="heir.Mid" class="form-control">
-                    @foreach (Testator testator in testators)
-                    {
-                        <option value="@testator.Id">@heir.RelationType.GetDisplayName(): @testator.FullName</option>
-                    }
+        }
+
+        @if (heir.RelationType == RelationType.GRAND_CHILD)
+        {
+            <div class="row mb-3">
+                <div class="col-2">
+                    <label class="col-form-label">Forældre</label>
+                </div>
+                <div class="col-6">
+                    <InputSelect @bind-Value="heir.Mid" class="form-control">
+                        @foreach (var heir in heirs)
+                        {
+                            if (heir.RelationType == RelationType.CHILD || heir.RelationType == RelationType.CHILD_SEPERATE)
+                            {
+                                <option value="@heir.Id">@heir.RelationType.GetDisplayName(): @heir.FullName</option>
+                            }
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        }
+        @if (heir.RelationType == RelationType.SIBLING)
+        {
+            <div class="row mb-3">
+                <div class="col-2">
+                    <label class="col-form-label">Søskende</label>
+                </div>
+                <div class="col-6">
+                    <InputSelect @bind-Value="heir.Mid" class="form-control">
+                        @foreach (Testator testator in testators)
+                        {
+                            <option value="@testator.Id">@heir.RelationType.GetDisplayName(): @testator.FullName</option>
+                        }
+                        @foreach (var heir in heirs)
+                        {
+                            <option value="@heir.Id">@heir.RelationType.GetDisplayName(): @heir.FullName</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        }
+
+        <div class="mb-3">
+            <div class="col-2">
+                <button type="submit" class="btn btn-success">@(isEditing == false ? "Tilføj arving" : "Opdater arving")</button>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="col-2">
+                <button type="button" class="btn btn-primary" @onclick="NavigateToAssets">Videre til aktiver</button>
+            </div>
+        </div>
+    </EditForm>
+
+    <div class="container mt-5">
+        <h4>Arvinger</h4>
+
+        @if (heirs.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Fornavn</th>
+                        <th>Efternavn</th>
+                        <th>Relation</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
                     @foreach (var heir in heirs)
                     {
-                        <option value="@heir.Id">@heir.RelationType.GetDisplayName(): @heir.FullName</option>
+                        <tr>
+                            <td>@heir.FirstName</td>
+                            <td>@heir.LastName</td>
+                            <td>@heir.RelationType.GetDisplayName()</td>
+                            <td><button class="btn btn-primary" @onclick="(() => Edit(heir.Id))">Rediger</button></td>
+                            <td><button class="btn btn-danger" @onclick="(() => Delete(heir.Id))">Slet</button></td>
+                        </tr>
                     }
-                </InputSelect>
-            </div>
-        </div>
-    }
-
-    <div class="mb-3">
-        <div class="col-2">
-            <button type="submit" class="btn btn-success">@(isEditing == false ? "Tilføj arving" : "Opdater arving")</button>
-        </div>
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Ingen arvinger tilføjet endnu.</p>
+        }
     </div>
-    <div class="mb-3">
-        <div class="col-2">
-            <button type="button" class="btn btn-primary" @onclick="NavigateToAssets">Videre til aktiver</button>
-        </div>
+
+    <br />
+
+    <div class="container mt-5">
+        <h4>Familie træ</h4>
+        <Family @ref="family" />
     </div>
-</EditForm>
-
-<div class="container mt-5">
-    <h4>Arvinger</h4>
-
-    @if (heirs.Any())
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Fornavn</th>
-                    <th>Efternavn</th>
-                    <th>Relation</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var heir in heirs)
-                {
-                    <tr>
-                        <td>@heir.FirstName</td>
-                        <td>@heir.LastName</td>
-                        <td>@heir.RelationType.GetDisplayName()</td>
-                        <td><button class="btn btn-primary" @onclick="(() => Edit(heir.Id))">Rediger</button></td>
-                        <td><button class="btn btn-danger" @onclick="(() => Delete(heir.Id))">Slet</button></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>Ingen arvinger tilføjet endnu.</p>
-    }
-</div>
-
-<br />
-
-<div class="container mt-5">
-    <h4>Familie træ</h4>
-    <Family @ref="family" />
-</div>
+}
 
 @code
 {

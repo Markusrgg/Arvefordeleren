@@ -5,35 +5,35 @@
 
 <div class="container">
     <div class="row flex-nowrap overflow-auto">
-            @foreach (Person person in Testator.Persons)
-            {
-                <div class="col-auto">
-                    <div class="card" style="width: 15rem;">
-                        <div class="card-body">
-                            @if (person is Testator t)
-                            {
-                                <p class="card-title fw-bold">@t.FullName <br /></p>
-                                <p class="card-subtitle mt-2 mb-2" style="font-size: 14px;"> <img src="img/@(t.RelationType).png" width="25" height="25" /> @t.RelationType.GetDisplayName()</p>
+        @foreach (Person person in Testator.Persons)
+        {
+            <div class="col-auto">
+                <div class="card" style="width: 15rem;">
+                    <div class="card-body">
+                        @if (person is Testator t)
+                        {
+                            <p class="card-title fw-bold text-truncate">@t.FullName <br /></p>
+                            <p class="card-subtitle mt-2 mb-2" style="font-size: 14px;"> <img src="img/@(t.RelationType).png" width="25" height="25" /> @t.RelationType.GetDisplayName()</p>
 
-                                <br />
-                                <p class="card-text" style="font-size: 14px;">Vælg procent:</p>
-                                <input type="range" min="0" max="100" value="@t.Percent" @oninput="(e) => UpdateSliderValue(t, e.Value)" class="form-range" />
-                                <p>Fordelt procent: <strong>@t.Percent%</strong></p>
-                            }
-                            @if (person is Heir h)
-                            {
-                                <p class="card-title fw-bold">@h.FullName <br /></p>
-                                <p class="card-subtitle mt-2 mb-2" style="font-size: 14px;"> <img src="img/@(h.RelationType).png" width="25" height="25" /> @h.RelationType.GetDisplayName()</p>
+                            <br />
+                            <p class="card-text" style="font-size: 14px;">Vælg procent:</p>
+                            <input type="range" min="0" max="100" value="@t.Percent" @oninput="(e) => UpdateSliderValue(t, e.Value)" class="form-range" />
+                            <p>Fordelt procent: <strong>@t.Percent%</strong></p>
+                        }
+                        @if (person is Heir h)
+                        {
+                            <p class="card-title fw-bold text-truncate">@h.FullName <br /></p>
+                            <p class="card-subtitle mt-2 mb-2" style="font-size: 14px;"> <img src="img/@(h.RelationType).png" width="25" height="25" /> @h.RelationType.GetDisplayName()</p>
 
-                                <br />
-                                <p class="card-text" style="font-size: 14px;">Vælg procent:</p>
-                                <input type="range" min="0" max="100" value="@h.Percent" @oninput="(e) => UpdateSliderValue(h, e.Value)" class="form-range" />
-                                <p>Fordelt procent: <strong>@h.Percent%</strong></p>
-                            }
-                        </div>
+                            <br />
+                            <p class="card-text" style="font-size: 14px;">Vælg procent:</p>
+                            <input type="range" min="0" max="100" value="@h.Percent" @oninput="(e) => UpdateSliderValue(h, e.Value)" class="form-range" />
+                            <p>Fordelt procent: <strong>@h.Percent%</strong></p>
+                        }
                     </div>
                 </div>
-            }
+            </div>
+        }
     </div>
     <div class="mt-4">
         <p>Total fordelt procent: <strong>@TotalPercent%</strong></p>

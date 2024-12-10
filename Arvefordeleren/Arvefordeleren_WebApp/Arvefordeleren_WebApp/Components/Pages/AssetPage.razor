@@ -1,94 +1,102 @@
 ﻿@rendermode InteractiveServer
+
 @page "/aktiver"
+
 @layout InformationLayout
+
 @inject AssetService assetService
 @inject HeirService heirService
 @inject TestatorService testatorService
 @inject NavigationManager navigationManager
 
-<h3>Aktiver</h3>
-<p>
-    En <strong>aktiv</strong> i forhold til en arv refererer til de værdier eller ejendele, som en afdød person efterlader,
-    og som kan indgå i boets samlede værdi. Aktiver kan være:
-</p>
-
-<ul>
-    <li><strong>Kontanter:</strong> Indestående på bankkonti.</li>
-    <li><strong>Ejendomme:</strong> Fx huse eller lejligheder.</li>
-    <li><strong>Investeringer:</strong> Aktier, obligationer eller pensionsopsparinger.</li>
-    <li><strong>Personlige ejendele:</strong> Fx biler, smykker eller kunst.</li>
-    <li><strong>Virksomheder eller ejerandele:</strong> Ejerskab i en virksomhed.</li>
-</ul>
-
-<p>
-    Når boet gøres op, trækkes gæld og forpligtelser fra aktiverne for at beregne, hvad der kan fordeles blandt arvingerne.
-</p>
-<br/>   
-
-<EditForm Model="asset" FormName="formAsset" OnValidSubmit="UpdateOrCreateAsset">
-
-    <DataAnnotationsValidator></DataAnnotationsValidator>
-    <ValidationSummary></ValidationSummary>
-
-    <div class="row mb-3">
-        <div class="col-2">
-            <label class="col-form-label">Aktivet:</label>
-        </div>
-        <div class="col-6">
-            <InputText @bind-Value="asset.Name" class="form-control" />
-        </div>
-        <div class="col">
-            <ValidationMessage For="() => asset.Name"></ValidationMessage>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-2">
-            <label class="col-form-label">Særeje:</label>
-        </div>
-        <div class="col-6">
-            <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
-                <option value="">Ingen valgt</option>
-                @foreach (var heir in inheritors)
-                {
-                    <option value="@heir.FirstName @heir.LastName">
-                        @heir.FirstName @heir.LastName
-                    </option>
-                }
-            </InputSelect>
-        </div>
-    </div>
-    <button class="btn btn-primary" type="submit">@(isUpdating ? "Opdater" : "Tilføj")</button>
-</EditForm>
-@if (assets.Count > 0 && !isUpdating)
+@if (!inheritors.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Aktiv</th>
-                <th>Særeje</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var asset in assets)
-            {
-                <tr>
-                    <td>@asset.Name</td>
-                    <td>@asset.SeparateEstate</td>
-                    <td>
-                        <button class="btn btn-primary" @onclick="() => CallUpdateAsset(asset)">Rediger</button>
-                        <button class="btn btn-primary" @onclick="() => DeleteAsset(asset.Id)">Fjern</button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <h3>Udfyld personoplysninger først!</h3>
 }
-<br />
-<button class="btn btn-primary" @onclick="NavigateToInheritanceDistribution">Videre</button>
+else
+{
 
+    <h3>Aktiver</h3>
+    <p>
+        En <strong>aktiv</strong> i forhold til en arv refererer til de værdier eller ejendele, som en afdød person efterlader,
+        og som kan indgå i boets samlede værdi. Aktiver kan være:
+    </p>
 
+    <ul>
+        <li><strong>Kontanter:</strong> Indestående på bankkonti.</li>
+        <li><strong>Ejendomme:</strong> Fx huse eller lejligheder.</li>
+        <li><strong>Investeringer:</strong> Aktier, obligationer eller pensionsopsparinger.</li>
+        <li><strong>Personlige ejendele:</strong> Fx biler, smykker eller kunst.</li>
+        <li><strong>Virksomheder eller ejerandele:</strong> Ejerskab i en virksomhed.</li>
+    </ul>
 
+    <p>
+        Når boet gøres op, trækkes gæld og forpligtelser fra aktiverne for at beregne, hvad der kan fordeles blandt arvingerne.
+    </p>
+    <br />
+
+    <EditForm Model="asset" FormName="formAsset" OnValidSubmit="UpdateOrCreateAsset">
+
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Aktivet:</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="asset.Name" class="form-control" />
+            </div>
+            <div class="col">
+                <ValidationMessage For="() => asset.Name"></ValidationMessage>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Særeje:</label>
+            </div>
+            <div class="col-6">
+                <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
+                    <option value="">Ingen valgt</option>
+                    @foreach (var heir in inheritors)
+                    {
+                        <option value="@heir.FirstName @heir.LastName">
+                            @heir.FirstName @heir.LastName
+                        </option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">@(isUpdating ? "Opdater" : "Tilføj")</button>
+    </EditForm>
+    @if (assets.Count > 0 && !isUpdating)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Aktiv</th>
+                    <th>Særeje</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var asset in assets)
+                {
+                    <tr>
+                        <td>@asset.Name</td>
+                        <td>@asset.SeparateEstate</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => CallUpdateAsset(asset)">Rediger</button>
+                            <button class="btn btn-primary" @onclick="() => DeleteAsset(asset.Id)">Fjern</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    <br />
+    <button class="btn btn-primary" @onclick="NavigateToInheritanceDistribution">Videre</button>
+}
 
 @code {
     [SupplyParameterFromForm]
