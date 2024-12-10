@@ -134,10 +134,10 @@
 
     private async Task SetupTestators()
     {
-        var allTestators = await TestatorService.GetAll();
+        testators = await TestatorService.GetAll();
 
         // Hvis ingen testators, start en ny
-        if (!allTestators.Any())
+        if (!testators.Any())
         {
             testator = new Testator { WillType = WillType.Individual };
             secondTestator = new Testator { WillType = WillType.Joint };
@@ -145,12 +145,12 @@
         }
 
         // Brug eksisterende testators
-        testator = allTestators.FirstOrDefault() ?? new Testator { WillType = WillType.Individual };
+        testator = testators.FirstOrDefault() ?? new Testator { WillType = WillType.Individual };
 
         // Tjek om der er en anden testator for fælles testamente
-        if (allTestators.Count > 1)
+        if (testators.Count > 1)
         {
-            secondTestator = allTestators[1];
+            secondTestator = testators[1];
         }
         else
         {
@@ -158,24 +158,20 @@
         }
     }
 
-
     private Testator testator = new Testator
         {
-            WillType = WillType.Individual // Default value
+            WillType = WillType.Individual
         };
 
     private Testator secondTestator = new Testator
         {
-            WillType = WillType.Joint // Default value
+            WillType = WillType.Joint
         };
 
     private async void HandleValidSubmit()
     {
         if (testator.WillType == WillType.Individual)
         {
-            // Process Individual Will data
-            Console.WriteLine($"Individuel: {testator.FirstName} {testator.LastName}");
-
             Testator temp = testators.FirstOrDefault(x => x.Id == testator.Id);
 
             testator.RelationType = RelationType.INDIVIDUAL;
@@ -198,9 +194,6 @@
         }
         else if (testator.WillType == WillType.Joint)
         {
-            // Process Joint Will data
-            Console.WriteLine($"Fælles: {testator.FirstName} & {secondTestator.FirstName} {testator.LastName} & {secondTestator.LastName}");
-
             Testator temp = testators.FirstOrDefault(x => x.Id == testator.Id);
             if (temp != null)
             {
@@ -227,21 +220,8 @@
                 secondTestator.Pids.Add(testator.Id);
                 secondTestator.RelationType = testator.RelationType;
                 await TestatorService.Create(secondTestator);
-
-                // List<Testator> testators = await TestatorService.GetAll();
-                // List<Heir> heirs = await HeirService.GetAll();
-                // foreach (var heir in heirs)
-                // {
-                //     if (heir.Fid != Guid.Empty)
-                //     {
-                //         heir.Fid = testators[1].Id;
-
-                //         await HeirService.Update(heir);
-                //     }
-                // }
             }
             NavigationManager.NavigateTo("/arvinger");
-
         }
     }
 }
