@@ -3,11 +3,10 @@
 @page "/aktiver"
 
 @layout InformationLayout
-
-@inject AssetService assetService
-@inject HeirService heirService
-@inject TestatorService testatorService
-@inject NavigationManager navigationManager
+@inject AssetService AssetService
+@inject HeirService HeirService
+@inject TestatorService TestatorService
+@inject NavigationManager NavigationManager
 
 @if (!inheritors.Any())
 {
@@ -40,118 +39,115 @@ else
         <DataAnnotationsValidator></DataAnnotationsValidator>
         <ValidationSummary></ValidationSummary>
 
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Aktivet:</label>
-            </div>
-            <div class="col-6">
-                <InputText @bind-Value="asset.Name" class="form-control" />
-            </div>
-            <div class="col">
-                <ValidationMessage For="() => asset.Name"></ValidationMessage>
-            </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Aktivet:</label>
         </div>
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Særeje:</label>
-            </div>
-            <div class="col-6">
-                <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
-                    <option value="">Ingen valgt</option>
-                    @foreach (var heir in inheritors)
-                    {
-                        <option value="@heir.FirstName @heir.LastName">
-                            @heir.FirstName @heir.LastName
-                        </option>
-                    }
-                </InputSelect>
-            </div>
+        <div class="col-6">
+            <InputText @bind-Value="asset.Name" class="form-control" />
         </div>
-        <button class="btn btn-primary" type="submit">@(isUpdating ? "Opdater" : "Tilføj")</button>
-    </EditForm>
-    @if (assets.Count > 0 && !isUpdating)
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Aktiv</th>
-                    <th>Særeje</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var asset in assets)
+        <div class="col">
+            <ValidationMessage For="() => asset.Name"></ValidationMessage>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">Særeje:</label>
+        </div>
+        <div class="col-6">
+            <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
+                <option value="">Ingen valgt</option>
+                @foreach (var person in persons)
                 {
-                    <tr>
-                        <td>@asset.Name</td>
-                        <td>@asset.SeparateEstate</td>
-                        <td>
-                            <button class="btn btn-primary" @onclick="() => CallUpdateAsset(asset)">Rediger</button>
-                            <button class="btn btn-primary" @onclick="() => DeleteAsset(asset.Id)">Fjern</button>
-                        </td>
-                    </tr>
+                    <option value="@person.FullName">
+                        @person.FullName
+                    </option>
                 }
-            </tbody>
-        </table>
-    }
-    <br />
-    <button class="btn btn-primary" @onclick="NavigateToInheritanceDistribution">Videre</button>
+            </InputSelect>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">@(isUpdating ? "Opdater" : "Tilføj")</button>
+</EditForm>
+@if (assets.Count > 0 && !isUpdating)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Aktiv</th>
+                <th>Særeje</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var asset in assets)
+            {
+                <tr>
+                    <td>@asset.Name</td>
+                    <td>@asset.SeparateEstate</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => CallUpdateAsset(asset)">Rediger</button>
+                        <button class="btn btn-primary" @onclick="() => DeleteAsset(asset.Id)">Fjern</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
+<br />
+<button class="btn btn-primary" @onclick="NavigateToInheritanceDistribution">Videre</button>
+
+
+
 
 @code {
     [SupplyParameterFromForm]
-    public Asset asset { get; set; } = new Asset();
+    private Asset asset { get; set; } = new Asset();
     private List<Asset> assets { get; set; } = new List<Asset>();
-    private List<Person> inheritors { get; set; } = new List<Person>();
+    private List<Person> persons { get; set; } = new List<Person>();
     private bool isCreating;
     private bool isUpdating;
 
     protected override async Task OnInitializedAsync()
     {
-        List<Heir> heirList = await heirService.GetAll();
-        List<Testator> testatorList = await testatorService.GetAll();
-        inheritors = heirList.Concat<Person>(testatorList).ToList();
-        assets = await assetService.GetAll();
+        List<Heir> heirList = await HeirService.GetAll();
+        List<Testator> testatorList = await TestatorService.GetAll();
+        persons = heirList.Concat<Person>(testatorList).ToList();
+        assets = await AssetService.GetAll();
         isCreating = true;
     }
 
-    private void SelectHeir(Heir selectedHeir)
-    {
-        asset.SeparateEstate = $"{selectedHeir.FirstName} {selectedHeir.LastName}";
-    }
-
-    public void CallUpdateAsset(Asset asset)
+    private void CallUpdateAsset(Asset asset)
     {
         this.asset = asset;
         isCreating = false;
         isUpdating = true;
     }
 
-    public async Task UpdateOrCreateAsset()
+    private async Task UpdateOrCreateAsset()
     {
         if (isUpdating)
         {
-            await assetService.Update(asset);
+            await AssetService.Update(asset);
             isUpdating = false;
             isCreating = true;
         }
         else if (isCreating)
         {
-            await assetService.Create(asset);
+            await AssetService.Create(asset);
         }
-        assets = await assetService.GetAll();
+        assets = await AssetService.GetAll();
         asset = new Asset();
     }
 
-    public async Task DeleteAsset(Guid assetId)
+    private async Task DeleteAsset(Guid assetId)
     {
-        await assetService.Delete(assetId);
-        assets = await assetService.GetAll();
+        await AssetService.Delete(assetId);
+        assets = await AssetService.GetAll();
     }
 
-    public void NavigateToInheritanceDistribution()
+    private void NavigateToInheritanceDistribution()
     {
-        navigationManager.NavigateTo("/aktiver");
+        NavigationManager.NavigateTo("/arvefordeling");
     }
 }
 
