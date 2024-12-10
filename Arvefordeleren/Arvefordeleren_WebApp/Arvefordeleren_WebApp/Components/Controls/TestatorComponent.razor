@@ -1,7 +1,5 @@
 ﻿@rendermode InteractiveServer //Brugerens handlinger bliver sendt til serveren og behandler dem 
 @inject NavigationManager NavigationManager 
-@using Arvefordeleren_ClassLibrary.Models
-@using Arvefordeleren_ClassLibrary.Services
 
 @inject TestatorService TestatorService
 @inject HeirService HeirService 
@@ -39,16 +37,6 @@
             <div class="col-md-6">
                 <label for="lastName" class="form-label">Efternavn</label>
                 <InputText id="lastName" class="form-control" @bind-Value="testator.LastName" />
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="dateOfBirth" class="form-label">Fødselsdag</label>
-                <InputDate id="dateOfBirth" class="form-control" @bind-Value="testator.DateOfBirth" />
-            </div>
-            <div class="col-md-6">
-                <label for="address" class="form-label">Adresse</label>
-                <InputText id="address" class="form-control" @bind-Value="testator.Address" />
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Videre</button>
@@ -97,18 +85,6 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label for="dateOfBirth1" class="form-label">Fødselsdag</label>
-                        <InputDate id="dateOfBirth1" class="form-control" @bind-Value="testator.DateOfBirth" />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label for="address1" class="form-label">Adresse</label>
-                        <InputText id="address1" class="form-control" @bind-Value="testator.Address" />
-                    </div>
-                </div>
-                <div class="row mb-3">
                     <div class="col-md-6">
                         <button type="submit" class="btn btn-primary">Videre til arvinger</button>
                     </div>
@@ -133,18 +109,7 @@
                         <InputText id="lastName2" class="form-control" @bind-Value="secondTestator.LastName" />
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label for="dateOfBirth2" class="form-label">Fødselsdag</label>
-                        <InputDate id="dateOfBirth2" class="form-control" @bind-Value="secondTestator.DateOfBirth" />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label for="address2" class="form-label">Adresse</label>
-                        <InputText id="address2" class="form-control" @bind-Value="secondTestator.Address" />
-                    </div>
-                </div>
+                
                 @*    <div class="row mb-3">
             <div class="col-md-6">
             <button type="submit" class="btn btn-primary">videre</button>
@@ -209,7 +174,7 @@
         if (testator.WillType == WillType.Individual)
         {
             // Process Individual Will data
-            Console.WriteLine($"Individuel: {testator.FirstName} {testator.LastName} {testator.DateOfBirth} {testator.Address}");
+            Console.WriteLine($"Individuel: {testator.FirstName} {testator.LastName}");
 
             Testator temp = testators.FirstOrDefault(x => x.Id == testator.Id);
 
@@ -234,7 +199,7 @@
         else if (testator.WillType == WillType.Joint)
         {
             // Process Joint Will data
-            Console.WriteLine($"Fælles: {testator.FirstName} & {secondTestator.FirstName} {testator.LastName} & {secondTestator.LastName} {testator.DateOfBirth} & {secondTestator.DateOfBirth} {testator.Address} & {secondTestator.Address}");
+            Console.WriteLine($"Fælles: {testator.FirstName} & {secondTestator.FirstName} {testator.LastName} & {secondTestator.LastName}");
 
             Testator temp = testators.FirstOrDefault(x => x.Id == testator.Id);
             if (temp != null)

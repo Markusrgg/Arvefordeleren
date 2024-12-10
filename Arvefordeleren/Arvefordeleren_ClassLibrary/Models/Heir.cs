@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arvefordeleren_ClassLibrary.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,19 +18,10 @@ namespace Arvefordeleren_ClassLibrary.Models
 
         public RelationType RelationType { get; set; }
 
-        public Heir(){}
-
-        public Heir(string relation, string inheritanceShare)
+        public Heir()
         {
             Id = Guid.NewGuid();
-            Relation = relation;
-            InheritanceShare = inheritanceShare;
         }
-
-        public string? Relation {  get; set; }
-
-        public string? InheritanceShare { get; set; }
-
         public Heir Clone()
         {
             return new Heir()
@@ -37,10 +29,6 @@ namespace Arvefordeleren_ClassLibrary.Models
                 Id = this.Id,
                 FirstName = this.FirstName,
                 LastName = this.LastName,
-                DateOfBirth = this.DateOfBirth,
-                Address = this.Address,
-                Relation = this.Relation,
-                InheritanceShare = this.InheritanceShare,
                 RelationType = this.RelationType,
                 Mid = this.Mid,
                 Fid = this.Fid,

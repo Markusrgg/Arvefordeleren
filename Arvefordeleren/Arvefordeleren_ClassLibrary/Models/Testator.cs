@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arvefordeleren_ClassLibrary.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,13 +16,10 @@ namespace Arvefordeleren_ClassLibrary.Models
             Id = Guid.NewGuid();
         }
 
-        public Testator(WillType willType, RelationType relationType, string forcedInheritance, string freeInheritance, DateTime date)
+        public Testator(WillType willType, RelationType relationType)
         {
             WillType = willType;
             RelationType = relationType;
-            ForcedInheritance = forcedInheritance;
-            FreeInheritance = freeInheritance;
-            Date = date;
         }
 
         public int Percent { get; set; }
@@ -32,15 +30,10 @@ namespace Arvefordeleren_ClassLibrary.Models
 
         public RelationType RelationType { get; set; }
 
-        public string? ForcedInheritance {  get; set; }
-
-        public string? FreeInheritance { get; set; }
-
-        public DateTime Date {  get; set; }
-
-        public List<Heir> Heirs { get; set; } = new List<Heir>();
-
         public List<Person> Persons { get; set; } = new List<Person>();
+
+        //En liste der indeholder Guids, de unikke værdier 
+        public List<Guid> Pids { get; set; } = new List<Guid>(); 
 
         public Testator Clone()
         {
@@ -50,20 +43,14 @@ namespace Arvefordeleren_ClassLibrary.Models
                 Id = this.Id,
                 WillType = this.WillType,
                 RelationType = this.RelationType,
-                ForcedInheritance = this.ForcedInheritance,
-                FreeInheritance = this.FreeInheritance,
-                Date = this.Date,
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 Pids = this.Pids,
-                Heirs = this.Heirs.Select(heir => heir.Clone()).ToList(),
                 InheritanceType = this.InheritanceType,
                 Percent = this.Percent,
                 Persons = this.Persons
             };
         }
 
-        //En liste der indeholder Guids, de unikke værdier 
-        public List<Guid> Pids { get; set; } = new List<Guid>(); 
     }
 }
