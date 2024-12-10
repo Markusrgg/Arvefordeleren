@@ -44,5 +44,35 @@
                 secondTestator = testators[1];
             }
         }
+
+        if (testator != null)
+        {
+            if (secondTestator != null && testator.Persons.FirstOrDefault(x => x.Id == secondTestator.Id) == null)
+            {
+                testator.Persons.Add(secondTestator);
+            }
+            foreach (Heir heir in heirs)
+            {
+                if (testator.Persons.FirstOrDefault(x => x.Id == heir.Id) == null)
+                {
+                    testator.Persons.Add(heir);
+                }
+            }
+
+            if (secondTestator != null)
+            {
+                if (secondTestator.Persons.FirstOrDefault(x => x.Id == testator.Id) == null)
+                {
+                    secondTestator.Persons.Add(testator);
+                }
+                foreach (Heir heir in heirs)
+                {
+                    if (secondTestator.Persons.FirstOrDefault(x => x.Id == heir.Id) == null)
+                    {
+                        secondTestator.Persons.Add(heir);
+                    }
+                }
+            }
+        }
     }
 }
