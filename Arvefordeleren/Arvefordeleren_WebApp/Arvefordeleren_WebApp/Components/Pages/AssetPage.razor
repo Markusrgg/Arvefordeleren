@@ -50,8 +50,8 @@
                 <option value="">Ingen valgt</option>
                 @foreach (var person in persons)
                 {
-                    <option value="@person.FirstName @person.LastName">
-                        @person.FirstName @person.LastName
+                    <option value="@person.FullName">
+                        @person.FullName
                     </option>
                 }
             </InputSelect>
@@ -105,11 +105,6 @@
         persons = heirList.Concat<Person>(testatorList).ToList();
         assets = await AssetService.GetAll();
         isCreating = true;
-    }
-
-    private void SelectHeir(Heir selectedHeir)
-    {
-        asset.SeparateEstate = selectedHeir.FullName;
     }
 
     private void CallUpdateAsset(Asset asset)
