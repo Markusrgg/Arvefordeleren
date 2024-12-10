@@ -60,7 +60,7 @@
         var deleteTasks = testators.Select(x => TestatorService.Delete(x.Id));
         await Task.WhenAll(deleteTasks);
 
-        deleteTasks = heirs.Select(x => TestatorService.Delete(x.Id));
+        deleteTasks = heirs.Select(x => HeirService.Delete(x.Id));
         await Task.WhenAll(deleteTasks);
 
         NavigationManager.NavigateTo("/testatorer");

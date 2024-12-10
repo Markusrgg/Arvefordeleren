@@ -6,13 +6,12 @@
 
 <h4 class="fw-bold">Friarv (75%)</h4>
 
-<hr />
-<p>Fordeling for <span class="fw-bold">@testator.FullName</span>:</p>
 <InheritanceDistributer Testator="testator" />
 
-<hr />
-<p>Fordeling for <span class="fw-bold">@secondTestator.FullName</span>:</p>
-<InheritanceDistributer Testator="secondTestator" />
+@if (!string.IsNullOrEmpty(secondTestator.FirstName))
+{
+    <InheritanceDistributer Testator="secondTestator" />
+}
 
 @code {
     List<Testator> testators = new List<Testator>();
@@ -47,7 +46,7 @@
 
         if (testator != null)
         {
-            if (secondTestator != null && testator.Persons.FirstOrDefault(x => x.Id == secondTestator.Id) == null)
+            if (secondTestator != null && testator.Persons.FirstOrDefault(x => x.Id == secondTestator.Id) == null && !string.IsNullOrEmpty(secondTestator.FirstName))
             {
                 testator.Persons.Add(secondTestator);
             }
@@ -59,7 +58,7 @@
                 }
             }
 
-            if (secondTestator != null)
+            if (secondTestator != null && !string.IsNullOrEmpty(secondTestator.FirstName))
             {
                 if (secondTestator.Persons.FirstOrDefault(x => x.Id == testator.Id) == null)
                 {

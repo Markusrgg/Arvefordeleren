@@ -28,7 +28,7 @@
 </div>
 
 <div class="row mb-3">
-    @if (secondTestator != null)
+    @if (secondTestator != null && !string.IsNullOrEmpty(secondTestator.FirstName))
     {
         <div class="col-2">
             <label class="col-form-label">@secondTestator.FullName</label>

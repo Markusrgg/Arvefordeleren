@@ -48,27 +48,6 @@ namespace Arvefordeleren_WebAPI.Controllers
             return Ok();
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> Update([FromBody] Testator testator)
-        //{
-        //    var existingTestator = await _repository.GetById(testator.Id);
-        //    if (existingTestator == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    existingTestator = testator;
-
-        //    Console.WriteLine("Came here!");
-        //    foreach (var item in testator.Persons)
-        //    {
-        //        Console.WriteLine(item);
-        //    }
-
-        //    await _repository.Update(existingTestator);
-        //    return Ok();
-        //}
-
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] string serializedTestator)
         {
@@ -88,8 +67,6 @@ namespace Arvefordeleren_WebAPI.Controllers
                 return BadRequest("Deserialization failed. Invalid JSON.");
             }
 
-            Console.WriteLine($"Received Testator of type: {testator.GetType().Name}");
-
             var existingTestator = await _repository.GetById(testator.Id);
             if (existingTestator == null)
             {
@@ -102,7 +79,6 @@ namespace Arvefordeleren_WebAPI.Controllers
             await _repository.Update(existingTestator);
             return Ok();
         }
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)

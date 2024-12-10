@@ -2,6 +2,7 @@
 using Arvefordeleren_ClassLibrary.Models;
 using Arvefordeleren_WebAPI.Persistance;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Text.Json;
 
 namespace Arvefordeleren_WebAPI.Controllers
@@ -45,7 +46,12 @@ namespace Arvefordeleren_WebAPI.Controllers
             if (testatorResult is OkObjectResult okResult)
             {
                 // Extract the Value (assuming it's already a list of Testators)
-                var testators = okResult.Value as IEnumerable<Testator>;
+                var tes = okResult.Value.ToString();
+                var testators = JsonConvert.DeserializeObject<List<Testator>>(tes, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+                //testators = okResult.Value as IEnumerable<Testator>;
 
                 if (testators != null)
                 {
@@ -81,7 +87,10 @@ namespace Arvefordeleren_WebAPI.Controllers
 
             if (!string.IsNullOrEmpty(jsonString)) 
             {
-                List<Testator> testators = JsonSerializer.Deserialize<List<Testator>>(jsonString);
+                var testators = JsonConvert.DeserializeObject<List<Testator>>(jsonString, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
 
                 //Hvis relationen er CHILD tildeles en mor og far her 
                 if (heir.RelationType == RelationType.CHILD)
