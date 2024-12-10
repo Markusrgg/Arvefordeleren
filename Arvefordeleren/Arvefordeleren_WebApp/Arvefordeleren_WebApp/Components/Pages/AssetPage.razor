@@ -1,10 +1,10 @@
 ﻿@rendermode InteractiveServer
 @page "/aktiver"
 @layout InformationLayout
-@inject AssetService assetService
-@inject HeirService heirService
-@inject TestatorService testatorService
-@inject NavigationManager navigationManager
+@inject AssetService AssetService
+@inject HeirService HeirService
+@inject TestatorService TestatorService
+@inject NavigationManager NavigationManager
 
 <h3>Aktiver</h3>
 <p>
@@ -48,10 +48,10 @@
         <div class="col-6">
             <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
                 <option value="">Ingen valgt</option>
-                @foreach (var heir in inheritors)
+                @foreach (var person in persons)
                 {
-                    <option value="@heir.FirstName @heir.LastName">
-                        @heir.FirstName @heir.LastName
+                    <option value="@person.FirstName @person.LastName">
+                        @person.FirstName @person.LastName
                     </option>
                 }
             </InputSelect>
@@ -92,58 +92,58 @@
 
 @code {
     [SupplyParameterFromForm]
-    public Asset asset { get; set; } = new Asset();
+    private Asset asset { get; set; } = new Asset();
     private List<Asset> assets { get; set; } = new List<Asset>();
-    private List<Person> inheritors { get; set; } = new List<Person>();
+    private List<Person> persons { get; set; } = new List<Person>();
     private bool isCreating;
     private bool isUpdating;
 
     protected override async Task OnInitializedAsync()
     {
-        List<Heir> heirList = await heirService.GetAll();
-        List<Testator> testatorList = await testatorService.GetAll();
-        inheritors = heirList.Concat<Person>(testatorList).ToList();
-        assets = await assetService.GetAll();
+        List<Heir> heirList = await HeirService.GetAll();
+        List<Testator> testatorList = await TestatorService.GetAll();
+        persons = heirList.Concat<Person>(testatorList).ToList();
+        assets = await AssetService.GetAll();
         isCreating = true;
     }
 
     private void SelectHeir(Heir selectedHeir)
     {
-        asset.SeparateEstate = $"{selectedHeir.FirstName} {selectedHeir.LastName}";
+        asset.SeparateEstate = selectedHeir.FullName;
     }
 
-    public void CallUpdateAsset(Asset asset)
+    private void CallUpdateAsset(Asset asset)
     {
         this.asset = asset;
         isCreating = false;
         isUpdating = true;
     }
 
-    public async Task UpdateOrCreateAsset()
+    private async Task UpdateOrCreateAsset()
     {
         if (isUpdating)
         {
-            await assetService.Update(asset);
+            await AssetService.Update(asset);
             isUpdating = false;
             isCreating = true;
         }
         else if (isCreating)
         {
-            await assetService.Create(asset);
+            await AssetService.Create(asset);
         }
-        assets = await assetService.GetAll();
+        assets = await AssetService.GetAll();
         asset = new Asset();
     }
 
-    public async Task DeleteAsset(Guid assetId)
+    private async Task DeleteAsset(Guid assetId)
     {
-        await assetService.Delete(assetId);
-        assets = await assetService.GetAll();
+        await AssetService.Delete(assetId);
+        assets = await AssetService.GetAll();
     }
 
-    public void NavigateToInheritanceDistribution()
+    private void NavigateToInheritanceDistribution()
     {
-        navigationManager.NavigateTo("/arvefordeling");
+        NavigationManager.NavigateTo("/arvefordeling");
     }
 }
 
