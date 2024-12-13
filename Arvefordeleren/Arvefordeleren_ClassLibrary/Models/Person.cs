@@ -20,7 +20,6 @@ namespace Arvefordeleren_ClassLibrary.Models
 
         public int Percent { get; set; }
 
-        [Required]
         public RelationType RelationType { get; set; }
 
     }
