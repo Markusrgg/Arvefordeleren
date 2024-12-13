@@ -33,17 +33,38 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-
+                    <div>
+                        <div class="input-group mb-3 my-4">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Kr. </span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-default">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <BlazorToolTip />
+                    </div>
+                    <h1 class="text-center">Aktiver</h1>
+                    <div class="asset-list d-flex flex-column gap-4">
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                    </div>
                 </div>
                 <div class="col">
                     <div class="w-75 mx-auto">
                         <div class="d-flex justify-content-end">
                             <BlazorToolTip />
                         </div>
-                        <BlazorChart @rendermode=InteractiveServer ChartType="ChartType.Pie"></BlazorChart>
+                        <BlazorChart @rendermode=InteractiveServer ChartType="ChartType.Pie" ChartData="Data"/>
+                        <BlazorChart @rendermode=InteractiveServer ChartType="ChartType.Pie" ChartData="Data"/>
                     </div>
                     <div class="summary my-5">
-                        <h2>Opsummering</h2>
+                        <h2 class="text-center">Opsummering</h2>
                     </div>
                 </div>
             </div>
@@ -52,5 +73,9 @@
 </div>
 
 @code {
-    
+    Dictionary<string, object> Data = new Dictionary<string, object>()
+{
+{"Test 1", 23},
+{"Test 2", 25}
+};
 }
