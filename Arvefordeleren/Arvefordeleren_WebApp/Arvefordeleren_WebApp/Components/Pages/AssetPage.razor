@@ -107,11 +107,20 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        List<Heir> heirList = await HeirService.GetAll();
-        List<Testator> testatorList = await TestatorService.GetAll();
-        persons = heirList.Concat<Person>(testatorList).ToList();
         assets = await AssetService.GetAll();
         isCreating = true;
+
+        List<Heir> heirList = await HeirService.GetAll();
+        List<Testator> testatorList = await TestatorService.GetAll();
+
+        if (testatorList[0].WillType == WillType.Joint)
+        {
+            persons = heirList.Concat<Person>(testatorList).ToList();
+        }
+        else
+        {
+            persons = heirList.Cast<Person>().ToList();
+        }
     }
 
     private void CallUpdateAsset(Asset asset)
