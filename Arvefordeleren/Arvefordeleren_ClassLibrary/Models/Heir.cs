@@ -18,6 +18,7 @@ namespace Arvefordeleren_ClassLibrary.Models
         {
             Id = Guid.NewGuid();
         }
+
         public Heir Clone()
         {
             return new Heir()

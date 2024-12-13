@@ -19,6 +19,7 @@ namespace Arvefordeleren_ClassLibrary.Models
         public string? FullName => $"{FirstName} {LastName}";
 
         public int Percent { get; set; }
+
         public RelationType RelationType { get; set; }
 
     }
