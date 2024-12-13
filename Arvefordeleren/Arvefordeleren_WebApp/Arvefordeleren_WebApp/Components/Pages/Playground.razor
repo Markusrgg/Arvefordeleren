@@ -1,19 +1,11 @@
 ﻿@rendermode InteractiveServer
 @inject HeirService HeirService;
+@inject TestatorService TestatorService;
 
 @page "/playground"
 @layout PlaygroundLayout
 
 <PageTitle>Playground</PageTitle>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.forEach((tooltipTriggerEl) => {
-            new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-    });
-</script>
 
 <div class="d-flex flex-row playerground-container">
     <!-- Sidebar -->
@@ -63,8 +55,10 @@
                         <div class="d-flex justify-content-end">
                             <BlazorToolTip />
                         </div>
-                        <BlazorChart @rendermode=InteractiveServer ChartType="ChartType.Pie" ChartData="Data" />
-                        <BlazorChart @rendermode=InteractiveServer ChartType="ChartType.Pie" ChartData="Data" />
+                        @foreach (Dictionary<string, object> data in DataList)
+                        {
+                            <BlazorChart @rendermode=InteractiveServer ChartType="ChartType.Pie" ChartData="data"/>
+                        }
                     </div>
                     <div class="summary my-5">
                         <h2 class="text-center">Opsummering</h2>
@@ -76,15 +70,38 @@
 </div>
 
 @code {
-    Dictionary<string, object> Data = new Dictionary<string, object>()
-{
-{"Test 1", 23},
-{"Test 2", 25}
-};
+    List<Dictionary<string, object>> DataList { get; set; } = new List<Dictionary<string, object>>();
+
     List<Heir> Heirs { get; set; } = new List<Heir>();
+
+    List<Testator> Testators { get; set; } = new List<Testator>();
+
 
     protected override async Task OnInitializedAsync()
     {
         Heirs = await HeirService.GetAll();
+        Testators = await TestatorService.GetAll();
+
+        InitializeCharts();
     }
+
+    private void InitializeCharts()
+    {
+        foreach (Testator t in Testators)
+        {
+            Dictionary<string, object> data = new Dictionary<string, object>();
+
+            foreach (Person p in t.Persons)
+            {
+                if (p is Heir h)
+                {
+                    data.Add(h.FullName, h.Percent);
+                }
+            }
+
+            DataList.Add(data);
+        }
+    }
+
+
 }
