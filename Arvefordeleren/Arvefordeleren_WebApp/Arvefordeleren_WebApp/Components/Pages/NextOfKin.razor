@@ -157,6 +157,26 @@ else
                 </div>
             </div>
         }
+        @if (heir.RelationType == RelationType.PARENT)
+        {
+            <div class="row mb-3">
+                <div class="col-2">
+                    <label class="col-form-label">Forældre</label>
+                </div>
+                <div class="col-6">
+                    <InputSelect @bind-Value="heir.Mid" class="form-control">
+                        @foreach (Testator testator in testators)
+                        {
+                            <option value="@testator.Id">@testator.RelationType.GetDisplayName(): @testator.FullName</option>
+                        }
+                        @foreach (var heir in heirs)
+                        {
+                            <option value="@heir.Id">@heir.RelationType.GetDisplayName(): @heir.FullName</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        }
 
         <div class="mb-3">
             <div class="col-2">
