@@ -16,3 +16,9 @@
 .content {
     overflow-y: auto;
 }
+
+.asset-list {
+    background-color: #e5e5e5;
+    padding: 20px;
+    border-radius: 10px;
+}
