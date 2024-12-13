@@ -33,12 +33,7 @@ public class HeirService
 
     public async Task Update(Heir heir)
     {
-        var serialized = JsonConvert.SerializeObject(heir, new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto, // Include type information in JSON
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Ignore circular references
-        });
-        await client.PutAsJsonAsync("heir", serialized);
+        await client.PutAsJsonAsync("heir", heir);
     }
 
     public async Task Delete(Guid id)

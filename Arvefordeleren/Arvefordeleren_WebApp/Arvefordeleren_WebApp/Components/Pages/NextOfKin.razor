@@ -68,7 +68,7 @@ else
                     <InputSelect @bind-Value="heir.Mid" class="form-control">
                         @foreach (Testator testator in testators)
                         {
-                            <option value="@testator.Id">@heir.RelationType.GetDisplayName(): @testator.FullName</option>
+                            <option value="@testator.Id">@testator.RelationType.GetDisplayName(): @testator.FullName</option>
                         }
                     </InputSelect>
                 </div>
@@ -104,7 +104,50 @@ else
                     <InputSelect @bind-Value="heir.Mid" class="form-control">
                         @foreach (Testator testator in testators)
                         {
-                            <option value="@testator.Id">@heir.RelationType.GetDisplayName(): @testator.FullName</option>
+                            <option value="@testator.Id">@testator.RelationType.GetDisplayName(): @testator.FullName</option>
+                        }
+                        @foreach (var heir in heirs)
+                        {
+                            <option value="@heir.Id">@heir.RelationType.GetDisplayName(): @heir.FullName</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        }
+        @if (heir.RelationType == RelationType.OTHER)
+        {
+            <div class="row mb-3">
+                <div class="col-2">
+                    <label class="col-form-label">Relation</label>
+                </div>
+                <div class="col-6">
+                    <InputSelect @bind-Value="heir.Mid" class="form-control">
+                        @foreach (Testator testator in testators)
+                        {
+                            <option value="@testator.Id">@testator.RelationType.GetDisplayName(): @testator.FullName</option>
+                        }
+                        @foreach (var heir in heirs)
+                        {
+                            <option value="@heir.Id">@heir.RelationType.GetDisplayName(): @heir.FullName</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        }
+        @if (heir.RelationType == RelationType.PARTNER)
+        {
+            <div class="row mb-3">
+                <div class="col-2">
+                    <label class="col-form-label">Samlever</label>
+                </div>
+                <div class="col-6">
+                    <InputSelect @bind-Value="heir.Mid" class="form-control">
+                        @foreach (Testator testator in testators)
+                        {
+                            if (testator.RelationType != RelationType.MARRIED)
+                            {
+                                <option value="@testator.Id">@testator.RelationType.GetDisplayName(): @testator.FullName</option>
+                            }
                         }
                         @foreach (var heir in heirs)
                         {

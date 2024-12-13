@@ -14,26 +14,13 @@
                 <div class="col-auto">
                     <div class="card" style="width: 15rem;">
                         <div class="card-body">
-                            @if (person is Testator t)
-                            {
-                                <p class="card-title fw-bold text-truncate">@t.FullName <br /></p>
-                                <p class="card-subtitle mt-2 mb-2" style="font-size: 14px;"> <img src="img/@(t.RelationType).png" width="25" height="25" /> @t.RelationType.GetDisplayName()</p>
+                            <p class="card-title fw-bold text-truncate">@person.FullName <br /></p>
+                            <p class="card-subtitle mt-2 mb-2" style="font-size: 14px;"> <img src="img/@(person.RelationType).png" width="25" height="25" /> @person.RelationType.GetDisplayName()</p>
 
-                                <br />
-                                <p class="card-text" style="font-size: 14px;">Vælg procent:</p>
-                                <input type="range" min="0" max="100" value="@t.Percent" @oninput="(e) => UpdateSliderValue(t, e.Value)" class="form-range" />
-                                <p>Fordelt procent: <strong>@t.Percent%</strong></p>
-                            }
-                            @if (person is Heir h)
-                            {
-                                <p class="card-title fw-bold text-truncate">@h.FullName <br /></p>
-                                <p class="card-subtitle mt-2 mb-2" style="font-size: 14px;"> <img src="img/@(h.RelationType).png" width="25" height="25" /> @h.RelationType.GetDisplayName()</p>
-
-                                <br />
-                                <p class="card-text" style="font-size: 14px;">Vælg procent:</p>
-                                <input type="range" min="0" max="100" value="@h.Percent" @oninput="(e) => UpdateSliderValue(h, e.Value)" class="form-range" />
-                                <p>Fordelt procent: <strong>@h.Percent%</strong></p>
-                            }
+                            <br />
+                            <p class="card-text" style="font-size: 14px;">Vælg procent:</p>
+                            <input type="range" min="0" max="100" value="@person.Percent" @oninput="(e) => UpdateSliderValue(person, e.Value)" class="form-range" />
+                            <p>Fordelt procent: <strong>@person.Percent%</strong></p>
                         </div>
                     </div>
                 </div>
@@ -71,25 +58,12 @@
     {
         if (int.TryParse(value.ToString(), out int newValue))
         {
-            if (person is Heir h)
-            {
-                int currentTotal = TotalPercent;
-                int difference = newValue - h.Percent;
+            int currentTotal = TotalPercent;
+            int difference = newValue - person.Percent;
 
-                if (currentTotal + difference <= MaxSliderValue)
-                {
-                    h.Percent = newValue;
-                }
-            }
-            if (person is Testator t)
+            if (currentTotal + difference <= MaxSliderValue)
             {
-                int currentTotal = TotalPercent;
-                int difference = newValue - t.Percent;
-
-                if (currentTotal + difference <= MaxSliderValue)
-                {
-                    t.Percent = newValue;
-                }
+                person.Percent = newValue;
             }
         }
         StateHasChanged();
@@ -124,22 +98,12 @@
 
             foreach (var item in Testator.Persons)
             {
-                if (item is Heir heir)
+                if (item.Percent == 0 || TotalPercent > 100)
                 {
-                    if (item.Percent == 0 || TotalPercent > 100 || TotalPercent < 100)
-                    {
-                        item.Percent = percent;
-                    }
-                }
-                if (item is Testator testator)
-                {
-                    if (testator.Percent == 0 || TotalPercent > 100 || TotalPercent < 100)
-                    {
-                        testator.Percent = percent;
-                    }
+                    item.Percent = percent;
                 }
             }
+            StateHasChanged();
         }
-        StateHasChanged();
     }
 }

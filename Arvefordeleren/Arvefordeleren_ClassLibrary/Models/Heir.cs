@@ -14,8 +14,6 @@ namespace Arvefordeleren_ClassLibrary.Models
         public Guid Mid { get; set; }
         public Guid Fid { get; set; }
 
-        public RelationType RelationType { get; set; }
-
         public Heir()
         {
             Id = Guid.NewGuid();
