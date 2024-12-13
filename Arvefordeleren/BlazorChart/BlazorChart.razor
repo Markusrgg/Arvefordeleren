@@ -6,10 +6,10 @@
     <canvas id="@chartIdentifier"></canvas>
 </div>
 
-<script src="
+@* <script src="
 https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js
 "></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script> *@
 
 <script>
     window.initializeChart = (chartId, chartType, dataLabels, chartData, chartLabel, labelFontSize) => {
@@ -59,6 +59,16 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js
 
     window.addEventListener("resize", beforePrintHandler);
 
+    function loadScript(url) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = url;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }
+
 
 </script>
 
@@ -89,6 +99,10 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js
     {
         if (firstrender)
         {
+            await JSRuntime.InvokeVoidAsync("loadScript", "https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js");
+            await JSRuntime.InvokeVoidAsync("loadScript", "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2");
+
+
             await JSRuntime.InvokeVoidAsync("initializeChart",
             chartIdentifier,
             ChartType.ToString().ToLower(),
