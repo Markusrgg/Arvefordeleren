@@ -48,13 +48,13 @@
         {
             if (secondTestator != null && testator.Persons.FirstOrDefault(x => x.Id == secondTestator.Id) == null && !string.IsNullOrEmpty(secondTestator.FirstName))
             {
-                testator.Persons.Add(secondTestator);
+                testator.Persons.Add(secondTestator.Clone());
             }
             foreach (Heir heir in heirs)
             {
                 if (testator.Persons.FirstOrDefault(x => x.Id == heir.Id) == null)
                 {
-                    testator.Persons.Add(heir);
+                    testator.Persons.Add(heir.Clone());
                 }
             }
 
@@ -62,13 +62,13 @@
             {
                 if (secondTestator.Persons.FirstOrDefault(x => x.Id == testator.Id) == null)
                 {
-                    secondTestator.Persons.Add(testator);
+                    secondTestator.Persons.Add(testator.Clone());
                 }
                 foreach (Heir heir in heirs)
                 {
                     if (secondTestator.Persons.FirstOrDefault(x => x.Id == heir.Id) == null)
                     {
-                        secondTestator.Persons.Add(heir);
+                        secondTestator.Persons.Add(heir.Clone());
                     }
                 }
             }

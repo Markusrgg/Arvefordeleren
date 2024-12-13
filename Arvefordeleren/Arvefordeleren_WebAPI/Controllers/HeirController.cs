@@ -1,5 +1,6 @@
 ﻿using Arvefordeleren_ClassLibrary.Enums;
 using Arvefordeleren_ClassLibrary.Models;
+using Arvefordeleren_ClassLibrary.Services;
 using Arvefordeleren_WebAPI.Persistance;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -82,10 +83,10 @@ namespace Arvefordeleren_WebAPI.Controllers
                 }
             }
 
-            var response = await _testatorController.GetAll(); 
+            var response = await _testatorController.GetAll();
             string? jsonString = (response as OkObjectResult)?.Value?.ToString();
 
-            if (!string.IsNullOrEmpty(jsonString)) 
+            if (!string.IsNullOrEmpty(jsonString))
             {
                 var testators = JsonConvert.DeserializeObject<List<Testator>>(jsonString, new JsonSerializerSettings
                 {
@@ -134,6 +135,37 @@ namespace Arvefordeleren_WebAPI.Controllers
             }
 
             await _repository.Delete(id);
+
+            var response = await _testatorController.GetAll();
+            string? jsonString = (response as OkObjectResult)?.Value?.ToString();
+
+            if (!string.IsNullOrEmpty(jsonString))
+            {
+                var testators = JsonConvert.DeserializeObject<List<Testator>>(jsonString, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+
+                if (testators != null)
+                {
+                    foreach (var item in testators)
+                    {
+                        Person p = item.Persons.FirstOrDefault(x => x.Id == id);
+                        if (p != null)
+                        {
+                            item.Persons.Remove(p);
+
+                            var serialized = JsonConvert.SerializeObject(item, new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.Auto, // Include type information in JSON
+                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore // Ignore circular references
+                            });
+
+                            await _testatorController.Update(serialized);
+                        }
+                    }
+                }
+            }
             return Ok();
         }
     }

@@ -18,10 +18,13 @@
                     <InputRadio id="split" Value="InheritanceType.SPLIT" class="form-check-input" />
                     <label class="form-check-label" for="split">@InheritanceType.SPLIT.GetDisplayName()</label>
                 </div>
-                <div class="form-check">
-                    <InputRadio id="fifty" Value="InheritanceType.FIFTY" class="form-check-input" />
+                @if (testator.RelationType == RelationType.MARRIED)
+                {
+                    <div class="form-check">
+                        <InputRadio id="fifty" Value="InheritanceType.FIFTY" class="form-check-input" />
                     <label class="form-check-label" for="fifty">@InheritanceType.FIFTY.GetDisplayName()</label>
                 </div>
+                }
             </InputRadioGroup>
         </div>
     }
@@ -39,10 +42,13 @@
                     <InputRadio id="split2" Value="InheritanceType.SPLIT" class="form-check-input" />
                     <label class="form-check-label" for="split2">@InheritanceType.SPLIT.GetDisplayName()</label>
                 </div>
-                <div class="form-check">
-                    <InputRadio id="fifty2" Value="InheritanceType.FIFTY" class="form-check-input" />
+                @if (secondTestator.RelationType == RelationType.MARRIED)
+                {
+                    <div class="form-check">
+                        <InputRadio id="fifty2" Value="InheritanceType.FIFTY" class="form-check-input" />
                     <label class="form-check-label" for="fifty2">@InheritanceType.FIFTY.GetDisplayName()</label>
                 </div>
+                }
             </InputRadioGroup>
         </div>
     }

@@ -107,4 +107,39 @@
             StateHasChanged();
         }
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Setup();
+
+        StateHasChanged();
+    }
+
+    private void Setup()
+    {
+        if (Testator != null && Testator.Persons.Any())
+        {
+            int amount = Testator.Persons.Count;
+            int percent = MaxSliderValue / amount;
+
+            foreach (var item in Testator.Persons)
+            {
+                if (item is Heir heir)
+                {
+                    if (item.Percent == 0 || TotalPercent > 100 || TotalPercent < 100)
+                    {
+                        item.Percent = percent;
+                    }
+                }
+                if (item is Testator testator)
+                {
+                    if (testator.Percent == 0 || TotalPercent > 100 || TotalPercent < 100)
+                    {
+                        testator.Percent = percent;
+                    }
+                }
+            }
+        }
+        StateHasChanged();
+    }
 }

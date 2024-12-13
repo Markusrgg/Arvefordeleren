@@ -16,7 +16,8 @@ namespace Arvefordeleren_ClassLibrary.Models
         public string? LastName { get; set; }
 
         public string? FullName => $"{FirstName} {LastName}";
+
+        public int Percent { get; set; }
+
     }
-
-
 }

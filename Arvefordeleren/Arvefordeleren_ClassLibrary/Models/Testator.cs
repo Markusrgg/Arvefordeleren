@@ -22,8 +22,6 @@ namespace Arvefordeleren_ClassLibrary.Models
             RelationType = relationType;
         }
 
-        public int Percent { get; set; }
-
         public InheritanceType InheritanceType { get; set; }
 
         public WillType WillType { get; set; }
