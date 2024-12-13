@@ -1,6 +1,5 @@
 ﻿@rendermode InteractiveServer
 
-@inject HeirService HeirService
 @inject TestatorService TestatorService
 
 <hr />
@@ -108,12 +107,4 @@
             StateHasChanged();
         }
     }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            StateHasChanged();
-        }
-    }
-    }
+}

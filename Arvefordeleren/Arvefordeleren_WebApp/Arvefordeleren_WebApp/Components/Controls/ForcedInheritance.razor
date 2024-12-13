@@ -50,15 +50,11 @@
 
 <button type="button" class="btn btn-success" @onclick="Save">Gem</button>
 
-
 @code {
     List<Testator> testators = new List<Testator>();
 
     private Testator testator = new Testator();
     private Testator secondTestator = new Testator();
-
-    string Test = "";
-    string Test2 = "";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
