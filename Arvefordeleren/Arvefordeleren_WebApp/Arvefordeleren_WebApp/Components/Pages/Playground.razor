@@ -89,6 +89,8 @@
 
 	private void InitializeChartData()
 	{
+		// Beregning af arvfordeling laves her, og skal tage højde for Arvtypen,
+		// om det er ligelig fordelt, eller 50% til ægtefælle.
 		foreach (Testator t in Testators)
 		{
 			Dictionary<string, object> data = new Dictionary<string, object>();
@@ -108,7 +110,6 @@
 						}
 						else
 						{
-							// Beregn resultat for arvfordeling her
 							double forcedInheritance;
 
 							forcedInheritance = (25 * 0.5) / t.Persons.OfType<Heir>().Count();
@@ -123,7 +124,6 @@
 
 					foreach (Person p in t.Persons)
 					{
-						// Beregn resultat for arvfordeling her
 						double forcedInheritance;
 
 						forcedInheritance = 25 / t.Persons.Count;
