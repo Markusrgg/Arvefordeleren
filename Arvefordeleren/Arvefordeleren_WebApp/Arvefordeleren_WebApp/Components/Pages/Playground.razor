@@ -57,7 +57,7 @@
                         </div>
                         @foreach (Dictionary<string, object> data in DataList)
                         {
-                            <BlazorChart @rendermode=InteractiveServer ChartType="ChartType.Pie" ChartData="data"/>
+                            <BlazorChart @rendermode=InteractiveServer ChartType="ChartType.Pie" ChartData="data" />
                         }
                     </div>
                     <div class="summary my-5">
@@ -82,10 +82,10 @@
         Heirs = await HeirService.GetAll();
         Testators = await TestatorService.GetAll();
 
-        InitializeCharts();
+        InitializeChartData();
     }
 
-    private void InitializeCharts()
+    private void InitializeChartData()
     {
         foreach (Testator t in Testators)
         {
@@ -93,10 +93,12 @@
 
             foreach (Person p in t.Persons)
             {
-                if (p is Heir h)
+                double forcedInheritance;
+                if (t.InheritanceType == Arvefordeleren_ClassLibrary.Enums.InheritanceType.FIFTY)
                 {
-                    data.Add(h.FullName, h.Percent);
+                    forcedInheritance = (25 * 0.5) / Heirs.Count;
                 }
+                data.Add(p.FullName, p.Percent);
             }
 
             DataList.Add(data);
