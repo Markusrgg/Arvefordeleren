@@ -8,102 +8,138 @@
 <PageTitle>Playground</PageTitle>
 
 <div class="d-flex flex-row playerground-container">
-    <!-- Sidebar -->
-    <div class="sidebar bg-light p-3">
-        <div class="d-flex justify-content-end">
-            <BlazorToolTip TooltipText="fytdytytyj" />
-        </div>
-        <h5 class="text-center" style="font-size: 25px;">Arvinger</h5>
-        <br>
-        <div class="d-flex flex-column gap-3">
-            @foreach (Heir heir in Heirs)
-            {
-                <HeirListItem Name="@heir.FullName" Relation="@heir.RelationType.ToString()"></HeirListItem>
-            }
-        </div>
-    </div>
+	<!-- Sidebar -->
+	<div class="sidebar bg-light p-3">
+		<div class="d-flex justify-content-end">
+			<BlazorToolTip TooltipText="fytdytytyj" />
+		</div>
+		<h5 class="text-center" style="font-size: 25px;">Arvinger</h5>
+		<br>
+		<div class="d-flex flex-column gap-3">
+			@foreach (Heir heir in Heirs)
+			{
+				<HeirListItem Name="@heir.FullName" Relation="@heir.RelationType.ToString()"></HeirListItem>
+			}
+		</div>
+	</div>
 
-    <!-- Main Content -->
-    <div class="content flex-grow-1 p-3">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div>
-                        <div class="input-group mb-3 my-4">
-                            <span class="input-group-text" id="inputGroup-sizing-default">Kr. </span>
-                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default">
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <BlazorToolTip />
-                    </div>
-                    <h1 class="text-center">Aktiver</h1>
-                    <div class="asset-list d-flex flex-column gap-4">
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="w-75 mx-auto">
-                        <div class="d-flex justify-content-end">
-                            <BlazorToolTip />
-                        </div>
-                        @foreach (Dictionary<string, object> data in DataList)
-                        {
-                            <BlazorChart @rendermode=InteractiveServer ChartType="ChartType.Pie" ChartData="data" />
-                        }
-                    </div>
-                    <div class="summary my-5">
-                        <h2 class="text-center">Opsummering</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<!-- Main Content -->
+	<div class="content flex-grow-1 p-3">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div>
+						<div class="input-group mb-3 my-4">
+							<span class="input-group-text" id="inputGroup-sizing-default">Kr. </span>
+							<input type="text" @bind="TotalSum" class="form-control" aria-label="Sizing example input"
+								   aria-describedby="inputGroup-sizing-default">
+						</div>
+					</div>
+					<div class="d-flex justify-content-end">
+						<BlazorToolTip />
+					</div>
+					<h1 class="text-center">Aktiver</h1>
+					<div class="asset-list d-flex flex-column gap-4">
+						<AssetListItem></AssetListItem>
+						<AssetListItem></AssetListItem>
+						<AssetListItem></AssetListItem>
+						<AssetListItem></AssetListItem>
+						<AssetListItem></AssetListItem>
+						<AssetListItem></AssetListItem>
+						<AssetListItem></AssetListItem>
+						<AssetListItem></AssetListItem>
+					</div>
+				</div>
+				<div class="col">
+					<div class="w-75 mx-auto">
+						<div class="d-flex justify-content-end">
+							<BlazorToolTip />
+						</div>
+						@foreach (Dictionary<string, object> data in DataList)
+						{
+							<BlazorChart @rendermode=InteractiveServer ChartLabel="Fordeling i %" ChartType="ChartType.Pie" ChartData="data" />
+						}
+					</div>
+					<div class="summary my-5">
+						<h2 class="text-center">Opsummering</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 @code {
-    List<Dictionary<string, object>> DataList { get; set; } = new List<Dictionary<string, object>>();
+	List<Dictionary<string, object>> DataList { get; set; } = new List<Dictionary<string, object>>();
 
-    List<Heir> Heirs { get; set; } = new List<Heir>();
+	List<Heir> Heirs { get; set; } = new List<Heir>();
 
-    List<Testator> Testators { get; set; } = new List<Testator>();
+	List<Testator> Testators { get; set; } = new List<Testator>();
+
+	double TotalSum { get; set; } = 0;
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        Heirs = await HeirService.GetAll();
-        Testators = await TestatorService.GetAll();
+	protected override async Task OnInitializedAsync()
+	{
+		Heirs = await HeirService.GetAll();
+		Testators = await TestatorService.GetAll();
 
-        InitializeChartData();
-    }
+		InitializeChartData();
+	}
 
-    private void InitializeChartData()
-    {
-        foreach (Testator t in Testators)
-        {
-            Dictionary<string, object> data = new Dictionary<string, object>();
+	private void InitializeChartData()
+	{
+		foreach (Testator t in Testators)
+		{
+			Dictionary<string, object> data = new Dictionary<string, object>();
 
-            foreach (Person p in t.Persons)
-            {
-                double forcedInheritance;
-                if (t.InheritanceType == Arvefordeleren_ClassLibrary.Enums.InheritanceType.FIFTY)
-                {
-                    forcedInheritance = (25 * 0.5) / Heirs.Count;
-                }
-                data.Add(p.FullName, p.Percent);
-            }
+			switch (t.InheritanceType)
+			{
+				case InheritanceType.FIFTY:
+					double spouseShare = 12.5;
 
-            DataList.Add(data);
-        }
-    }
+					foreach (Person p in t.Persons)
+					{
+						if (p is Testator spouse)
+						{
+							double result = spouseShare + (75 * ((double)p.Percent / 100));
+
+							data.Add(p.FullName, result);
+						}
+						else
+						{
+							// Beregn resultat for arvfordeling her
+							double forcedInheritance;
+
+							forcedInheritance = (25 * 0.5) / t.Persons.OfType<Heir>().Count();
+
+							double result = (75 * ((double)p.Percent / 100)) + forcedInheritance;
+
+							data.Add(p.FullName, result);
+						}
+					}
+					break;
+				case InheritanceType.SPLIT:
+
+					foreach (Person p in t.Persons)
+					{
+						// Beregn resultat for arvfordeling her
+						double forcedInheritance;
+
+						forcedInheritance = 25 / t.Persons.Count;
+
+						double result = (75 * ((double)p.Percent / 100)) + forcedInheritance;
+
+						data.Add(p.FullName, result);
+					}
+					break;
+			}
+
+
+
+			DataList.Add(data);
+		}
+	}
 
 
 }
