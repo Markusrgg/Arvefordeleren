@@ -2,146 +2,165 @@
 @inject HeirService HeirService;
 @inject TestatorService TestatorService;
 
-@page "/playground"
+@page "/arvefordeling"
 @layout PlaygroundLayout
 
 <PageTitle>Playground</PageTitle>
 
 <div class="d-flex flex-row playerground-container">
-	<!-- Sidebar -->
-	<div class="sidebar bg-light p-3">
-		<div class="d-flex justify-content-end">
-			<BlazorToolTip TooltipText="fytdytytyj" />
-		</div>
-		<h5 class="text-center" style="font-size: 25px;">Arvinger</h5>
-		<br>
-		<div class="d-flex flex-column gap-3">
-			@foreach (Heir heir in Heirs)
-			{
-				<HeirListItem Name="@heir.FullName" Relation="@heir.RelationType.GetDisplayName()"></HeirListItem>
-			}
-		</div>
-	</div>
+    <!-- Sidebar -->
+    <div class="sidebar bg-light p-3">
+        <div class="d-flex justify-content-end">
+            <BlazorToolTip TooltipText="fytdytytyj" />
+        </div>
+        <h5 class="text-center" style="font-size: 25px;"><strong>Arvinger</strong></h5>
+        <br>
+        <div class="d-flex flex-column gap-3">
+            @foreach (Heir heir in Heirs)
+            {
+                <HeirListItem Name="@heir.FullName" Relation="@heir.RelationType.GetDisplayName()"></HeirListItem>
+            }
+        </div>
+        <br />
+        <br />
+        <a href="/arveladere" class="btn btn-outline-primary" role="button">Tilbage til personoplysninger</a>
+    </div>
 
-	<!-- Main Content -->
-	<div class="content flex-grow-1 p-3">
-		<div class="container">
-			<div class="row">
-				<div class="col">
-					<div>
-						<div class="input-group mb-3 my-4">
-							<span class="input-group-text" id="inputGroup-sizing-default">Kr. </span>
-							<input type="text" @bind="TotalSum" class="form-control" aria-label="Sizing example input"
-								   aria-describedby="inputGroup-sizing-default">
-						</div>
-					</div>
-					<div class="d-flex justify-content-end">
-						<BlazorToolTip />
-					</div>
-					<h1 class="text-center">Aktiver</h1>
-					<div class="asset-list d-flex flex-column gap-4">
-						<AssetListItem></AssetListItem>
-						<AssetListItem></AssetListItem>
-						<AssetListItem></AssetListItem>
-						<AssetListItem></AssetListItem>
-						<AssetListItem></AssetListItem>
-						<AssetListItem></AssetListItem>
-						<AssetListItem></AssetListItem>
-						<AssetListItem></AssetListItem>
-					</div>
-				</div>
-				<div class="col">
-					<div class="w-75 mx-auto">
-						<div class="d-flex justify-content-end">
-							<BlazorToolTip />
-						</div>
-						@foreach (Dictionary<string, object> data in DataList)
-						{
-							<p class="text-center">Fordeling for arvelader</p>
 
-							<BlazorChart @rendermode=InteractiveServer ChartLabel="Fordeling i %" ChartType="ChartType.Pie" ChartData="data" />
-						}
-					</div>
-					<div class="summary my-5">
-						<h2 class="text-center">Opsummering</h2>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <!-- Main Content -->
+    <div class="content flex-grow-1 p-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4><strong>Arvefordelingsoversigt</strong></h4>
+                <button class="btn btn-primary" onclick="downloadPDF()">
+                    <i class="bi bi-file-earmark-pdf"></i> Hent PDF
+                </button>
+            </div>
+
+            <p>
+                Her kan du se en oversigt over, hvordan arven er fordelt mellem de oplyste arvingerne. <br />
+                <strong>Vælg dine egne scenarier!</strong><br />
+                Du kan i venstre side se hvordan arvefordelingen kan ændre sig ved dødsdfald ud fra arveklasser.
+            </p>
+                   
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <p><strong>Samlet arv:</strong></p>
+                        <div class="input-group mb-3 my-4">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Kr. </span>
+                            <input type="text" @bind="TotalSum" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-default">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <BlazorToolTip />
+                    </div>
+                    <h3 class="text-center"><strong>Aktiver</strong></h3>
+                    <div class="asset-list d-flex flex-column gap-4">
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                        <AssetListItem></AssetListItem>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="w-75 mx-auto">
+                        <div class="d-flex justify-content-end">
+                            <BlazorToolTip />
+                        </div>
+                        @foreach (Dictionary<string, object> data in DataList)
+                        {
+                            <p class="text-center"><strong>Fordeling for arvelader</strong></p>
+
+                            <BlazorChart @rendermode=InteractiveServer ChartLabel="Fordeling i %" ChartType="ChartType.Pie" ChartData="data" />
+                        }
+                    </div>
+                </div>
+                    <div class="summary my-5 text-center">
+                        <h4 class="text-center"><strong>Opsummering</strong></h4>
+                        <p>Her kan du se en oversigt over, hvordan arven er fordelt mellem arvingerne.</p>
+                    </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
-	List<Dictionary<string, object>> DataList { get; set; } = new List<Dictionary<string, object>>();
+    List<Dictionary<string, object>> DataList { get; set; } = new List<Dictionary<string, object>>();
 
-	List<Heir> Heirs { get; set; } = new List<Heir>();
+    List<Heir> Heirs { get; set; } = new List<Heir>();
 
-	List<Testator> Testators { get; set; } = new List<Testator>();
+    List<Testator> Testators { get; set; } = new List<Testator>();
 
-	double TotalSum { get; set; } = 0;
-
-
-	protected override async Task OnInitializedAsync()
-	{
-		Heirs = await HeirService.GetAll();
-		Testators = await TestatorService.GetAll();
-
-		InitializeChartData();
-	}
-
-	private void InitializeChartData()
-	{
-		// Beregning af arvfordeling laves her, og skal tage højde for Arvtypen,
-		// om det er ligelig fordelt, eller 50% til ægtefælle.
-		foreach (Testator t in Testators)
-		{
-			Dictionary<string, object> data = new Dictionary<string, object>();
-
-			switch (t.InheritanceType)
-			{
-				case InheritanceType.FIFTY:
-					double spouseShare = 12.5;
-
-					foreach (Person p in t.Persons)
-					{
-						if (p is Testator spouse)
-						{
-							double result = spouseShare + (75 * ((double)p.Percent / 100));
-
-							data.Add(p.FullName, result);
-						}
-						else
-						{
-							double forcedInheritance;
-
-							forcedInheritance = (25 * 0.5) / t.Persons.OfType<Heir>().Count();
-
-							double result = (75 * ((double)p.Percent / 100)) + forcedInheritance;
-
-							data.Add(p.FullName, result);
-						}
-					}
-					break;
-				case InheritanceType.SPLIT:
-
-					foreach (Person p in t.Persons)
-					{
-						double forcedInheritance;
-
-						forcedInheritance = 25 / t.Persons.Count;
-
-						double result = (75 * ((double)p.Percent / 100)) + forcedInheritance;
-
-						data.Add(p.FullName, result);
-					}
-					break;
-			}
+    double TotalSum { get; set; } = 0;
 
 
+    protected override async Task OnInitializedAsync()
+    {
+        Heirs = await HeirService.GetAll();
+        Testators = await TestatorService.GetAll();
 
-			DataList.Add(data);
-		}
-	}
+        InitializeChartData();
+    }
+
+    private void InitializeChartData()
+    {
+        // Beregning af arvfordeling laves her, og skal tage højde for Arvtypen,
+        // om det er ligelig fordelt, eller 50% til ægtefælle.
+        foreach (Testator t in Testators)
+        {
+            Dictionary<string, object> data = new Dictionary<string, object>();
+
+            switch (t.InheritanceType)
+            {
+                case InheritanceType.FIFTY:
+                    double spouseShare = 12.5;
+
+                    foreach (Person p in t.Persons)
+                    {
+                        if (p is Testator spouse)
+                        {
+                            double result = spouseShare + (75 * ((double)p.Percent / 100));
+
+                            data.Add(p.FullName, result);
+                        }
+                        else
+                        {
+                            double forcedInheritance;
+
+                            forcedInheritance = (25 * 0.5) / t.Persons.OfType<Heir>().Count();
+
+                            double result = (75 * ((double)p.Percent / 100)) + forcedInheritance;
+
+                            data.Add(p.FullName, result);
+                        }
+                    }
+                    break;
+                case InheritanceType.SPLIT:
+
+                    foreach (Person p in t.Persons)
+                    {
+                        double forcedInheritance;
+
+                        forcedInheritance = 25 / t.Persons.Count;
+
+                        double result = (75 * ((double)p.Percent / 100)) + forcedInheritance;
+
+                        data.Add(p.FullName, result);
+                    }
+                    break;
+            }
+
+
+
+            DataList.Add(data);
+        }
+    }
 
 
 }

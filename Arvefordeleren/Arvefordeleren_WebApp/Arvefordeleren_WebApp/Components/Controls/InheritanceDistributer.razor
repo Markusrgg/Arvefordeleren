@@ -2,7 +2,7 @@
 
 @inject TestatorService TestatorService
 
-<hr />
+
 <p>Fordeling for <span class="fw-bold">@Testator.FullName</span>:</p>
 
 <div class="container">
@@ -30,7 +30,8 @@
             <p>Total fordelt procent: <strong>@TotalPercent%</strong></p>
         </div>
 
-        <button class="btn btn-success" type="button" @onclick="Save">Gem</button>
+        <button class="btn btn-success mb-2" type="button" @onclick="Save">Gem</button>
+        <br />
     }
     else
     {

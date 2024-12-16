@@ -1,6 +1,7 @@
 ﻿@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
 
-@page "/arvefordeling"
+@page "/fritvangsarv"
 
 @layout InformationLayout
 
@@ -13,8 +14,9 @@
 else
 {
     <div style="width: 35%;">
-        <h3 class="fw-bold">Fordeling af fri- og tvangsarvs</h3>
-        <hr class="mt-0" />
+        <h4 class="fw-bold">Fordeling af fri- og tvangsarvs</h4>
+      
+        <hr style="width:85%; "/>
     </div>
 
     <br />
@@ -24,6 +26,8 @@ else
     <br />
     <SharedInheritance />
 }
+<a  href="/arvefordeling" class="btn btn-primary" role="button">Se min arvefordeling</a>
+
 
 @code {
     List<Testator> testators = new List<Testator>();

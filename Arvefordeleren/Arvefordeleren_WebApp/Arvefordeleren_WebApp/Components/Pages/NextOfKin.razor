@@ -9,20 +9,24 @@
 
 @if (!testators.Any())
 {
-    <h3>Udfyld personoplysninger fra forrige side først!</h3>
+    <h3><strong>Udfyld venligst personoplysninger fra forrige side først</strong>!</h3>
 }
 else
 {
-    <h3>Indtast arvingens oplysninger</h3>
-
+    <div class ="d-flex justify-content-start">
+        <h4><strong>Oplysninger om arvinge og deres relation</strong></h4>
+        <BlazorToolTip TooltipText="Indsæt tekst" />
+    </div>
+        <hr style="width:40%;" />
+    <br />
     <EditForm Model="heir" OnValidSubmit="HandleValidSubmit" FormName="heirForm">
         <DataAnnotationsValidator />
 
         <div class="row mb-3">
             <div class="col-2">
-                <label class="col-form-label">Fornavn</label>
+                <label class="col-form-label"><strong>Fornavn</strong></label>
             </div>
-            <div class="col-6">
+            <div class="col-6 w-25">
                 <InputText @bind-Value="heir.FirstName" class="form-control" />
             </div>
             <div class="col">
@@ -32,9 +36,9 @@ else
 
         <div class="row mb-3">
             <div class="col-2">
-                <label class="col-form-label">Efternavn</label>
+                <label class="col-form-label"><strong>Efternavn</strong></label>
             </div>
-            <div class="col-6">
+            <div class="col-6 w-25">
                 <InputText @bind-Value="heir.LastName" class="form-control" />
             </div>
             <div class="col">
@@ -44,9 +48,9 @@ else
 
         <div class="row mb-3">
             <div class="col-2">
-                <label class="col-form-label">Relation</label>
+                <label class="col-form-label"><strong>Relation</strong></label>
             </div>
-            <div class="col-6">
+            <div class="col-6 w-auto">
                 <InputSelect @bind-Value="heir.RelationType" class="form-control">
                     @foreach (RelationType relation in Enum.GetValues(typeof(RelationType)))
                     {
@@ -191,7 +195,7 @@ else
     </EditForm>
 
     <div class="container mt-5">
-        <h4>Arvinger</h4>
+        <h4><strong>Oversigt af arvinger</strong></h4>
 
         @if (heirs.Any())
         {
@@ -227,8 +231,8 @@ else
 
     <br />
 
-    <div class="container mt-5">
-        <h4>Familie træ</h4>
+    <div class="container mt-5 text-center">
+        <h4><strong>Familietræ</strong></h4>
         <Family @ref="family" />
     </div>
 }

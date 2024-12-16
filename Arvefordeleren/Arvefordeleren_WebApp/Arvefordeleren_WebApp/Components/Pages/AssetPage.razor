@@ -15,18 +15,24 @@
 else
 {
 
-    <h3>Aktiver</h3>
+    <div>
+        <div class="d-flex justify-content-start">
+        <h4><strong>Aktiver og tildeling</strong></h4>
+            <BlazorToolTip TooltipText="Indsæt tekst" />
+        </div>
+        <hr style="width: 28%;" />          
+    </div>
     <p>
-        En <strong>aktiv</strong> i forhold til en arv refererer til de værdier eller ejendele, som en afdød person efterlader,
-        og som kan indgå i boets samlede værdi. Aktiver kan være:
+        Et <strong>aktiv</strong> i forhold til arv refererer til de værdier og ejendele, som afdøde efterlader sig.<br />
+        Aktiver kan være:
     </p>
 
     <ul>
-        <li><strong>Kontanter:</strong> Indestående på bankkonti.</li>
-        <li><strong>Ejendomme:</strong> Fx huse eller lejligheder.</li>
-        <li><strong>Investeringer:</strong> Aktier, obligationer eller pensionsopsparinger.</li>
-        <li><strong>Personlige ejendele:</strong> Fx biler, smykker eller kunst.</li>
-        <li><strong>Virksomheder eller ejerandele:</strong> Ejerskab i en virksomhed.</li>
+        <li><strong>Kontanter:</strong> Indestående på bankkonti og rede penge.</li>
+        <li><strong>Ejendomme:</strong> f.eks hus(e) eller lejligheder.</li>
+        <li><strong>Investeringer:</strong> Aktier, obligationer samt pensionsopsparinger.</li>
+        <li><strong>Personlige ejendele:</strong> f.eks biler, smykker eller kunst.</li>
+        <li><strong>Virksomheder eller ejerandele:</strong> Ejerandele i virksomhed(er).</li>
     </ul>
 
     <p>
@@ -41,9 +47,9 @@ else
 
         <div class="row mb-3">
             <div class="col-2">
-                <label class="col-form-label">Aktivet:</label>
+                <label class="col-form-label"><strong>Aktivet:</strong></label>
             </div>
-            <div class="col-6">
+            <div class="col-6 w-25">
                 <InputText @bind-Value="asset.Name" class="form-control" />
             </div>
             <div class="col">
@@ -51,10 +57,11 @@ else
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Særeje:</label>
+            <div class="col-2 d-flex justify-content-start">
+                <label class="col-form-label "><strong>Særeje:</strong></label>
+                <BlazorToolTip TooltipText="Indsæt tekst" />
             </div>
-            <div class="col-6">
+            <div class="col-6 w-auto">
                 <InputSelect @bind-Value="asset.SeparateEstate" class="form-control">
                     <option value="">Ingen valgt</option>
                     @foreach (var person in persons)
@@ -66,7 +73,7 @@ else
                 </InputSelect>
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">@(isUpdating ? "Opdater" : "Tilføj")</button>
+        <button class="btn btn-success" type="submit">@(isUpdating ? "Opdater" : "Tilføj")</button>
     </EditForm>
     @if (assets.Count > 0 && !isUpdating)
     {
@@ -94,7 +101,7 @@ else
         </table>
     }
     <br />
-    <button class="btn btn-primary" @onclick="NavigateToInheritanceDistribution">Videre</button>
+    <button class="btn btn-primary" @onclick="NavigateToInheritanceDistribution">Videre til arvefordeling</button>
 }
 
 @code {
@@ -154,7 +161,7 @@ else
 
     private void NavigateToInheritanceDistribution()
     {
-        NavigationManager.NavigateTo("/arvefordeling");
+        NavigationManager.NavigateTo("/fritvangsarv");
     }
 }
 

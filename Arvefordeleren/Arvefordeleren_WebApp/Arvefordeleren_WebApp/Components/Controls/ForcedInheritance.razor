@@ -3,8 +3,13 @@
 @inject TestatorService TestatorService
 @inject HeirService HeirService
 
-<h4 class="fw-bold">Tvangsarv (25%)</h4>
-<hr />
+<div>
+    <div class="d-flex justify-content-start">        
+    <h5><strong>Tvangsarv (25%) </strong></h5>
+        <BlazorToolTip TooltipText="Indsæt tekst" />
+    </div>
+    <hr style="width: 15%;" />
+</div>
 
 <div class="row mb-3">
     @if (testator != null)
