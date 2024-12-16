@@ -18,7 +18,7 @@
 		<div class="d-flex flex-column gap-3">
 			@foreach (Heir heir in Heirs)
 			{
-				<HeirListItem Name="@heir.FullName" Relation="@heir.RelationType.ToString()"></HeirListItem>
+				<HeirListItem Name="@heir.FullName" Relation="@heir.RelationType.GetDisplayName()"></HeirListItem>
 			}
 		</div>
 	</div>
@@ -57,6 +57,8 @@
 						</div>
 						@foreach (Dictionary<string, object> data in DataList)
 						{
+							<p class="text-center">Fordeling for arvelader</p>
+
 							<BlazorChart @rendermode=InteractiveServer ChartLabel="Fordeling i %" ChartType="ChartType.Pie" ChartData="data" />
 						}
 					</div>
