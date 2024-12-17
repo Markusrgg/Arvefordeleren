@@ -64,6 +64,6 @@
         deleteTasks = heirs.Select(x => HeirService.Delete(x.Id));
         await Task.WhenAll(deleteTasks);
 
-        NavigationManager.NavigateTo("/testatorer");
+        NavigationManager.NavigateTo("/");
     }
 }

@@ -51,7 +51,7 @@ else
                 <label class="col-form-label"><strong>Relation</strong></label>
             </div>
             <div class="col-6 w-auto">
-                <InputSelect @bind-Value="heir.RelationType" class="form-control">
+                <InputSelect @bind-Value="heir.RelationType" class="form-control" style="cursor: pointer;">
                     @foreach (RelationType relation in Enum.GetValues(typeof(RelationType)))
                     {
                         if (relation != RelationType.MARRIED && relation != RelationType.INDIVIDUAL)
