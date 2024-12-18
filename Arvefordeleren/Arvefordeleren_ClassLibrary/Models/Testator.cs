@@ -28,8 +28,6 @@ namespace Arvefordeleren_ClassLibrary.Models
 
         public WillType WillType { get; set; }
 
-        public RelationType RelationType { get; set; }
-
         public List<Person> Persons { get; set; } = new List<Person>();
 
         //En liste der indeholder Guids, de unikke værdier 

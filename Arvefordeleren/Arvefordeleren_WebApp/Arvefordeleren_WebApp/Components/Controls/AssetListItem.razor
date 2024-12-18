@@ -1,24 +1,12 @@
-﻿<div class="d-flex justify-content-between align-items-center" style="padding: 5px; border-radius: 5px;">
+﻿@rendermode InteractiveServer
+
+<div class="d-flex justify-content-between align-items-center" style="padding: 5px; border-radius: 5px;">
     <div>
-        <label style="font-size:20px">@AssetName</label>
+        <label style="font-size:20px">@Asset.Name</label>
     </div>
-
-    <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Arvinger
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-    </div>
-
 </div>
 
 @code {
     [Parameter]
-    public string AssetName { get; set; } = "Lorem ipsum dolor sit amet";
-
-    
+    public Asset Asset { get; set; }
 }

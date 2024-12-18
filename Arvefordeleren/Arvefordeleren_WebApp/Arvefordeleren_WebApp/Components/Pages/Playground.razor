@@ -1,5 +1,7 @@
 ﻿@rendermode InteractiveServer
-@inject HeirService HeirService;
+@inject HeirService HeirService
+@inject TestatorService TestatorService
+@inject AssetService AssetService
 
 @page "/playground"
 @layout PlaygroundLayout
@@ -8,10 +10,10 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.forEach((tooltipTriggerEl) => {
-            new bootstrap.Tooltip(tooltipTriggerEl);
-        });
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach((tooltipTriggerEl) => {
+    new bootstrap.Tooltip(tooltipTriggerEl);
+    });
     });
 </script>
 
@@ -24,9 +26,13 @@
         <h5 class="text-center" style="font-size: 25px;">Arvinger</h5>
         <br>
         <div class="d-flex flex-column gap-3">
-            @foreach (Heir heir in Heirs)
+            @foreach (Person person in Persons)
             {
-                <HeirListItem Name="@heir.FullName" Relation="@heir.RelationType.ToString()"></HeirListItem>
+                <div @onclick="(() => SelectedPerson = person)"
+                class="heir-item @(person == SelectedPerson ? "selected" : "")"
+                style="cursor: pointer;">
+                    <HeirListItem Name="@person.FullName" Relation="@person.RelationType.ToString()"></HeirListItem>
+                </div>
             }
         </div>
     </div>
@@ -40,22 +46,38 @@
                         <div class="input-group mb-3 my-4">
                             <span class="input-group-text" id="inputGroup-sizing-default">Kr. </span>
                             <input type="text" class="form-control" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default">
+                            aria-describedby="inputGroup-sizing-default">
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
                         <BlazorToolTip />
                     </div>
-                    <h1 class="text-center">Aktiver</h1>
+                    <h1 class="text-center">
+                        @(SelectedPerson != null ? SelectedPerson.FullName : "") Aktiver
+                    </h1>
                     <div class="asset-list d-flex flex-column gap-4">
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
-                        <AssetListItem></AssetListItem>
+                        @foreach (Asset asset in SelectedAsset)
+                        {
+                            <div class="d-flex justify-content-between align-items-center" style="padding: 5px; border-radius: 5px;">
+                                <div>
+                                    <label style="font-size:20px">@asset.Name</label>
+                                </div>
+                            </div>
+                            <div>
+                                <InputSelect @bind-Value="asset.SeparateEstate" class="form-control" @onchange="() => OnSeparateEstateChanged(asset)">
+                                    <option value="">Ingen valgt</option>
+                                    @foreach (Person person in Persons)
+                                    {
+                                        if (person.FullName != asset.SeparateEstate)
+                                        {
+                                            <option value="@person.FullName">
+                                                @person.FullName
+                                            </option>
+                                        }
+                                    }
+                                </InputSelect>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="col">
@@ -81,10 +103,47 @@
 {"Test 1", 23},
 {"Test 2", 25}
 };
-    List<Heir> Heirs { get; set; } = new List<Heir>();
+    public List<Person> Persons { get; set; } = new List<Person>();
+
+    private Person _selectedPerson;
+    public Person SelectedPerson 
+    { 
+        get{ return _selectedPerson; }
+        set
+        {
+            _selectedPerson = value;
+            SelectedAsset = Assets.FindAll(x => x.SeparateEstate == value.FullName); 
+        }
+    }
+
+    public List<Asset> Assets { get; set; } = new List<Asset>();
+    public List<Asset> SelectedAsset { get; set; } = new List<Asset>();
 
     protected override async Task OnInitializedAsync()
     {
-        Heirs = await HeirService.GetAll();
+        Assets = await AssetService.GetAll();
+        List<Heir> heirList = await HeirService.GetAll();
+        List<Testator> testatorList = await TestatorService.GetAll();
+        try
+        {
+            if (testatorList[0] != null)
+            {
+                if (testatorList[0].WillType == WillType.Joint)
+                {
+                    Persons = heirList.Concat<Person>(testatorList).ToList();
+                }
+                else
+                {
+                    Persons = heirList.Cast<Person>().ToList();
+                }
+            }
+        }
+        catch (ArgumentOutOfRangeException){}
+    }
+    private async void OnSeparateEstateChanged(Asset asset)
+    {
+        await AssetService.Update(asset);
+        Assets = await AssetService.GetAll();
+        SelectedPerson = SelectedPerson;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arvefordeleren_ClassLibrary.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace Arvefordeleren_ClassLibrary.Models
         public string? LastName { get; set; }
 
         public string? FullName => $"{FirstName} {LastName}";
+
+        public RelationType RelationType { get; set; }
     }
 
 

@@ -16,8 +16,6 @@ namespace Arvefordeleren_ClassLibrary.Models
 
         public int Percent { get; set; } = 0;
 
-        public RelationType RelationType { get; set; }
-
         public Heir()
         {
             Id = Guid.NewGuid();
