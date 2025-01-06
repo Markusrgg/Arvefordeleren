@@ -124,13 +124,16 @@ else
         List<Heir> heirList = await HeirService.GetAll();
         List<Testator> testatorList = await TestatorService.GetAll();
 
-        if (testatorList[0].WillType == WillType.Joint)
+        if (testatorList.Any())
         {
-            persons = heirList.Concat<Person>(testatorList).ToList();
-        }
-        else
-        {
-            persons = heirList.Cast<Person>().ToList();
+            if (testatorList[0].WillType == WillType.Joint)
+            {
+                persons = heirList.Concat<Person>(testatorList).ToList();
+            }
+            else
+            {
+                persons = heirList.Cast<Person>().ToList();
+            }
         }
     }
 
